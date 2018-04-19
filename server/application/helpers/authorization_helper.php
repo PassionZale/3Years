@@ -34,6 +34,11 @@ class Authorization
         return JWT::encode($data, $key);
     }
 
+    /**
+     * 从 Authorization Token 中获取用户信息
+     *
+     * @return array
+     */
     public static function getUserFromToken()
     {
         $CI =& get_instance();
