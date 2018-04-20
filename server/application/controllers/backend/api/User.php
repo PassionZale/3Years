@@ -19,5 +19,3 @@ class User extends REST_Controller
         $this->set_response($user, REST_Controller::HTTP_OK);
     }
 }
-
-

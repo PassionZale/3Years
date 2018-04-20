@@ -6,7 +6,8 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-    filename: 'build.js'
+    filename: 'build.js',
+    chunkFilename: '[name].[chunkhash:5].chunk.js',
   },
   module: {
     rules: [
@@ -16,7 +17,7 @@ module.exports = {
           'vue-style-loader',
           'css-loader'
         ],
-      },      {
+      }, {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
@@ -35,6 +36,13 @@ module.exports = {
         loader: 'file-loader',
         options: {
           name: '[name].[ext]?[hash]'
+        }
+      },
+      {
+        test: /\.(ttf|eot|woff|woff2)$/,
+        loader: 'url-loader',
+        options: {
+          name: 'fonts/[name].[ext]',
         }
       }
     ]
