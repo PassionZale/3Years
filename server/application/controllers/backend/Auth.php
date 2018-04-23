@@ -18,7 +18,7 @@ class Auth extends CI_Controller
     {
         if ($this->form_validation->run('auth_login') === FALSE) {
             $errors = $this->form_validation->error_array();
-            echoFail($errors);
+            echoFail(current($errors));
         } else {
             $data = $this->input->post();
             $result = $this->UserModel->user_login($data['username'], $data['password']);
@@ -52,16 +52,16 @@ class Auth extends CI_Controller
     {
         if ($this->UserModel->superuser_exist()) {
             header('Content-Type: text/plain; charset=utf-8');
-            set_status_header(403, 'superuser is exist');
-            echoFail(ErrCode::getErrText(40001));
+            set_status_header(406, 'superuser is exist');
+            echoMsg('superuser is exist', ErrCode::getErrText(40001));
         } else {
             if ($this->form_validation->run('auth_register') === FALSE) {
                 $errors = $this->form_validation->error_array();
-                echoFail($errors);
+                echoFail(current($errors));
             } else {
                 $data = $this->input->post();
                 $result = $this->UserModel->user_create($data, TRUE);
-                if($result){
+                if ($result) {
                     $this->UserModel->superuser_lock();
                 }
                 $result ? echoSuccess() : echoFail();

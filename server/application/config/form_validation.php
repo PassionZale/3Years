@@ -26,7 +26,7 @@ $config = array(
             'errors' => array(
                 'required' => '%s 不能为空',
                 'is_unique' => '%s 已被占用',
-                'regex_match' => '以字母开头，长度在5~16之间，只能包含字母、数字和下划线',
+                'regex_match' => '%s 以字母开头，长度在5~16之间，只能包含字母、数字和下划线',
             )
         ),
         array(
@@ -35,7 +35,7 @@ $config = array(
             'rules' => 'trim|required|regex_match[/^[a-zA-Z]\w{5,17}$/]',
             'errors' => array(
                 'required' => '%s 不能为空',
-                'regex_match' => '以字母开头，长度在6~18之间，只能包含字母、数字和下划线',
+                'regex_match' => '%s 以字母开头，长度在6~18之间，只能包含字母、数字和下划线',
             )
         ),
         array(
