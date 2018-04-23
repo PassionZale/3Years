@@ -1,8 +1,7 @@
 <template>
-  <h1>Detail</h1>
+  <h1>Dashboard</h1>
 </template>
+
 <script>
-export default {
-  
-}
+export default {};
 </script>

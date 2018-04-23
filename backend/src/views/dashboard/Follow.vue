@@ -1,8 +1,7 @@
 <template>
-  <h1>Index</h1>
+  <h1>Follow</h1>
 </template>
+
 <script>
-export default {
-  
-}
+export default {};
 </script>
