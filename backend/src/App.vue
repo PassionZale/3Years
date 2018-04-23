@@ -5,10 +5,7 @@
 </template>
 
 <script>
-import store from "./vuex/store";
-export default {
-  store
-};
+export default {};
 </script>
 
 <style lang="less">

@@ -1,4 +1,4 @@
-import { login, superuser, logout } from '../../api/auth'
+import { login, superuser } from '../../api/auth'
 import { setToken,removeToken } from '../../utils/auth'
 
 const user = {
