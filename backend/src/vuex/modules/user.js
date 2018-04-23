@@ -1,5 +1,5 @@
 import { login, superuser } from '../../api/auth'
-import { setToken,removeToken } from '../../utils/auth'
+import { setToken, removeToken } from '../../utils/auth'
 
 const user = {
     state: {
@@ -24,9 +24,14 @@ const user = {
         Login({ commit }, params) {
             return new Promise((resolve, reject) => {
                 login(params.username, params.password).then(response => {
-                    const token = response.ret_msg.token;
-                    setToken(token);
-                    resolve();
+                    console.log(response);
+                    if (response.ret_code === 0) {
+                        let token = response.ret_msg.token;
+                        setToken(token);
+                        resolve();
+                    } else {
+                        reject(response.ret_msg);
+                    }
                 }).catch(error => {
                     reject(error);
                 });

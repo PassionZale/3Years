@@ -2,6 +2,7 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '../vuex/store'
 import { getToken } from './auth'
+import { superUserIsNotExist, superUserIsExist, defaultErrorMsg } from './error'
 
 const baseURL = process.env.NODE_ENV === 'production' ?
     'https://www.url.com/backend' :
@@ -28,11 +29,20 @@ ajax.interceptors.request.use(config => {
 });
 
 ajax.interceptors.response.use(response => {
-    let res = response.data;
-    console.log(res);
-    return res;
+    return response.data;
 }, error => {
-    console.log('err' + error);
+    if (error.response) {
+        let error_msg = error.response.data.ret_msg;
+        if (error.response.status === 406) {
+            if (error.response.data.ret_code === 'superuser is exist') {
+                superUserIsExist(error_msg);
+            } else {
+                superUserIsNotExist(error_msg);
+            }
+        } else {
+            defaultErrorMsg(error_msg);
+        }
+    }
     return Promise.reject(error);
 });
 

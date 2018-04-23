@@ -36,11 +36,14 @@ export default {
   },
   methods: {
     login() {
-      this.$store.dispatch('Login', this.data).then(() => {
-        console.log('success');
-      }).catch(() => {
-        console.log('error');
-      });
+      this.$store
+        .dispatch("Login", this.data)
+        .then(() => {
+          console.log("success");
+        })
+        .catch(error => {
+          console.log(error);
+        });
     }
   }
 };
