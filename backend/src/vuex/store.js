@@ -1,27 +1,18 @@
-import middlewares from './middlewares';
-import Vue from 'vue';
-import Vuex from 'vuex';
+import middlewares from './middlewares'
+import Vue from 'vue'
+import Vuex from 'vuex'
+import authRandomBg from './modules/randomImages'
+import user from './modules/user'
+import getters from './getters'
+
 Vue.use(Vuex);
 
-const state = {
-    user: {
-        id: null,
-        username: null,
-        email: null,
-        role: {}
-    }
-};
-
-const mutations = {
-    // 登录成功
-    LOGIN_SUCCESS(state, params) {
-        state.user = params;
-    },
-};
-
 export default new Vuex.Store({
-    state,
-    mutations,
+    modules: {
+        authRandomBg,
+        user
+    },
+    getters,
     strict: process.env.NODE_ENV !== 'production',
     plugins: middlewares,
 });

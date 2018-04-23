@@ -1,1 +1,5 @@
-export const getUser = (state) => state.user;
+const getters = {
+    authRandomBg: state => state.authRandomBg.imageList,
+}
+
+export default getters;
