@@ -13,6 +13,7 @@ export const RouterMap = [
 ];
 
 export default new VueRouter({
+    mode: 'history',
     scrollBehavior: () => ({ y: 0 }),
     routes: RouterMap
 });

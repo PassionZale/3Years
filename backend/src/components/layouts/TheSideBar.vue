@@ -1,31 +1,26 @@
 <template>
-<Sider :style="{position: 'fixed', height: '100vh', left: 0, overflow: 'auto'}">
-    <Menu active-name="1-2" theme="dark" width="auto" :open-names="['1']">
-        <Submenu name="1">
-            <template slot="title">
-                <Icon type="ios-navigate"></Icon>
-                Item 1
-            </template>
-            <MenuItem name="1-1">Option 1</MenuItem>
-            <MenuItem name="1-2">Option 2</MenuItem>
-            <MenuItem name="1-3">Option 3</MenuItem>
-        </Submenu>
-        <Submenu name="2">
-            <template slot="title">
-                <Icon type="ios-keypad"></Icon>
-                Item 2
-            </template>
-            <MenuItem name="2-1">Option 1</MenuItem>
-            <MenuItem name="2-2">Option 2</MenuItem>
-        </Submenu>
-        <Submenu name="3">
-            <template slot="title">
-                <Icon type="ios-analytics"></Icon>
-                Item 3
-            </template>
-            <MenuItem name="3-1">Option 1</MenuItem>
-            <MenuItem name="3-2">Option 2</MenuItem>
-        </Submenu>
+<Sider :style="{position: 'fixed', height: '100vh',background:'#fff', left: 0, overflow: 'auto'}">
+    <Menu width="200px" theme="light" active-name="1" :style="{height: '100%'}">
+        <MenuGroup title="内容管理">
+            <MenuItem name="1">
+                <Icon type="document-text"></Icon>
+                文章管理
+            </MenuItem>
+            <MenuItem name="2">
+                <Icon type="chatbubbles"></Icon>
+                评论管理
+            </MenuItem>
+        </MenuGroup>
+        <MenuGroup title="统计分析">
+            <MenuItem name="3">
+                <Icon type="heart"></Icon>
+                用户留存
+            </MenuItem>
+            <MenuItem name="4">
+                <Icon type="heart-broken"></Icon>
+                流失用户
+            </MenuItem>
+        </MenuGroup>
     </Menu>
 </Sider>
 </template>

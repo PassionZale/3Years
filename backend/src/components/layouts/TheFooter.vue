@@ -1,5 +1,5 @@
 <template>
-    <Footer>Footer</Footer>
+    <Footer :style="{padding: '16px'}">Footer</Footer>
 </template>
 
 <script>
