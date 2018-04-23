@@ -19,7 +19,14 @@
             <Input v-model="data.password_confirm" type="password" placeholder="请再次输入密码" clearable style="width: 300px"></Input>   
           </div>
           <div class="box-group">
-            <Button type="primary" long @click.native.prevent="createSuperUser">确认创建</Button>
+            <Button 
+              type="primary"
+              long
+              @click.native.prevent="createSuperUser"
+              :loading="loading"
+            >
+              {{ btnText }}
+            </Button>
           </div>
         </div>
       </div>
@@ -39,18 +46,25 @@ export default {
         email: "",
         password: "",
         password_confirm: ""
-      }
+      },
+      btnText: "登录",
+      loading: false
     };
   },
   methods: {
     createSuperUser() {
+      this.loading = true;
       this.$store
         .dispatch("Superuser", this.data)
         .then(() => {
-          console.log("success");
+          this.btnText = "创建成功，请登录...";
+          this.$nextTick(() => {
+            this.$router.push("/login");
+          });
         })
-        .catch(() => {
-          console.log("error");
+        .catch(error => {
+          this.$Message.error(error);
+          this.loading = false;
         });
     }
   }

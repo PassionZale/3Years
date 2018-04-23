@@ -24,7 +24,6 @@ const user = {
         Login({ commit }, params) {
             return new Promise((resolve, reject) => {
                 login(params.username, params.password).then(response => {
-                    console.log(response);
                     if (response.ret_code === 0) {
                         let token = response.ret_msg.token;
                         setToken(token);
@@ -40,9 +39,11 @@ const user = {
         Superuser({ commit }, params) {
             return new Promise((resolve, reject) => {
                 superuser(params).then(response => {
-                    const data = response;
-                    console.log(data);
-                    resolve();
+                    if (response.ret_code === 0) {
+                        resolve();
+                    } else {
+                        reject(response.ret_msg);
+                    }
                 }).cache(error => {
                     reject(error);
                 });

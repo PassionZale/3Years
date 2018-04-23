@@ -13,7 +13,14 @@
             <Input v-model="data.password" type="password" placeholder="请输入密码" clearable style="width: 300px"></Input>   
           </div>
           <div class="box-group">
-            <Button type="primary" long @click.native.prevent="login">登录</Button>
+            <Button 
+              type="primary"
+              long 
+              @click.native.prevent="login"
+              :loading="loading"
+            >
+              {{ btnText }}
+            </Button>
           </div>
         </div>
       </div>
@@ -31,18 +38,26 @@ export default {
       data: {
         username: "",
         password: ""
-      }
+      },
+      btnText: "登录",
+      loading: false
     };
   },
   methods: {
     login() {
+      this.loading = true;
       this.$store
         .dispatch("Login", this.data)
         .then(() => {
-          console.log("success");
+          this.btnText = "登录成功，正在跳转...";
+          this.$nextTick(() => {
+            this.$router.push("/");
+          });
         })
         .catch(error => {
           console.log(error);
+          this.$Message.error(error);
+          this.loading = false;
         });
     }
   }
