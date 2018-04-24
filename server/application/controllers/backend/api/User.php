@@ -16,6 +16,9 @@ class User extends REST_Controller
     public function index_get()
     {
         $user = Authorization::getUserFromToken();
-        $this->set_response($user, REST_Controller::HTTP_OK);
+        $this->set_response(array(
+            'ret_code' => 0,
+            'ret_msg' => $user
+        ), REST_Controller::HTTP_OK);
     }
 }
