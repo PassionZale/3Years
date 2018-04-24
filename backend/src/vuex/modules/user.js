@@ -54,7 +54,7 @@ const user = {
                 });
             })
         },
-        Logout() {
+        LogOut() {
             removeToken();
             return;
         },

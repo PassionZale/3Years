@@ -25,7 +25,7 @@ export default {
   },
   methods: {
     logout() {
-      this.$store.dispatch("Logout").then(() => {
+      this.$store.dispatch("LogOut").then(() => {
         location.reload();
       });
     }
