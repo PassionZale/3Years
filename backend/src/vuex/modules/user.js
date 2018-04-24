@@ -44,7 +44,7 @@ const user = {
                     } else {
                         reject(response.ret_msg);
                     }
-                }).cache(error => {
+                }).catch(error => {
                     reject(error);
                 });
             })

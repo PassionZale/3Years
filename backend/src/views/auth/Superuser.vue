@@ -47,7 +47,7 @@ export default {
         password: "",
         password_confirm: ""
       },
-      btnText: "登录",
+      btnText: "确认创建",
       loading: false
     };
   },
