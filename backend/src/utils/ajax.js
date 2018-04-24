@@ -7,6 +7,7 @@ import { superUserIsNotExist, superUserIsExist, defaultErrorMsg } from './error'
 const baseURL = process.env.NODE_ENV === 'production' ?
     'https://www.url.com/backend' :
     'http://127.0.0.1:8000/backend';
+    // 'http://server.3years.com/backend';
 
 const ajax = axios.create({
     baseURL: baseURL,
@@ -19,12 +20,11 @@ const ajax = axios.create({
 
 ajax.interceptors.request.use(config => {
     config.headers.post['Content-Type'] = 'application/x-www-form-urlencoded';
-    if (store.getters.token) {
+    if (getToken()) {
         config.headers['Authorization'] = getToken();
     }
     return config;
 }, error => {
-    console.log(error);
     Promise.reject(error);
 });
 
@@ -40,7 +40,7 @@ ajax.interceptors.response.use(response => {
                 superUserIsNotExist(error_msg);
             }
         } else {
-            defaultErrorMsg(error_msg);
+            defaultErrorMsg(error.response.data);
         }
     }
     return Promise.reject(error);

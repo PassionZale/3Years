@@ -1,11 +1,11 @@
 <template>
 <Sider :style="{position: 'fixed', height: '100vh',background:'#fff', left: 0, overflow: 'auto'}">
     <Menu width="200px" theme="light" active-name="1" :style="{height: '100%'}">
+        <MenuItem name="1">
+            <Icon type="document-text"></Icon>
+            控制台
+        </MenuItem>
         <MenuGroup title="内容管理">
-            <MenuItem name="1">
-                <Icon type="document-text"></Icon>
-                dashboard
-            </MenuItem>
             <MenuItem name="2">
                 <Icon type="chatbubbles"></Icon>
                 user

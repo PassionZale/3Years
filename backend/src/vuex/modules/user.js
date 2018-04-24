@@ -1,14 +1,19 @@
 import { login, superuser } from '../../api/auth'
+import { fetchUserInfo } from '../../api/user'
 import { setToken, removeToken } from '../../utils/auth'
 
 const user = {
     state: {
+        id: '',
         username: '',
         email: '',
         roles: []
     },
 
     mutations: {
+        SET_ID: (state, id) => {
+            state.id = id
+        },
         SET_USERNAME: (state, username) => {
             state.username = username
         },
@@ -52,6 +57,23 @@ const user = {
         Logout() {
             removeToken();
             return;
+        },
+        FetchUserInfo({commit, state}) {
+            return new Promise((resolve, reject) => {
+                fetchUserInfo().then(response => {
+                    if (response.ret_code === 0) {
+                        let userinfo = response.ret_msg;
+                        commit('SET_ID', userinfo.id);
+                        commit('SET_USERNAME', userinfo.username);
+                        commit('SET_EMAIL', userinfo.email);
+                        resolve();
+                    } else {
+                        reject(response.ret_msg);
+                    }
+                }).catch(error => {
+                    reject(error);
+                });
+            });
         }
     }
 }
