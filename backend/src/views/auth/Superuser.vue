@@ -63,7 +63,9 @@ export default {
           });
         })
         .catch(error => {
-          this.$Message.error(error);
+          if (typeof error === "string" && error.constructor === String) {
+            this.$Message.error(error);
+          }
           this.loading = false;
         });
     }
