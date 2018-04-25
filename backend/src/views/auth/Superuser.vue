@@ -22,7 +22,7 @@
             <Button 
               type="primary"
               long
-              @click.native.prevent="createSuperUser"
+              @click.prevent="createSuperUser"
               :loading="loading"
             >
               {{ btnText }}

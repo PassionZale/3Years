@@ -16,7 +16,7 @@
             <Button 
               type="primary"
               long 
-              @click.native.prevent="login"
+              @click.prevent="login"
               :loading="loading"
             >
               {{ btnText }}

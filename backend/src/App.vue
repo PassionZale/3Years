@@ -10,6 +10,12 @@ export default {
 </script>
 
 <style lang="less">
+hr {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  border: 0;
+  border-top: 1px solid #eee;
+}
 #login-wrapper {
   padding: 20px 10px 40px;
   .login-box {

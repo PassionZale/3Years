@@ -1,5 +1,5 @@
 import { login, superuser } from '../../api/auth'
-import { fetchUserInfo } from '../../api/user'
+import { fetchUserInfo, updateUserInfo, updateUserPwd } from '../../api/user'
 import { setToken, removeToken } from '../../utils/auth'
 
 const user = {
@@ -58,7 +58,7 @@ const user = {
             removeToken();
             return;
         },
-        FetchUserInfo({commit, state}) {
+        FetchUserInfo({ commit, state }) {
             return new Promise((resolve, reject) => {
                 fetchUserInfo().then(response => {
                     if (response.ret_code === 0) {
@@ -68,6 +68,36 @@ const user = {
                         commit('SET_EMAIL', userinfo.email);
                         resolve();
                     } else {
+                        reject(response.ret_msg);
+                    }
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        },
+        UpdateUserInfo({ commit, state }, params) {
+            return new Promise((resolve, reject) => {
+                updateUserInfo(params).then(response => {
+                    if(response.ret_code === 0) {
+                        let userinfo = response.ret_msg;
+                        commit('SET_ID', userinfo.id);
+                        commit('SET_USERNAME', userinfo.username);
+                        commit('SET_EMAIL', userinfo.email);
+                        resolve();
+                    }else{
+                        reject(response.ret_msg);
+                    }
+                }).catch(error => {
+                    reject(error);
+                });
+            });
+        },
+        UpdateUserPwd({ commit, state }, params) {
+            return new Promise((resolve, reject) => {
+                updateUserPwd(params).then(response => {
+                    if(response.ret_code === 0) {
+                        resolve();
+                    }else{
                         reject(response.ret_msg);
                     }
                 }).catch(error => {
