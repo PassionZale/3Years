@@ -84,6 +84,10 @@ export default {
         .then(response => {
           this.$Message.success("密码修改成功");
           this.userpwd_btn_loading = false;
+          // 修改成功后，将 userpwd 重置为默认值：""
+          Object.keys(this.userpwd).forEach(k => {
+            this.userpwd[k] = "";
+          });
         })
         .catch(error => {
           this.$Message.error(error);
