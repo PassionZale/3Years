@@ -15,6 +15,7 @@ export const RouterMap = [
         redirect: '/console',
         children: [
             { path: 'console', name: '首页', component: _import('console/Index') },
+            { path: 'user', name: '用户中心', component: _import('user/Index') },
             { path: 'permission', name: '权限管理', component: _import('permission/Index') },
             { path: 'follow', name: '粉丝管理', component: _import('wechat/Follow') },
             { path: 'nav', name: '菜单管理', component: _import('wechat/Nav') },

@@ -8,6 +8,12 @@
             </MenuItem>
         </router-link>
         <MenuGroup title="系统设置">
+            <router-link :to="{ path: '/user' }">
+                <MenuItem name="用户中心">
+                    <Icon type="person"></Icon>
+                    用户中心
+                </MenuItem>
+            </router-link>
             <router-link :to="{ path: '/permission' }">
                 <MenuItem name="权限管理">
                     <Icon type="person-stalker"></Icon>
@@ -57,6 +63,11 @@ export default {
   },
   created() {
     this.active_route_name = this.$route.name;
+  },
+  watch: {
+    $route(to, from) {
+        this.active_route_name = to.name;
+    }
   }
 };
 </script>
