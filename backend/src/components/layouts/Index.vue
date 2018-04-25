@@ -9,10 +9,10 @@
   </div>
 </template>
 <script>
-import cSideBar from "../../components/layouts/TheSideBar.vue";
-import cHeader from "../../components/layouts/TheHeader.vue";
-import cContent from "../../components/layouts/TheContent.vue";
-import cFooter from "../../components/layouts/TheFooter.vue";
+import cSideBar from "./TheSideBar.vue";
+import cHeader from "./TheHeader.vue";
+import cContent from "./TheContent.vue";
+import cFooter from "./TheFooter.vue";
 export default {
   components: {
     cSideBar,

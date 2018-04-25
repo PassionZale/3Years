@@ -6,8 +6,8 @@ import { superUserIsNotExist, superUserIsExist, defaultErrorMsg } from './error'
 
 const baseURL = process.env.NODE_ENV === 'production' ?
     'https://www.url.com/backend' :
-    'http://127.0.0.1:8000/backend';
-    // 'http://server.3years.com/backend';
+    // 'http://127.0.0.1:8000/backend';
+    'http://server.3years.com/backend';
 
 const ajax = axios.create({
     baseURL: baseURL,
