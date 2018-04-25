@@ -94,4 +94,50 @@ class User_Model extends CI_Model
         return $this->db->insert('auth_user', $data);
     }
 
+    public function get_user_by_id($id)
+    {
+        $query = $this->db->select('id, username, email, last_login')->where('id', $id)->get('auth_user');
+        $user = $query->row_array();
+        return $user;
+    }
+
+    public function update_userinfo($id, $data)
+    {
+        $this->db->where('id', $id);
+        $query = $this->db->get('auth_user');
+        $user = $query->row_array();
+        if ($user) {
+            $data['updated_at'] = current_date();
+            $this->db->where('id', $id)->update('auth_user', $data);
+            return array(
+                'id' => $id,
+                'username' => $data['username'],
+                'email' => $data['email']
+            );
+        }
+        return FALSE;
+    }
+
+    public function update_userpwd($id, $data)
+    {
+        $this->db->where('id', $id);
+        $query = $this->db->get('auth_user');
+        $user = $query->row_array();
+        if ($user) {
+            $verify = password_verify($data['old_password'], $user['password']);
+            if ($verify) {
+                $options = [
+                    'cost' => 8,
+                ];
+                $pwd_hash = password_hash($data['password'], PASSWORD_DEFAULT, $options);
+                $this->db->where('id', $id)->update('auth_user', array(
+                    'password' => $pwd_hash,
+                    'updated_at' => current_date()
+                ));
+                return TRUE;
+            }
+        }
+        return FALSE;
+    }
+
 }

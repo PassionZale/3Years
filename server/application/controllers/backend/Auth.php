@@ -28,10 +28,6 @@ class Auth extends CI_Controller
                 $token_data = array(
                     // 用户 ID
                     'id' => $result['id'],
-                    // 用户 账户
-                    'username' => $result['username'],
-                    // 用户 邮箱
-                    'email' => $result['email'],
                     // 签发时间
                     'iat' => $date->getTimestamp(),
                     // 过期时间（10小时后）

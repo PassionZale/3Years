@@ -35,22 +35,18 @@ class Authorization
     }
 
     /**
-     * 从 Authorization Token 中获取用户信息
+     * 从 Authorization Token 中获取用户ID
      *
-     * @return array
+     * @return mixed
      */
-    public static function getUserFromToken()
+    public static function getUserIdFromToken()
     {
         $CI =& get_instance();
         $headers = $CI->input->request_headers();
         list($jwt) = sscanf($headers['Authorization'], 'lovchun.com %s');
         $token = self::validateToken($jwt);
-        $user = array(
-            'id' => $token->id,
-            'username' => $token->username,
-            'email' => $token->email,
-        );
-        return $user;
+        $user_id = $token->id;
+        return $user_id;
     }
 
 }
