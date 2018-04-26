@@ -17,5 +17,13 @@ $hook['post_controller_constructor'][] = array(
     'params'   => []
 );
 
+$hook['post_controller_constructor'][] = array(
+    'class'    => 'BackendPermissionHook',
+    'function' => 'index',
+    'filename' => 'BackendPermissionHook.php',
+    'filepath' => 'hooks',
+    'params'   => []
+);
+
 
 

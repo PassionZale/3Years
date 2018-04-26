@@ -6,8 +6,7 @@ import { superUserIsNotExist, superUserIsExist, defaultErrorMsg } from './error'
 
 const baseURL = process.env.NODE_ENV === 'production' ?
     'https://www.url.com/backend' :
-    // 'http://127.0.0.1:8000/backend';
-    'http://server.3years.com/backend';
+    'http://127.0.0.1:8000/backend';
 
 const ajax = axios.create({
     baseURL: baseURL,
@@ -40,7 +39,7 @@ ajax.interceptors.response.use(response => {
                 superUserIsNotExist(error_msg);
             }
         } else {
-            defaultErrorMsg(error.response.data);
+            defaultErrorMsg(error_msg);
         }
     }
     return Promise.reject(error);
