@@ -140,4 +140,34 @@ class User_Model extends CI_Model
         return FALSE;
     }
 
+    public function get_users()
+    {
+        $query = $this->db->select('id, username, email, last_login, is_superuser')
+            ->from('auth_user')
+            ->order_by('id', 'ASC')
+            ->get();
+        return $query->result_array();
+    }
+
+    public function get_user_role($user_id){
+        $this->db->select('auth_role.id, auth_role.name, auth_role.alias')->from('auth_role')
+            ->join('auth_user_role', 'auth_user_role.role_id = auth_role.id', 'inner')
+            ->group_start()
+            ->where('auth_user_role.user_id', $user_id)
+            ->group_end();
+        $query = $this->db->get();
+        return $query->row_array();
+    }
+
+    public function get_user_permissions($role_id){
+        $this->db->select('auth_permission.id, auth_permission.name, auth_permission.resource')
+            ->from('auth_permission')
+            ->join('auth_role_permission', 'auth_role_permission.permission_id = auth_permission.id', 'inner')
+            ->group_start()
+            ->where('auth_role_permission.role_id', $role_id)
+            ->group_end();
+        $query = $this->db->get();
+        return $query->result_array();
+    }
+
 }

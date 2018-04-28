@@ -8,48 +8,41 @@
             </MenuItem>
         </router-link>
         <MenuGroup title="系统设置">
-            <router-link :to="{ path: '/user' }">
-                <MenuItem name="用户中心">
-                    <Icon type="person"></Icon>
-                    用户中心
+            <router-link :to="{ path: '/system/users' }">
+                <MenuItem name="用户列表">
+                    <Icon type="person-stalker"></Icon>
+                    用户列表
                 </MenuItem>
             </router-link>
-            <router-link :to="{ path: '/permission' }">
-                <MenuItem name="权限管理">
-                    <Icon type="person-stalker"></Icon>
-                    权限管理
+            <router-link :to="{ path: '/system/roles' }">
+                <MenuItem name="角色列表">
+                    <Icon type="ionic"></Icon>
+                    角色列表
+                </MenuItem>
+            </router-link>
+            <router-link :to="{ path: '/system/permissions' }">
+                <MenuItem name="权限列表">
+                    <Icon type="locked"></Icon>
+                    权限列表
                 </MenuItem>
             </router-link>
         </MenuGroup>
-        <MenuGroup title="公众号设置">
-            <router-link :to="{ path: '/follow' }">
-                <MenuItem name="粉丝管理">
-                    <Icon type="heart"></Icon>
-                    粉丝管理
-                </MenuItem>
-            </router-link>
-            <router-link :to="{path: '/nav'}">
-                <MenuItem name="菜单管理">
-                    <Icon type="navicon-round"></Icon>
-                    菜单管理
-                </MenuItem>          
-            </router-link>
-
+        <!-- <MenuGroup title="公众号设置">
+            <MenuItem name="粉丝管理">
+                粉丝管理
+            </MenuItem>
+            <MenuItem name="菜单管理">
+                菜单管理
+            </MenuItem>          
         </MenuGroup>
         <MenuGroup title="商城设置">
-            <router-link :to="{path: '/setting'}">
-                <MenuItem name="基础配置">
-                    <Icon type="gear-a"></Icon>
-                    基础配置
-                </MenuItem>
-            </router-link>
-            <router-link :to="{path: '/product'}">
-                <MenuItem name="商品管理">
-                    <Icon type="tshirt"></Icon>
-                    商品管理
-                </MenuItem>
-            </router-link>
-        </MenuGroup>
+            <MenuItem name="基础配置">
+                基础配置
+            </MenuItem>
+            <MenuItem name="商品管理">
+                商品管理
+            </MenuItem>
+        </MenuGroup> -->
     </Menu>
 </Sider>
 </template>
@@ -66,7 +59,7 @@ export default {
   },
   watch: {
     $route(to, from) {
-        this.active_route_name = to.name;
+      this.active_route_name = to.name;
     }
   }
 };

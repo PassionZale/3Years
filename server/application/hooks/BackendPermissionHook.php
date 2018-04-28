@@ -37,10 +37,3 @@ class BackendPermissionHook
     }
 
 }
-
-
-
-
-
-
-

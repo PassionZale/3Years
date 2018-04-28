@@ -79,4 +79,9 @@ class Permission_model extends CI_Model
         return $query->row_array();
     }
 
+    public function get_permissions() {
+        $query = $this->db->get('auth_permission');
+        return $query->result_array();
+    }
+
 }

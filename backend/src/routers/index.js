@@ -15,8 +15,17 @@ export const RouterMap = [
         redirect: '/console',
         children: [
             { path: 'console', name: '首页', component: _import('console/Index') },
-            { path: 'user', name: '用户中心', component: _import('user/Index') },
-            { path: 'permission', name: '权限管理', component: _import('permission/Index') },
+            { path: 'user', name: '个人中心', component: _import('user/Index') },
+            {
+                path: 'system',
+                name: '系统设置',
+                component: _import('system/Index'),
+                children: [
+                    { path: 'users', name: '用户列表', component: _import('system/children/User') },
+                    { path: 'roles', name: '角色列表', component: _import('system/children/Role') },
+                    { path: 'permissions', name: '权限列表', component: _import('system/children/Permission') },
+                ]
+            },
             { path: 'follow', name: '粉丝管理', component: _import('wechat/Follow') },
             { path: 'nav', name: '菜单管理', component: _import('wechat/Nav') },
             { path: 'setting', name: '基础配置', component: _import('shop/Setting') },
