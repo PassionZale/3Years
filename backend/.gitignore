@@ -1,6 +1,7 @@
 # Application
 .DS_Store
 node_modules/
+package-lock.json
 dist/
 npm-debug.log
 yarn-error.log
