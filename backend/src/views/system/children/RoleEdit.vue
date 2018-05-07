@@ -1,5 +1,5 @@
 <template>
-  <router-view></router-view>
+  <p>role edit</p>
 </template>
 
 <script>

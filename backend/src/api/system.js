@@ -44,9 +44,17 @@ export function deletePermission(id) {
     });
 }
 
-export function fetchPermission(id){
+export function fetchPermission(id) {
     return ajax({
         method: 'get',
         url: `/api/system/permission/${id}`
+    });
+}
+
+export function createRole(data) {
+    return ajax({
+        method: 'post',
+        url: '/api/system/role',
+        data
     });
 }

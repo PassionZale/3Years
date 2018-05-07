@@ -22,7 +22,15 @@ export const RouterMap = [
                 component: _import('system/Index'),
                 children: [
                     { path: 'users', name: '用户管理', component: _import('system/children/User') },
-                    { path: 'roles', name: '角色管理', component: _import('system/children/Role') },
+                    {
+                        path: 'roles', name: '角色管理', component: _import('system/children/Role'),
+                        redirect: '/system/roles/index',
+                        children: [
+                            { path: 'index', name: '角色列表', component: _import('system/children/RoleIndex') },
+                            { path: 'create', name: '创建角色', component: _import('system/children/RoleCreate') },
+                            { path: 'edit/:role_id', name: '编辑角色', component: _import('system/children/RoleEdit') },
+                        ]
+                    },
                     {
                         path: 'permissions', name: '权限管理', component: _import('system/children/Permission'),
                         redirect: '/system/permissions/index',
