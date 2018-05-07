@@ -16,6 +16,19 @@ class System extends REST_Controller
         $this->load->model('Permission_model', 'Permission');
     }
 
+    public function user_role_permission_get($user_id)
+    {
+        $role = $this->User->get_user_role($user_id);
+        $permissions = $this->User->get_user_permissions($role['id']);
+        $this->set_response(array(
+            'ret_code' => 0,
+            'ret_msg' => array(
+                'role' => $role,
+                'permissions' => $permissions
+            )
+        ), REST_Controller::HTTP_OK);
+    }
+
     // 用户列表
     public function users_get()
     {
@@ -60,6 +73,7 @@ class System extends REST_Controller
         ), REST_Controller::HTTP_OK);
     }
 
+    /*------ 权限 CRUD ------*/
     public function permission_post()
     {
         if ($this->form_validation->run('permission') === FALSE) {
@@ -121,17 +135,35 @@ class System extends REST_Controller
         }
     }
 
-    public function user_role_permission_get($user_id)
+    /*------ 角色 CRUD ------*/
+    public function role_post()
     {
-        $role = $this->User->get_user_role($user_id);
-        $permissions = $this->User->get_user_permissions($role['id']);
-        $this->set_response(array(
-            'ret_code' => 0,
-            'ret_msg' => array(
-                'role' => $role,
-                'permissions' => $permissions
-            )
-        ), REST_Controller::HTTP_OK);
+        if ($this->form_validation->run('role') === FALSE) {
+            $errors = $this->form_validation->error_array();
+            echoFail(current($errors));
+        } else {
+            $data = $this->input->post();
+            $result = $this->Role->create($data);
+            $this->set_response(array(
+                'ret_code' => 0,
+                'ret_msg' => $result
+            ), REST_Controller::HTTP_OK);
+        }
+    }
+
+    public function role_delete($id)
+    {
+
+    }
+
+    public function role_get()
+    {
+
+    }
+
+    public function role_put()
+    {
+
     }
 
 }

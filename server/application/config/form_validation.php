@@ -127,4 +127,22 @@ $config = array(
             )
         ),
     ),
+    'role' => array(
+        array(
+            'field' => 'name',
+            'label' => '角色名称',
+            'rules' => 'trim|required',
+            'errors' => array(
+                'required' => '%s 不能为空',
+            )
+        ),
+        array(
+            'field' => 'alias',
+            'label' => '角色别名',
+            'rules' => 'trim|required',
+            'errors' => array(
+                'required' => '%s 不能为空',
+            )
+        ),
+    ),
 );
