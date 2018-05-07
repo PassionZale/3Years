@@ -153,17 +153,48 @@ class System extends REST_Controller
 
     public function role_delete($id)
     {
-
+        if (empty($id)) {
+            $this->set_response(array(
+                'ret_code' => 'fail',
+                'ret_msg' => '无效的参数'
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $result = $this->Role->delete($id);
+            $result ? echoSuccess() : echoFail();
+        }
     }
 
-    public function role_get()
+    public function role_get($id)
     {
-
+        if (empty($id)) {
+            $this->set_response(array(
+                'ret_code' => 'fail',
+                'ret_msg' => '无效的参数'
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $result = $this->Role->show($id);
+            $result ? echoMsg(0, $result) : echoFail();
+        }
     }
 
-    public function role_put()
+    public function role_put($id)
     {
-
+        if (empty($id)) {
+            $this->set_response(array(
+                'ret_code' => 'fail',
+                'ret_msg' => '无效的参数'
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $data = $this->put();
+            $this->form_validation->set_data($data);
+            if ($this->form_validation->run('role') === FALSE) {
+                $errors = $this->form_validation->error_array();
+                echoFail(current($errors));
+            } else {
+                $result = $this->Role->update($id, $data);
+                $result ? echoSuccess() : echoFail();
+            }
+        }
     }
 
 }
