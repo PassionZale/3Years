@@ -5,8 +5,7 @@
 </template>
 
 <script>
-export default {
-}
+export default {};
 </script>
 
 <style lang="less">
@@ -15,6 +14,21 @@ hr {
   margin-bottom: 20px;
   border: 0;
   border-top: 1px solid #eee;
+}
+.form-item-wrapper {
+  margin: 10px 0;
+  label {
+    display: inline-block;
+    width: 80px;
+    text-align: left;
+  }
+}
+.router-link-active {
+  li {
+    color: #2d8cf0;
+    border-right: 2px solid #2d8cf0;
+    z-index: 2;
+  }
 }
 #login-wrapper {
   padding: 20px 10px 40px;

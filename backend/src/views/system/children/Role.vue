@@ -1,5 +1,12 @@
 <template>
-  <Table :loading="table.loading" :columns="table.columns" :data="table.data"></Table>
+  <div>
+    <Button type="primary">
+      <Icon type="plus-round"></Icon>
+      创建角色
+    </Button>
+    <br><br>
+    <Table :loading="table.loading" :columns="table.columns" :data="table.data"></Table>
+  </div>
 </template>
 
 <script>
@@ -29,6 +36,27 @@ export default {
           {
             title: "最后修改",
             key: "updated_at"
+          },
+          {
+            title: "操作",
+            key: "CRUD",
+            render: (h, params) => {
+              return h(
+                "Button",
+                {
+                  props: {
+                    type: "primary",
+                    size: "small",
+                    icon: "edit"
+                  },
+                  on: {
+                    click: () => {
+                    }
+                  }
+                },
+                ["编辑"]
+              );
+            }
           }
         ],
         data: []

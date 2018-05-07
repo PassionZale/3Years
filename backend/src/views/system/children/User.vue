@@ -1,14 +1,10 @@
 <template>
   <div>
     <Button type="primary">
-      <Icon type="person-add"></Icon>
+      <Icon type="plus-round"></Icon>
       创建用户
     </Button>
     <br><br>
-    <Input v-model="keyword" placeholder="请输入用户名" style="width:300px;">
-        <Button slot="append" icon="ios-search" type="primary"></Button>
-    </Input>
-    <br>
     <Table :loading="table.loading" :columns="table.columns" :data="table.data"></Table>
   </div>
 </template>
@@ -18,7 +14,6 @@ import { fetchUsers } from "../../../api/system";
 export default {
   data() {
     return {
-      keyword: "",
       table: {
         loading: true,
         columns: [

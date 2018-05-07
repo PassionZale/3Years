@@ -109,4 +109,22 @@ $config = array(
             )
         )
     ),
+    'permission' => array(
+        array(
+            'field' => 'name',
+            'label' => '权限名称',
+            'rules' => 'trim|required',
+            'errors' => array(
+                'required' => '%s 不能为空',
+            )
+        ),
+        array(
+            'field' => 'resource',
+            'label' => '权限资源',
+            'rules' => 'trim|required',
+            'errors' => array(
+                'required' => '%s 不能为空',
+            )
+        ),
+    ),
 );

@@ -97,15 +97,3 @@ export default {
   }
 };
 </script>
-
-<style lang="less">
-.form-item-wrapper {
-  margin: 10px 0;
-  label {
-    display: inline-block;
-    width: 80px;
-    text-align: left;
-  }
-}
-</style>
-

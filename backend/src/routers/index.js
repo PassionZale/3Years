@@ -21,9 +21,17 @@ export const RouterMap = [
                 name: '系统设置',
                 component: _import('system/Index'),
                 children: [
-                    { path: 'users', name: '用户列表', component: _import('system/children/User') },
-                    { path: 'roles', name: '角色列表', component: _import('system/children/Role') },
-                    { path: 'permissions', name: '权限列表', component: _import('system/children/Permission') },
+                    { path: 'users', name: '用户管理', component: _import('system/children/User') },
+                    { path: 'roles', name: '角色管理', component: _import('system/children/Role') },
+                    {
+                        path: 'permissions', name: '权限管理', component: _import('system/children/Permission'),
+                        redirect: '/system/permissions/index',
+                        children: [
+                            { path: 'index', name: '权限列表', component: _import('system/children/PermissionIndex') },
+                            { path: 'create', name: '创建权限', component: _import('system/children/PermissionCreate') },
+                            { path: 'edit/:permission_id', name: '编辑权限', component: _import('system/children/PermissionEdit') },
+                        ]
+                    },
                 ]
             },
             { path: 'follow', name: '粉丝管理', component: _import('wechat/Follow') },

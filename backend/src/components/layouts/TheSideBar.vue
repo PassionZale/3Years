@@ -1,29 +1,29 @@
 <template>
 <Sider :style="{position: 'fixed', height: '100vh',background:'#fff', left: 0, overflow: 'auto'}">
     <Menu width="200px" theme="light" :active-name="active_route_name" :style="{height: '100%'}">
-        <router-link :to="{ path: '/' }">
+        <router-link :to="{ path: '/' }" exact>
             <MenuItem name="首页">
                 <Icon type="home"></Icon>
-                控制台
+                首页
             </MenuItem>
         </router-link>
         <MenuGroup title="系统设置">
             <router-link :to="{ path: '/system/users' }">
-                <MenuItem name="用户列表">
+                <MenuItem name="用户管理">
                     <Icon type="person-stalker"></Icon>
-                    用户列表
+                    用户管理
                 </MenuItem>
             </router-link>
             <router-link :to="{ path: '/system/roles' }">
-                <MenuItem name="角色列表">
+                <MenuItem name="角色管理">
                     <Icon type="ionic"></Icon>
-                    角色列表
+                    角色管理
                 </MenuItem>
             </router-link>
             <router-link :to="{ path: '/system/permissions' }">
-                <MenuItem name="权限列表">
+                <MenuItem name="权限管理">
                     <Icon type="locked"></Icon>
-                    权限列表
+                    权限管理
                 </MenuItem>
             </router-link>
         </MenuGroup>

@@ -79,9 +79,42 @@ class Permission_model extends CI_Model
         return $query->row_array();
     }
 
-    public function get_permissions() {
+    public function get_permissions()
+    {
         $query = $this->db->get('auth_permission');
         return $query->result_array();
+    }
+
+    public function show($id)
+    {
+        $query = $this->db->select('id, name, resource')->where('id', $id)->get('auth_permission');
+        $result = $query->row_array();
+        return $result;
+    }
+
+    public function update($id, $data)
+    {
+        return $this->db->where('id', $id)->update('auth_permission', $data);
+    }
+
+    public function create($data)
+    {
+        $data['created_at'] = current_date();
+        $data['updated_at'] = current_date();
+        return $this->db->insert('auth_permission', $data);
+    }
+
+    public function delete($id)
+    {
+        $query = $this->db->get_where('auth_permission', ['id' => $id]);
+        $result = $query->row_array();
+        if ($result) {
+            $this->db->where('id', $id)->delete('auth_permission');
+            $this->db->where('permission_id', $id)->delete('auth_role_permission');
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
 }

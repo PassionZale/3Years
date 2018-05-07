@@ -10,8 +10,10 @@ class System extends REST_Controller
     function __construct()
     {
         parent::__construct();
+        $this->load->library('form_validation', 'form');
         $this->load->model('User_model', 'User');
         $this->load->model('Role_model', 'Role');
+        $this->load->model('Permission_model', 'Permission');
     }
 
     // 用户列表
@@ -56,6 +58,67 @@ class System extends REST_Controller
             'ret_code' => 0,
             'ret_msg' => $permissions
         ), REST_Controller::HTTP_OK);
+    }
+
+    public function permission_post()
+    {
+        if ($this->form_validation->run('permission') === FALSE) {
+            $errors = $this->form_validation->error_array();
+            echoFail(current($errors));
+        } else {
+            $data = $this->input->post();
+            $result = $this->Permission->create($data);
+            $this->set_response(array(
+                'ret_code' => 0,
+                'ret_msg' => $result
+            ), REST_Controller::HTTP_OK);
+        }
+    }
+
+    public function permission_delete($id)
+    {
+        if (empty($id)) {
+            $this->set_response(array(
+                'ret_code' => 'fail',
+                'ret_msg' => '无效的参数'
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $result = $this->Permission->delete($id);
+            $result ? echoSuccess() : echoFail();
+        }
+    }
+
+    public function permission_get($id)
+    {
+        if (empty($id)) {
+            $this->set_response(array(
+                'ret_code' => 'fail',
+                'ret_msg' => '无效的参数'
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $result = $this->Permission->show($id);
+            $result ? echoMsg(0, $result) : echoFail();
+        }
+    }
+
+    public function permission_put($id)
+    {
+        if (empty($id)) {
+            $this->set_response(array(
+                'ret_code' => 'fail',
+                'ret_msg' => '无效的参数'
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $data = $this->put();
+            $this->form_validation->set_data($data);
+            if ($this->form_validation->run('permission') === FALSE) {
+                $errors = $this->form_validation->error_array();
+                echoFail(current($errors));
+            } else {
+                $result = $this->Permission->update($id, $data);
+                $result ? echoSuccess() : echoFail();
+            }
+        }
     }
 
     public function user_role_permission_get($user_id)
