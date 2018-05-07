@@ -1,7 +1,8 @@
 <template>
-  <router-view></router-view>
+  <p>user edit</p>
 </template>
 
 <script>
 export default {};
 </script>
+

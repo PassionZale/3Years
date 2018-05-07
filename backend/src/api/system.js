@@ -80,3 +80,33 @@ export function updateRole(id, data) {
         data
     });
 }
+
+export function createUser(data) {
+    return ajax({
+        method: 'post',
+        url: '/api/system/user',
+        data
+    });
+}
+
+export function deleteUser(id) {
+    return ajax({
+        method: 'delete',
+        url: `/api/system/user/${id}`
+    });
+}
+
+export function fetchUser(id) {
+    return ajax({
+        method: 'get',
+        url: `/api/system/user/${id}`
+    });
+}
+
+export function updateUser(id, data) {
+    return ajax({
+        method: 'put',
+        url: `/api/system/user/${id}`,
+        data
+    });
+}

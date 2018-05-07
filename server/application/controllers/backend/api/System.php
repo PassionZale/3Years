@@ -16,18 +16,18 @@ class System extends REST_Controller
         $this->load->model('Permission_model', 'Permission');
     }
 
-    public function user_role_permission_get($user_id)
-    {
-        $role = $this->User->get_user_role($user_id);
-        $permissions = $this->User->get_user_permissions($role['id']);
-        $this->set_response(array(
-            'ret_code' => 0,
-            'ret_msg' => array(
-                'role' => $role,
-                'permissions' => $permissions
-            )
-        ), REST_Controller::HTTP_OK);
-    }
+//    public function user_role_permission_get($user_id)
+//    {
+//        $role = $this->User->get_user_role($user_id);
+//        $permissions = $this->User->get_user_permissions($role['id']);
+//        $this->set_response(array(
+//            'ret_code' => 0,
+//            'ret_msg' => array(
+//                'role' => $role,
+//                'permissions' => $permissions
+//            )
+//        ), REST_Controller::HTTP_OK);
+//    }
 
     // 用户列表
     public function users_get()
@@ -195,6 +195,34 @@ class System extends REST_Controller
                 $result ? echoSuccess() : echoFail();
             }
         }
+    }
+
+    /*------ 用户 CRUD ------*/
+    public function user_post()
+    {
+        if ($this->form_validation->run('auth_register') === FALSE) {
+            $errors = $this->form_validation->error_array();
+            echoFail(current($errors));
+        } else {
+            $data = $this->input->post();
+            $result = $this->User->create($data);
+            $result ? echoSuccess() : echoFail();
+        }
+    }
+
+    public function user_delete($id)
+    {
+
+    }
+
+    public function user_show($id)
+    {
+
+    }
+
+    public function user_put($id)
+    {
+
     }
 
 }

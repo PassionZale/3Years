@@ -21,7 +21,15 @@ export const RouterMap = [
                 name: '系统设置',
                 component: _import('system/Index'),
                 children: [
-                    { path: 'users', name: '用户管理', component: _import('system/children/User') },
+                    {
+                        path: 'users', name: '用户管理', component: _import('system/children/User'),
+                        redirect: '/system/users/index',
+                        children: [
+                            { path: 'index', name: '用户列表', component: _import('system/children/UserIndex') },
+                            { path: 'create', name: '创建用户', component: _import('system/children/UserCreate') },
+                            { path: 'edit/:user_id', name: '编辑用户', component: _import('system/children/UserEdit') },
+                        ]
+                    },
                     {
                         path: 'roles', name: '角色管理', component: _import('system/children/Role'),
                         redirect: '/system/roles/index',

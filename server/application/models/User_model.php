@@ -149,7 +149,8 @@ class User_Model extends CI_Model
         return $query->result_array();
     }
 
-    public function get_user_role($user_id){
+    public function get_user_role($user_id)
+    {
         $this->db->select('auth_role.id, auth_role.name, auth_role.alias')->from('auth_role')
             ->join('auth_user_role', 'auth_user_role.role_id = auth_role.id', 'inner')
             ->group_start()
@@ -159,7 +160,8 @@ class User_Model extends CI_Model
         return $query->row_array();
     }
 
-    public function get_user_permissions($role_id){
+    public function get_user_permissions($role_id)
+    {
         $this->db->select('auth_permission.id, auth_permission.name, auth_permission.resource')
             ->from('auth_permission')
             ->join('auth_role_permission', 'auth_role_permission.permission_id = auth_permission.id', 'inner')
@@ -168,6 +170,51 @@ class User_Model extends CI_Model
             ->group_end();
         $query = $this->db->get();
         return $query->result_array();
+    }
+
+    public function create($data)
+    {
+        $options = [
+            'cost' => 8,
+        ];
+        $pwd_hash = password_hash($data['password'], PASSWORD_DEFAULT, $options);
+        $user = array(
+            'username' => $data['username'],
+            'password' => $pwd_hash,
+            'email' => $data['email'],
+            'created_at' => current_date()
+        );
+        $this->db->insert('auth_user', $user);
+        $user_id = $this->db->insert_id();
+
+        $role_id = isset($data['role']) ? $data['role'] : FALSE;
+
+        if ($role_id) {
+            $user_role = array(
+                'user_id' => $user_id,
+                'role_id' => $role_id,
+                'created_at' => current_date(),
+                'updated_at' => current_date()
+            );
+            $this->db->insert('auth_user_role', $user_role);
+        }
+
+        return TRUE;
+    }
+
+    public function delete()
+    {
+
+    }
+
+    public function show()
+    {
+
+    }
+
+    public function update()
+    {
+
     }
 
 }
