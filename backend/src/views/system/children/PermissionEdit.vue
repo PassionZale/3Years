@@ -13,7 +13,6 @@
       <Button type="primary" @click="update_permission" :loading="permission_btn_loading">保存修改</Button>
     </div>
   </div>
-  
 </template>
 
 <script>

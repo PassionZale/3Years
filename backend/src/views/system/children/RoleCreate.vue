@@ -52,6 +52,7 @@ export default {
         .then(response => {
           if (response.ret_code === 0) {
             this.$Message.success("创建角色成功");
+            this.$router.push('/system/roles');
           } else {
             this.$Message.error(response.ret_msg);
           }

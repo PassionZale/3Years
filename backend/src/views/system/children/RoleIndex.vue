@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { fetchRoles } from "../../../api/system";
+import { fetchRoles, deleteRole } from "../../../api/system";
 export default {
   data() {
     return {
@@ -98,8 +98,22 @@ export default {
       });
   },
   methods: {
-    edit() {},
-    delete() {}
+    edit(role_id) {
+      this.$router.push({
+        path: `/system/roles/edit/${role_id}`
+      });
+    },
+    delete(params) {
+      deleteRole(params.row.id)
+        .then(response => {
+          if (response.ret_code === 0) {
+            this.table.data.splice(params.index, 1);
+          } else {
+            this.$Message.error("操作失败");
+          }
+        })
+        .catch(error => {});
+    }
   }
 };
 </script>

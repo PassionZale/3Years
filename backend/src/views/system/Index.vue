@@ -2,10 +2,7 @@
 <div>
     <Breadcrumb :style="{marginBottom:'16px'}">
         <template v-for="nav in navs" v-if="nav.path !== ''">
-            <BreadcrumbItem v-if="nav.path == '/system'">
-                {{ nav.name }}
-            </BreadcrumbItem>
-            <BreadcrumbItem v-else :to="nav.path">
+            <BreadcrumbItem>
                 {{ nav.name }}
             </BreadcrumbItem>
         </template>

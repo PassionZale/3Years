@@ -2,7 +2,6 @@ import { Message } from 'iview'
 
 export const superUserIsNotExist = (msg) => {
     Message.error({
-        duration: 500,
         render: h => {
             return h(
                 'span',
@@ -10,7 +9,7 @@ export const superUserIsNotExist = (msg) => {
                     msg,
                     h('a', {
                         attrs: {
-                            href: '/superuser'
+                            href: '#/superuser'
                         }
                     }, '前往创建')
                 ]
@@ -21,7 +20,6 @@ export const superUserIsNotExist = (msg) => {
 
 export const superUserIsExist = (msg) => {
     Message.error({
-        duration: 500,
         render: h => {
             return h(
                 'span',
@@ -29,7 +27,7 @@ export const superUserIsExist = (msg) => {
                     msg,
                     h('a', {
                         attrs: {
-                            href: '/login'
+                            href: '#/login'
                         }
                     }, '前往登录')
                 ]
@@ -40,7 +38,6 @@ export const superUserIsExist = (msg) => {
 
 export const defaultErrorMsg = (msg) => {
     Message.error({
-        duration: 500,
         render: h => {
             return h(
                 'span',

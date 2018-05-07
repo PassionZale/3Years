@@ -58,3 +58,25 @@ export function createRole(data) {
         data
     });
 }
+
+export function deleteRole(id) {
+    return ajax({
+        method: 'delete',
+        url: `/api/system/role/${id}`
+    });
+}
+
+export function fetchRole(id) {
+    return ajax({
+        method: 'get',
+        url: `/api/system/role/${id}`
+    });
+}
+
+export function updateRole(id, data) {
+    return ajax({
+        method: 'put',
+        url: `/api/system/role/${id}`,
+        data
+    });
+}
