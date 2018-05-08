@@ -202,9 +202,17 @@ class User_Model extends CI_Model
         return TRUE;
     }
 
-    public function delete()
+    public function delete($id)
     {
-
+        $query = $this->db->get_where('auth_user', ['id' => $id]);
+        $result = $query->row_array();
+        if ($result) {
+            $this->db->where('id', $id)->delete('auth_user');
+            $this->db->where('user_id', $id)->delete('auth_user_role');
+            return TRUE;
+        } else {
+            return FALSE;
+        }
     }
 
     public function show()

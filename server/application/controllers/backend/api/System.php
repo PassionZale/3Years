@@ -212,7 +212,15 @@ class System extends REST_Controller
 
     public function user_delete($id)
     {
-
+        if (empty($id)) {
+            $this->set_response(array(
+                'ret_code' => 'fail',
+                'ret_msg' => '无效的参数'
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $result = $this->User->delete($id);
+            $result ? echoMsg(0, $result) : echoFail();
+        }
     }
 
     public function user_show($id)
