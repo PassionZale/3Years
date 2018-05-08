@@ -12,7 +12,7 @@
 </template>
 
 <script>
-import { fetchUsers } from "../../../api/system";
+import { fetchUsers, deleteUser } from "../../../api/system";
 export default {
   data() {
     return {
@@ -69,23 +69,41 @@ export default {
             title: "操作",
             key: "CRUD",
             render: (h, params) => {
-              return h(
-                "Button",
-                {
-                  props: {
-                    type: "primary",
-                    size: "small",
-                    icon: "edit"
-                  },
-                  on: {
-                    click: () => {
-                      console.log(this.$route.name);
-                      this.editBtnClick(params.row.id);
+              return h("div", [
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "primary",
+                      size: "small"
+                    },
+                    style: {
+                      marginRight: "5px"
+                    },
+                    on: {
+                      click: () => {
+                        this.edit(params.row.id);
+                      }
                     }
-                  }
-                },
-                ["编辑"]
-              );
+                  },
+                  "编辑"
+                ),
+                h(
+                  "Button",
+                  {
+                    props: {
+                      type: "error",
+                      size: "small"
+                    },
+                    on: {
+                      click: () => {
+                        this.delete(params);
+                      }
+                    }
+                  },
+                  "删除"
+                )
+              ]);
             }
           }
         ],
@@ -106,8 +124,19 @@ export default {
       });
   },
   methods: {
-    editBtnClick(user_id) {
-      console.log(user_id);
+    edit(user_id) {
+      this.$router.push(`/system/users/edit/${user_id}`);
+    },
+    delete(params) {
+      deleteUser(params.row.id)
+        .then(response => {
+          if (response.ret_code === 0) {
+            this.table.data.splice(params.index, 1);
+          } else {
+            this.$Message.error("操作失败");
+          }
+        })
+        .catch(error => {});
     }
   }
 };
