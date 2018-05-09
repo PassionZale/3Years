@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Layout from '../components/layouts/Index.vue'
+import systemRouter from './dynamic/systemRouter'
+import productRouter from './dynamic/productRouter'
 
 Vue.use(VueRouter);
 
@@ -16,44 +18,9 @@ export const RouterMap = [
         children: [
             { path: 'console', name: '首页', component: _import('console/Index') },
             { path: 'user', name: '个人中心', component: _import('user/Index') },
-            {
-                path: 'system',
-                name: '系统设置',
-                component: _import('system/Index'),
-                children: [
-                    {
-                        path: 'users', name: '用户管理', component: _import('system/children/User'),
-                        redirect: '/system/users/index',
-                        children: [
-                            { path: 'index', name: '用户列表', component: _import('system/children/UserIndex') },
-                            { path: 'create', name: '创建用户', component: _import('system/children/UserCreate') },
-                            { path: 'edit/:user_id', name: '编辑用户', component: _import('system/children/UserEdit') },
-                        ]
-                    },
-                    {
-                        path: 'roles', name: '角色管理', component: _import('system/children/Role'),
-                        redirect: '/system/roles/index',
-                        children: [
-                            { path: 'index', name: '角色列表', component: _import('system/children/RoleIndex') },
-                            { path: 'create', name: '创建角色', component: _import('system/children/RoleCreate') },
-                            { path: 'edit/:role_id', name: '编辑角色', component: _import('system/children/RoleEdit') },
-                        ]
-                    },
-                    {
-                        path: 'permissions', name: '权限管理', component: _import('system/children/Permission'),
-                        redirect: '/system/permissions/index',
-                        children: [
-                            { path: 'index', name: '权限列表', component: _import('system/children/PermissionIndex') },
-                            { path: 'create', name: '创建权限', component: _import('system/children/PermissionCreate') },
-                            { path: 'edit/:permission_id', name: '编辑权限', component: _import('system/children/PermissionEdit') },
-                        ]
-                    },
-                ]
-            },
-            { path: 'follow', name: '粉丝管理', component: _import('wechat/Follow') },
-            { path: 'nav', name: '菜单管理', component: _import('wechat/Nav') },
-            { path: 'setting', name: '基础配置', component: _import('shop/Setting') },
-            { path: 'product', name: '商品管理', component: _import('shop/Product') },
+            // dynamic router list
+            systemRouter,
+            productRouter,
         ]
     },
     { path: '*', name: '404', component: _import('404') },

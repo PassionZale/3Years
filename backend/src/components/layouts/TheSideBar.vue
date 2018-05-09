@@ -27,22 +27,16 @@
                 </MenuItem>
             </router-link>
         </MenuGroup>
-        <!-- <MenuGroup title="公众号设置">
-            <MenuItem name="粉丝管理">
-                粉丝管理
-            </MenuItem>
-            <MenuItem name="菜单管理">
-                菜单管理
-            </MenuItem>          
-        </MenuGroup>
-        <MenuGroup title="商城设置">
-            <MenuItem name="基础配置">
-                基础配置
-            </MenuItem>
+        <MenuGroup title="商品设置">
+            <router-link :to="{ path: '/product/category' }">
+                <MenuItem name="分类管理">
+                    分类管理
+                </MenuItem>
+            </router-link>
             <MenuItem name="商品管理">
                 商品管理
             </MenuItem>
-        </MenuGroup> -->
+        </MenuGroup>
     </Menu>
 </Sider>
 </template>

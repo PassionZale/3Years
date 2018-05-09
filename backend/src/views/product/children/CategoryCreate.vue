@@ -1,7 +1,8 @@
 <template>
-  <h1>Setting</h1>
+  <p>category create</p>
 </template>
 
 <script>
 export default {};
 </script>
+

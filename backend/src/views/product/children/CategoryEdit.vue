@@ -1,7 +1,8 @@
 <template>
-  <h1>Follow</h1>
+  <p>category edit</p>
 </template>
 
 <script>
 export default {};
 </script>
+

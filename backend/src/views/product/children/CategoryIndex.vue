@@ -1,7 +1,8 @@
 <template>
-  <h1>Product</h1>
+  <p>category index</p>
 </template>
 
 <script>
 export default {};
 </script>
+
