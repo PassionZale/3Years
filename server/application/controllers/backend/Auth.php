@@ -22,7 +22,11 @@ class Auth extends CI_Controller
         } else {
             $data = $this->input->post();
             $result = $this->UserModel->user_login($data['username'], $data['password']);
-            if ($result) {
+            if ($result === 'not found' || $result === 'login error') {
+                echoFail('用户名或密码错误');
+            } else if ($result === 'account disabled') {
+                echoFail('账户被冻结，请联系管理员');
+            } else {
                 // 生成并返回 Authorization Token
                 $date = new DateTime();
                 $token_data = array(
@@ -35,8 +39,6 @@ class Auth extends CI_Controller
                 );
                 $response['token'] = Authorization::generateToken($token_data);
                 echoSuccess($response);
-            } else {
-                echoFail('用户名或密码错误');
             }
         }
     }

@@ -43,8 +43,9 @@ class System extends REST_Controller
                 'email' => $user['email'],
                 'last_login' => $user['last_login'],
                 'is_superuser' => $user['is_superuser'],
-                'role' => $role['alias'],
-                'permissions' => $permissions
+                'role' => $role['name'],
+                'permissions' => $permissions,
+                'is_active' => $user['is_active'],
             );
         }
         $this->set_response(array(
@@ -223,14 +224,31 @@ class System extends REST_Controller
         }
     }
 
-    public function user_show($id)
+    public function user_get($id)
     {
-
+        if (empty($id)) {
+            $this->set_response(array(
+                'ret_code' => 'fail',
+                'ret_msg' => '无效的参数'
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $result = $this->User->show($id);
+            $result ? echoMsg(0, $result) : echoFail();
+        }
     }
 
     public function user_put($id)
     {
-
+        if (empty($id)) {
+            $this->set_response(array(
+                'ret_code' => 'fail',
+                'ret_msg' => '无效的参数'
+            ), REST_Controller::HTTP_BAD_REQUEST);
+        } else {
+            $data = $this->put();
+            $result = $this->User->update($id, $data);
+            $result ? echoSuccess() : echoFail();
+        }
     }
 
 }

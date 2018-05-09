@@ -54,20 +54,26 @@ class User_Model extends CI_Model
      */
     public function user_login($username, $password)
     {
-        $this->db->select('id, username, email, password');
+        $this->db->select('id, username, email, password, is_active');
         $this->db->where('username', $username);
         $query = $this->db->get('auth_user');
         $user = $query->row_array();
         if ($user) {
-            $verify = password_verify($password, $user['password']);
-            if ($verify) {
-                $data = array('last_login' => current_date());
-                $this->db->where('id', $user['id']);
-                $this->db->update('auth_user', $data);
-                return $user;
+            if ($user['is_active'] == 1) {
+                $verify = password_verify($password, $user['password']);
+                if ($verify) {
+                    $data = array('last_login' => current_date());
+                    $this->db->where('id', $user['id']);
+                    $this->db->update('auth_user', $data);
+                    return $user;
+                } else {
+                    return 'login error';
+                }
+            } else {
+                return 'account disabled';
             }
         }
-        return FALSE;
+        return 'not found';
     }
 
     /**
@@ -92,6 +98,13 @@ class User_Model extends CI_Model
         }
         $data['created_at'] = current_date();
         return $this->db->insert('auth_user', $data);
+    }
+
+    public function is_active($id)
+    {
+        $query = $this->db->select('is_active')->where('id', $id)->from('auth_user')->get();
+        $result = $query->row_array();
+        return $result['is_active'] == 1 ? TRUE : FALSE;
     }
 
     public function get_user_by_id($id)
@@ -142,7 +155,7 @@ class User_Model extends CI_Model
 
     public function get_users()
     {
-        $query = $this->db->select('id, username, email, last_login, is_superuser')
+        $query = $this->db->select('id, username, email, last_login, is_superuser, is_active')
             ->from('auth_user')
             ->order_by('id', 'ASC')
             ->get();
@@ -215,14 +228,45 @@ class User_Model extends CI_Model
         }
     }
 
-    public function show()
+    public function show($id)
     {
-
+        $query = $this->db->select('email, username, is_active')->where('id', $id)->get('auth_user');
+        $result = $query->row_array();
+        $query = $this->db->select('role_id')->where('user_id', $id)->get('auth_user_role');
+        $role = $query->row_array();
+        $result['role'] = $role['role_id'];
+        return $result;
     }
 
-    public function update()
+    public function update($id, $data)
     {
-
+        $user = array(
+            'is_active' => $data['is_active'],
+            'updated_at' => current_date()
+        );
+        $this->db->where('id', $id)->update('auth_user', $user);
+        if (isset($data['role'])) {
+            $query = $this->db->where('user_id', $id)->from('auth_user_role')->get();
+            $user_role = $query->row_array();
+            if (!$user_role) {
+                $role = array(
+                    'user_id' => $id,
+                    'role_id' => $data['role'],
+                    'created_at' => current_date(),
+                    'updated_at' => current_date()
+                );
+                $this->db->insert('auth_user_role', $role);
+            } else {
+                if ($user_role['role_id'] !== $data['role']) {
+                    $role = array(
+                        'role_id' => $data['role'],
+                        'updated_at' => current_date()
+                    );
+                    $this->db->where('user_id', $id)->update('auth_user_role', $role);
+                }
+            }
+        }
+        return TRUE;
     }
 
 }
