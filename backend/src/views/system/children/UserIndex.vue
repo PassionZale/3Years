@@ -62,6 +62,14 @@ export default {
             }
           },
           {
+            title: "状态",
+            key: "is_active",
+            render: (h, params) => {
+              let text = params.row.is_active == 1 ? "启用" : "禁用";
+              return h("strong", text);
+            }
+          },
+          {
             title: "最后登录",
             key: "last_login"
           },
