@@ -9,6 +9,12 @@ class Category_model extends CI_Model
         parent::__construct();
     }
 
+    public function all_child_categories()
+    {
+        $query = $this->db->where('p_id !=', 0)->from('product_categories')->get();
+        return $query->result_array();
+    }
+
     public function child_categories($id)
     {
         $query = $this->db->where('p_id', $id)->from('product_categories')->get();
@@ -17,7 +23,7 @@ class Category_model extends CI_Model
 
     public function parent_categories()
     {
-        $query = $this->db->select('id, name')->where('p_id', 0)->from('product_categories')->get();
+        $query = $this->db->where('p_id', 0)->from('product_categories')->get();
         return $query->result_array();
     }
 

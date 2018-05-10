@@ -14,6 +14,14 @@ class Product extends REST_Controller
         $this->load->model('Category_model', 'Category');
     }
 
+    public function allChildCategories_get(){
+        $categories = $this->Category->all_child_categories();
+        $this->set_response(array(
+            'ret_code' => 0,
+            'ret_msg' => $categories
+        ), REST_Controller::HTTP_OK);
+    }
+
     public function childCategories_get($id)
     {
         if (empty($id)) {

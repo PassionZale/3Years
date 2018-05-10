@@ -3,6 +3,7 @@ const _import = file => () => import('../../views/' + file + '.vue');
 const productRouter = {
     path: 'product',
     name: '商品设置',
+    redirect: '/product/',
     component: _import('product/Index'),
     children: [
         {

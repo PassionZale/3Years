@@ -7,10 +7,17 @@ export function fetchParentCategories() {
     });
 }
 
-export function fetchChildCategories(id) {
+export function fetchChildCategories(id = '') {
     return ajax({
         method: 'get',
         url: `/api/product/childCategories/${id}`
+    });
+}
+
+export function fetchAllChildCategories() {
+    return ajax({
+        method: 'get',
+        url: `/api/product/allChildCategories`
     });
 }
 
