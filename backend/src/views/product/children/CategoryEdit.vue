@@ -6,7 +6,8 @@
     </div>
     <div class="form-item-wrapper">
       <label>一级分类：</label>
-      <Select v-model="data.p_id" placeholder="请选择" :disabled="disabled" filterable style="width: 300px">
+      <Button type="dashed" v-if="data.p_id == 0">已为一级分类，无法设置</Button>
+      <Select v-else v-model="data.p_id" placeholder="请选择" filterable style="width: 300px">
           <Option :value="0">无</Option>
           <Option v-for="item in parent_categories" :value="item.id" :key="item.id">{{ item.name }}</Option>
       </Select>
@@ -37,10 +38,9 @@ export default {
       id: this.$route.params.id,
       btn_loading: false,
       parent_categories: [],
-      disabled: false,
       data: {
         name: "",
-        p_id: "",
+        p_id: 0,
         sort: 0
       }
     };
@@ -51,9 +51,6 @@ export default {
         // 由于 InputNumber 只接受 Number 类型，在此强制转换为 Number
         response.ret_msg.sort = parseInt(response.ret_msg.sort);
         this.data = Object.assign({}, this.data, response.ret_msg);
-        if (this.data.p_id == 0) {
-          this.disabled = true;
-        }
       })
       .catch();
     fetchParentCategories()
