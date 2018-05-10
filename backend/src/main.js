@@ -11,6 +11,7 @@ Vue.use(iView);
 const whiteListRouter = ['/login', '/superuser'];
 
 router.beforeEach((to, from, next) => {
+    iView.LoadingBar.start();
     if (getToken()) {
         if(to.path === '/login'){
             next({ path: '/' })
@@ -24,6 +25,10 @@ router.beforeEach((to, from, next) => {
             next('/login');
         }
     }
+});
+
+router.afterEach(router => {
+    iView.LoadingBar.finish();
 });
 
 new Vue({

@@ -105,7 +105,7 @@ export default {
                     },
                     on: {
                       click: () => {
-                        this.delete(params);
+                        this.del(params);
                       }
                     }
                   },
@@ -135,7 +135,7 @@ export default {
     edit(user_id) {
       this.$router.push(`/system/users/edit/${user_id}`);
     },
-    delete(params) {
+    del(params) {
       deleteUser(params.row.id)
         .then(response => {
           if (response.ret_code === 0) {

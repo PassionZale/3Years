@@ -71,7 +71,7 @@ export default {
                     },
                     on: {
                       click: () => {
-                        this.delete(params);
+                        this.del(params);
                       }
                     }
                   },
@@ -103,7 +103,7 @@ export default {
         path: `/system/roles/edit/${role_id}`
       });
     },
-    delete(params) {
+    del(params) {
       deleteRole(params.row.id)
         .then(response => {
           if (response.ret_code === 0) {

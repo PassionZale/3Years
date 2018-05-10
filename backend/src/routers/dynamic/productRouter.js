@@ -11,7 +11,7 @@ const productRouter = {
             children: [
                 { path: 'index', name: '分类列表', component: _import('product/children/CategoryIndex') },
                 { path: 'create', name: '创建分类', component: _import('product/children/CategoryCreate') },
-                { path: 'edit', name: '编辑分类', component: _import('product/children/CategoryEdit') },
+                { path: 'edit/:id', name: '编辑分类', component: _import('product/children/CategoryEdit') },
             ]
         },
     ]
