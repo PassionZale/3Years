@@ -16,12 +16,12 @@ class Product extends REST_Controller
 
     public function childCategories_get($id)
     {
-        if(empty($id)){
+        if (empty($id)) {
             $this->set_response(array(
                 'ret_code' => 'fail',
                 'ret_msg' => '无效的参数'
             ), REST_Controller::HTTP_BAD_REQUEST);
-        }else{
+        } else {
             $categories = $this->Category->child_categories($id);
             $p_categories = $this->Category->show($id);
             // 将父分类插入数组的开头
@@ -54,29 +54,49 @@ class Product extends REST_Controller
         }
     }
 
-    public function category_delete($id){
+    public function category_delete($id)
+    {
         $result = $this->Category->delete($id);
         $result ? echoSuccess() : echoFail();
     }
 
-    public function category_put($id){
+    public function category_put($id)
+    {
         $data = $this->put();
         $this->form_validation->set_data($data);
-        if($this->form_validation->run('category') === FALSE){
+        if ($this->form_validation->run('category') === FALSE) {
             $errors = $this->form_validation->error_array();
             echoFail(current($errors));
-        }else{
+        } else {
             $result = $this->Category->update($id, $data);
             $result ? echoSuccess() : echoFail();
         }
     }
 
-    public function category_get($id){
+    public function category_get($id)
+    {
         $category = $this->Category->show($id);
         $this->set_response(array(
             'ret_code' => 0,
             'ret_msg' => $category
         ), REST_Controller::HTTP_OK);
+    }
+
+    public function attribute_post()
+    {
+
+    }
+
+    public function attribute_delete($id)
+    {
+    }
+
+    public function attribute_put($id, $data)
+    {
+    }
+
+    public function attribute_get($id)
+    {
     }
 
 }

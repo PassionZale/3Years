@@ -30,12 +30,22 @@
         <MenuGroup title="商品设置">
             <router-link :to="{ path: '/product/category' }">
                 <MenuItem name="分类管理">
+                    <Icon type="ios-pricetag"></Icon>
                     分类管理
                 </MenuItem>
             </router-link>
-            <MenuItem name="商品管理">
-                商品管理
-            </MenuItem>
+            <router-link :to="{ path: '/product/attribute' }">
+                <MenuItem name="规格管理">
+                    <Icon type="ios-pricetag-outline"></Icon>
+                    规格管理
+                </MenuItem>
+            </router-link>
+            <router-link :to="{ path: '/product' }" exact>
+                <MenuItem name="商品管理">
+                    <Icon type="bag"></Icon>
+                    商品管理
+                </MenuItem>
+            </router-link>
         </MenuGroup>
     </Menu>
 </Sider>
