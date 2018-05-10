@@ -1,4 +1,14 @@
 <?php
+$sort = array(
+    'field' => 'sort',
+    'label' => '排序',
+    'rules' => 'trim|required|is_natural',
+    'errors' => array(
+        'required' => '%s 不能为空',
+        'is_natural' => '%s 为大于等于0的整数',
+    )
+);
+
 $config = array(
     'auth_login' => array(
         array(
@@ -144,5 +154,16 @@ $config = array(
                 'required' => '%s 不能为空',
             )
         ),
+    ),
+    'category' => array(
+        array(
+            'field' => 'name',
+            'label' => '分类名称',
+            'rules' => 'trim|required',
+            'errors' => array(
+                'required' => '%s 不能为空',
+            )
+        ),
+        $sort
     ),
 );
