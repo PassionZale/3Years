@@ -50,3 +50,11 @@ export function updateCategory(id, data) {
         data
     });
 }
+
+export function createAttribute(data) {
+    return ajax({
+        method: 'post',
+        url: '/api/product/attribute',
+        data
+    });
+}

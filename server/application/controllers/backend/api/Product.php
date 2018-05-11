@@ -12,6 +12,7 @@ class Product extends REST_Controller
         parent::__construct();
         $this->load->library('form_validation', 'form');
         $this->load->model('Category_model', 'Category');
+        $this->load->model('Attribute_model', 'Attribute');
     }
 
     public function allChildCategories_get(){
@@ -92,7 +93,9 @@ class Product extends REST_Controller
 
     public function attribute_post()
     {
-
+        $data = $this->input->post();
+        $result = $this->Attribute->create($data);
+        $result ? echoSuccess() : echoFail();
     }
 
     public function attribute_delete($id)
