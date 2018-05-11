@@ -9,9 +9,28 @@ class Attribute_model extends CI_Model
         parent::__construct();
     }
 
+    public function all()
+    {
+        $query = $this->db->select('
+            c.name as category,
+            a.name, 
+            a.id, 
+            a.created_at, 
+            a.updated_at
+        ')->from('product_attributes as a')
+            ->join('product_categories as c', 'c.id = a.category_id')
+            ->get();
+        return $query->result_array();
+    }
+
     public function show($id)
     {
-
+        $query = $this->db->get_where('product_attributes', ['id' => $id]);
+        $attribute = $query->row_array();
+        $query = $this->db->get_where('product_items', ['attribute_id' => $id]);
+        $items = $query->result_array();
+        $attribute['items'] = $items;
+        return $attribute;
     }
 
     public function create($data)

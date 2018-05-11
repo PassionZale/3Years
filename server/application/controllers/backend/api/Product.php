@@ -15,14 +15,6 @@ class Product extends REST_Controller
         $this->load->model('Attribute_model', 'Attribute');
     }
 
-    public function allChildCategories_get(){
-        $categories = $this->Category->all_child_categories();
-        $this->set_response(array(
-            'ret_code' => 0,
-            'ret_msg' => $categories
-        ), REST_Controller::HTTP_OK);
-    }
-
     public function childCategories_get($id)
     {
         if (empty($id)) {
@@ -98,6 +90,12 @@ class Product extends REST_Controller
         $result ? echoSuccess() : echoFail();
     }
 
+    public function attributes_get()
+    {
+        $attributes = $this->Attribute->all();
+        echoMsg(0, $attributes);
+    }
+
     public function attribute_delete($id)
     {
     }
@@ -108,6 +106,8 @@ class Product extends REST_Controller
 
     public function attribute_get($id)
     {
+        $attribute = $this->Attribute->show($id);
+        echoMsg(0, $attribute);
     }
 
 }
