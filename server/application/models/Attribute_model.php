@@ -47,7 +47,7 @@ class Attribute_model extends CI_Model
             // 批量插入规格选项
             $this->db->insert_batch('product_items', $items);
             // 若没有全部插入则回滚事物
-            if($this->db->affected_rows() !== count($items)){
+            if ($this->db->affected_rows() !== count($items)) {
                 $this->db->trans_rollback();
                 return FALSE;
             }
