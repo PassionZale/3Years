@@ -14,13 +14,6 @@ export function fetchChildCategories(id = '') {
     });
 }
 
-export function fetchAllChildCategories() {
-    return ajax({
-        method: 'get',
-        url: `/api/product/allChildCategories`
-    });
-}
-
 export function createCategory(data) {
     return ajax({
         method: 'post',
@@ -56,5 +49,19 @@ export function createAttribute(data) {
         method: 'post',
         url: '/api/product/attribute',
         data
+    });
+}
+
+export function fetchAttributes() {
+    return ajax({
+        method: 'get',
+        url: '/api/product/attributes'
+    });
+}
+
+export function fetchAttribute(id = ''){
+    return ajax({
+        method: 'get',
+        url: `/api/product/attribute/${id}`
     });
 }
