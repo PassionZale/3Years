@@ -20,14 +20,23 @@ class Attribute_model extends CI_Model
         ')->from('product_attributes as a')
             ->join('product_categories as c', 'c.id = a.category_id')
             ->get();
-        return $query->result_array();
+        $attributes = $query->result_array();
+        $response = array();
+        foreach ($attributes as $attribute) {
+            $query = $this->db->where('attribute_id', $attribute['id'])
+                ->from('product_items')
+                ->get();
+            $attribute['items'] = $query->result_array();
+            $response[] = $attribute;
+        }
+        return $response;
     }
 
     public function show($id)
     {
-        $query = $this->db->get_where('product_attributes', ['id' => $id]);
+        $query = $this->db->select('category_id, name')->where('id', $id)->from('product_attributes')->get();
         $attribute = $query->row_array();
-        $query = $this->db->get_where('product_items', ['attribute_id' => $id]);
+        $query = $this->db->select('attribute_id, name')->where('attribute_id', $id)->from('product_items')->get();
         $items = $query->result_array();
         $attribute['items'] = $items;
         return $attribute;
@@ -84,6 +93,39 @@ class Attribute_model extends CI_Model
 
     public function update($id, $data)
     {
+        $attribute = array(
+            'category_id' => $data['category_id'],
+            'name' => $data['name'],
+            'updated_at' => current_date()
+        );
+        $this->db->trans_begin();
+
+        $this->db->where('id', $id)->update('product_attributes', $attribute);
+        if ($this->db->affected_rows() === 0) {
+            $this->db->trans_rollback();
+            return FALSE;
+        }
+
+        $this->db->where('attribute_id', $id)->delete('product_items');
+        if ($this->db->affected_rows() === 0) {
+            $this->db->trans_rollback();
+            return FALSE;
+        }
+
+        $items = $data['items'];
+        $this->db->insert_batch('product_items', $items);
+        if ($this->db->affected_rows() !== count($items)) {
+            $this->db->trans_rollback();
+            return FALSE;
+        }
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->db->trans_rollback();
+            return FALSE;
+        } else {
+            $this->db->trans_commit();
+            return TRUE;
+        }
 
     }
 

@@ -100,8 +100,11 @@ class Product extends REST_Controller
     {
     }
 
-    public function attribute_put($id, $data)
+    public function attribute_put($id)
     {
+        $data = $this->put();
+        $result = $this->Attribute->update($id, $data);
+        $result ? echoSuccess() : echoFail();
     }
 
     public function attribute_get($id)
