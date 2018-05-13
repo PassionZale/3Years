@@ -34,7 +34,11 @@
 </template>
 
 <script>
-import { fetchParentCategories, fetchAttribute } from "../../../api/product";
+import {
+  fetchParentCategories,
+  fetchAttribute,
+  updateAttribute
+} from "../../../api/product";
 export default {
   data() {
     return {
@@ -58,9 +62,50 @@ export default {
       .catch();
   },
   methods: {
-    add_item() {},
-    remove_item() {},
-    click() {}
+    add_item() {
+      let name = this.item_input_name;
+      if (name) {
+        this.attribute.items.push({
+          attribute_id: this.id,
+          name
+        });
+        this.$nextTick(function() {
+          this.item_input_name = "";
+        });
+      } else {
+        this.$Message.error("规格选项不能为空");
+      }
+    },
+    remove_item(index) {
+      this.attribute.items.splice(index, 1);
+    },
+    click() {
+      if (!this.attribute.name) {
+        this.$Message.error("规格名称不能为空");
+        return;
+      }
+      if (!this.attribute.items.length) {
+        this.$Message.error("至少添加一个规格选项");
+        return;
+      }
+
+      this.btn_loading = true;
+
+      updateAttribute(this.id, this.attribute)
+        .then(response => {
+          if (response.ret_code === 0) {
+            this.$Message.success("操作成功");
+            this.$router.push("/product/attribute");
+          } else {
+            this.$Message.error("操作失败");
+          }
+          this.btn_loading = false;
+        })
+        .catch(error => {
+          this.btn_loading = false;
+          this.$Message.error("操作失败");
+        });
+    }
   }
 };
 </script>

@@ -59,9 +59,17 @@ export function fetchAttributes() {
     });
 }
 
-export function fetchAttribute(id = ''){
+export function fetchAttribute(id = '') {
     return ajax({
         method: 'get',
         url: `/api/product/attribute/${id}`
+    });
+}
+
+export function updateAttribute(id = '', data) {
+    return ajax({
+        method: 'put',
+        url: `/api/product/attribute/${id}`,
+        data
     });
 }

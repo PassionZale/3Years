@@ -31,6 +31,18 @@ export default {
             key: "name"
           },
           {
+            title: "规格选项",
+            key: "items",
+            render: (h, params) => {
+              return h(
+                "div",
+                params.row.items.map(item => {
+                  return h("Tag", [item.name]);
+                })
+              );
+            }
+          },
+          {
             title: "创建时间",
             key: "created_at"
           },
