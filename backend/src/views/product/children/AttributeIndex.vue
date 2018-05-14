@@ -19,15 +19,15 @@
 
     <Table :loading="table.loading" :columns="table.columns" :data="table.data"></Table>
 
-    <br><br>
+    <br>
 
-    <Page :total="search.page.total" :current.sync="search.page.current" show-elevator></Page>
+    <Page :total="search.page.total" :current.sync="search.page.current" @on-change="loadPage" show-elevator></Page>
 
   </div>
 </template>
 
 <script>
-import { fetchAttributes, fetchParentCategories } from "../../../api/product";
+import { fetchAttributes, fetchParentCategories, deleteAttribute } from "../../../api/product";
 export default {
   data() {
     return {
@@ -144,10 +144,25 @@ export default {
       this.search.page.current = 1;
       this.initTable();
     },
+    loadPage(current = 1){
+      this.search.page.current = current;
+      this.initTable();
+    },
     edit(id) {
       this.$router.push(`/product/attribute/edit/${id}`);
     },
-    del() {}
+    del(params) {
+      deleteAttribute(params.row.id).then(response => {
+        if(response.ret_code === 0){
+          this.table.data.splice(params.index, 1);
+          this.$Message.success('操作成功');
+        }else{
+          this.$Message.error('操作失败');
+        }
+      }).catch(error => {
+        this.$Message.error('操作失败');
+      });
+    }
   }
 };
 </script>

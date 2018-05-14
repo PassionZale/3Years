@@ -8,6 +8,8 @@ application/logs/*
 
 !application/*/.htaccess
 
+mysql_config.php
+
 composer.lock
 superuser.lock
 

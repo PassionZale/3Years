@@ -73,3 +73,10 @@ export function updateAttribute(id = '', data) {
         data
     });
 }
+
+export function deleteAttribute(id=''){
+    return ajax({
+        method: 'delete',
+        url: `/api/product/attribute/${id}`, 
+    });
+}

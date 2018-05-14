@@ -90,15 +90,6 @@ class Product extends REST_Controller
         $result ? echoSuccess() : echoFail();
     }
 
-    public function attributes_total_get(){
-        $category_id = $this->get('category_id');
-        $page = $this->get('page');
-        $category_id === null && $category_id = 'all';
-        $page === null && $page = 1;
-        $attributes = $this->Attribute->total($category_id, $page);
-        echoMsg(0, $attributes);
-    }
-
     public function attributes_get()
     {
         $category_id = $this->get('category_id');

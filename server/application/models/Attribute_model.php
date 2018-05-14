@@ -40,7 +40,7 @@ class Attribute_model extends CI_Model
         }
         $this->db->join('product_categories as c', 'c.id = a.category_id');
 
-        $this->db->limit($this->page_size, $page - 1);
+        $this->db->limit($this->page_size, ($page - 1)*$this->page_size);
         $query = $this->db->get();
 
         $attributes = $query->result_array();
@@ -154,8 +154,17 @@ class Attribute_model extends CI_Model
     public function delete($id)
     {
         $this->db->trans_start();
-        $this->db->where('id', $id)->delete('product_attributes');
 
+        $this->db->where('id', $id)->delete('product_attributes');
+        $this->db->where('attribute_id', $id)->delete('product_items');
+
+        $this->db->trans_complete();
+
+        if($this->db->trans_status() === FALSE){
+            return FALSE;
+        }
+
+        return TRUE;
     }
 
 }
