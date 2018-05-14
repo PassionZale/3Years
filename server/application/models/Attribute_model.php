@@ -4,31 +4,59 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 class Attribute_model extends CI_Model
 {
 
+    private $page_size = 10;
+
     function __construct()
     {
         parent::__construct();
     }
 
-    public function all()
+    public function total($category_id)
     {
-        $query = $this->db->select('
+        $this->db->select('id');
+        if ($category_id !== 'all') {
+            $this->db->where('category_id', $category_id);
+        }
+        $total = $this->db->from('product_attributes')->count_all_results();
+        return $total;
+    }
+
+    public function all($category_id, $page)
+    {
+        $response = array(
+            'paginate' => [],
+            'data' => []
+        );
+
+        $this->db->select('
             c.name as category,
             a.name, 
             a.id, 
             a.created_at, 
             a.updated_at
-        ')->from('product_attributes as a')
-            ->join('product_categories as c', 'c.id = a.category_id')
-            ->get();
+        ')->from('product_attributes as a');
+        if ($category_id !== 'all') {
+            $this->db->where('c.id', $category_id);
+        }
+        $this->db->join('product_categories as c', 'c.id = a.category_id');
+
+        $this->db->limit($this->page_size, $page - 1);
+        $query = $this->db->get();
+
         $attributes = $query->result_array();
-        $response = array();
         foreach ($attributes as $attribute) {
             $query = $this->db->where('attribute_id', $attribute['id'])
                 ->from('product_items')
                 ->get();
             $attribute['items'] = $query->result_array();
-            $response[] = $attribute;
+            $response['data'][] = $attribute;
         }
+
+        $response['paginate'] = array(
+            'page' => $page,
+            'total' => $this->total($category_id)
+        );
+
         return $response;
     }
 
@@ -68,8 +96,6 @@ class Attribute_model extends CI_Model
                 $items[] = array(
                     'attribute_id' => $attribute_id,
                     'name' => $item['name'],
-                    'created_at' => current_date(),
-                    'updated_at' => current_date(),
                 );
             }
             // 批量插入规格选项
@@ -107,10 +133,6 @@ class Attribute_model extends CI_Model
         }
 
         $this->db->where('attribute_id', $id)->delete('product_items');
-        if ($this->db->affected_rows() === 0) {
-            $this->db->trans_rollback();
-            return FALSE;
-        }
 
         $items = $data['items'];
         $this->db->insert_batch('product_items', $items);
@@ -131,6 +153,8 @@ class Attribute_model extends CI_Model
 
     public function delete($id)
     {
+        $this->db->trans_start();
+        $this->db->where('id', $id)->delete('product_attributes');
 
     }
 
