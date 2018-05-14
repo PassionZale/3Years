@@ -7,20 +7,40 @@
         创建规格
       </Button>
     </router-link>
+
+    <br><br>
+
+    <Select v-model="search.category_id" placeholder="请选择分类" filterable style="width: 300px" @on-change="change">
+        <Option value="all" :key="0">全部分类</Option>
+        <Option v-for="item in categories" :value="item.id" :key="item.id" >{{ item.name }}</Option>
+    </Select>
+
     <br><br>
 
     <Table :loading="table.loading" :columns="table.columns" :data="table.data"></Table>
+
+    <br><br>
+
+    <Page :total="search.page.total" :current.sync="search.page.current" show-elevator></Page>
 
   </div>
 </template>
 
 <script>
-import { fetchAttributes } from "../../../api/product";
+import { fetchAttributes, fetchParentCategories } from "../../../api/product";
 export default {
   data() {
     return {
+      categories: [],
+      search: {
+        category_id: "all",
+        page: {
+          total: 0,
+          current: 1
+        }
+      },
       table: {
-        loading: true,
+        loading: false,
         columns: [
           {
             title: "所属分类",
@@ -97,16 +117,33 @@ export default {
     };
   },
   created() {
-    fetchAttributes()
+    fetchParentCategories()
       .then(response => {
-        this.table.data = response.ret_msg;
-        this.$nextTick(function() {
-          this.table.loading = false;
-        });
+        this.categories = response.ret_msg;
       })
-      .catch();
+      .catch(error => {});
+
+    this.initTable();
   },
   methods: {
+    initTable() {
+      this.table.loading = true;
+      fetchAttributes(this.search.category_id, this.search.page.current)
+        .then(response => {
+          this.table.data = response.ret_msg.data;
+          this.search.page.total = response.ret_msg.paginate.total;
+          this.$nextTick(function() {
+            this.table.loading = false;
+          });
+        })
+        .catch(error => {
+          this.table.loading = false;
+        });
+    },
+    change() {
+      this.search.page.current = 1;
+      this.initTable();
+    },
     edit(id) {
       this.$router.push(`/product/attribute/edit/${id}`);
     },

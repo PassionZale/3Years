@@ -52,10 +52,10 @@ export function createAttribute(data) {
     });
 }
 
-export function fetchAttributes() {
+export function fetchAttributes(category_id=0, page=1) {
     return ajax({
         method: 'get',
-        url: '/api/product/attributes'
+        url: `/api/product/attributes?category_id=${category_id}&page=${page}`,
     });
 }
 
