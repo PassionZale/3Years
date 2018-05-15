@@ -15,6 +15,25 @@ class Product extends REST_Controller
         $this->load->model('Attribute_model', 'Attribute');
     }
 
+    public function index_get($id)
+    {
+    }
+
+    public function index_post()
+    {
+
+    }
+
+    public function index_put($id)
+    {
+
+    }
+
+    public function index_delete($id)
+    {
+
+    }
+
     public function childCategories_get($id)
     {
         if (empty($id)) {
@@ -41,6 +60,11 @@ class Product extends REST_Controller
             'ret_code' => 0,
             'ret_msg' => $categories
         ), REST_Controller::HTTP_OK);
+    }
+
+    public function categories_get(){
+        $categories = $this->Category->all();
+        echoMsg(0, $categories);
     }
 
     public function category_post()
