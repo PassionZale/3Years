@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Breadcrumb :style="{marginBottom:'16px'}">
+    <Breadcrumb :style="{marginBottom:'15px'}">
         <template v-for="nav in navs" v-if="nav.path !== ''">
             <BreadcrumbItem>
                 {{ nav.name }}

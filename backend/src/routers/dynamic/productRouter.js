@@ -7,8 +7,8 @@ const productRouter = {
     component: _import('product/Index'),
     children: [
         {
-            path: '/', name: '商品管理', component: _import('product/children/Product'),
-            redirect: '/product/index',
+            path: 'commodity', name: '商品管理', component: _import('product/children/Product'),
+            redirect: '/product/commodity/index',
             children: [
                 { path: 'index', name: '商品列表', component: _import('product/children/ProductIndex') },
                 { path: 'create', name: '创建商品', component: _import('product/children/ProductCreate') },

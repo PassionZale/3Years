@@ -40,7 +40,7 @@
                     规格管理
                 </MenuItem>
             </router-link>
-            <router-link :to="{ path: '/product/index' }">
+            <router-link :to="{ path: '/product/commodity' }">
                 <MenuItem name="商品管理">
                     <Icon type="bag"></Icon>
                     商品管理

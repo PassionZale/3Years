@@ -14,6 +14,13 @@ export function fetchChildCategories(id = '') {
     });
 }
 
+export function fetchCategories() {
+    return ajax({
+        mehtod: 'get',
+        url: '/api/product/categories'
+    });
+}
+
 export function createCategory(data) {
     return ajax({
         method: 'post',
@@ -52,7 +59,7 @@ export function createAttribute(data) {
     });
 }
 
-export function fetchAttributes(category_id=0, page=1) {
+export function fetchAttributes(category_id = 0, page = 1) {
     return ajax({
         method: 'get',
         url: `/api/product/attributes?category_id=${category_id}&page=${page}`,
@@ -74,9 +81,9 @@ export function updateAttribute(id = '', data) {
     });
 }
 
-export function deleteAttribute(id=''){
+export function deleteAttribute(id = '') {
     return ajax({
         method: 'delete',
-        url: `/api/product/attribute/${id}`, 
+        url: `/api/product/attribute/${id}`,
     });
 }
