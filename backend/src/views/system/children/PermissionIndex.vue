@@ -7,6 +7,20 @@
       </Button>
     </router-link>
     <br><br>
+    <div style="background:#eee;padding: 20px">
+        <Card :bordered="false">
+            <p slot="title">
+              <Icon type="ios-film-outline"></Icon>
+              权限介绍
+            </p>
+            <p>系统设置 | system：对应“系统设置”菜单下的所有操作</p>
+            <p>商品设置 | product：对应“商品设置”菜单下的所有操作</p>
+            <p>个人中心 | user：点击“头像”后，用户可以修改自己的账户信息</p>
+            <p>上传图片 | upload：系统全部需要上传图片的操作，如商品、轮播图等</p>
+        </Card>
+    </div>
+    <br>
+
     <Table :loading="table.loading" :columns="table.columns" :data="table.data"></Table>
   </div>
 </template>

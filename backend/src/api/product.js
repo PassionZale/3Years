@@ -1,4 +1,5 @@
 import ajax from '../utils/ajax'
+import { baseURL } from '../utils/base'
 
 export function fetchParentCategories() {
     return ajax({
@@ -87,3 +88,7 @@ export function deleteAttribute(id = '') {
         url: `/api/product/attribute/${id}`,
     });
 }
+
+export const ACTION_FOR_PRODUCT_THUMB_IMG = `${baseURL}/api/upload/product_thumb_img`;
+
+export const ACTION_FOR_PRODUCT_BANNERS = `${baseURL}/api/upload/product_banners`;

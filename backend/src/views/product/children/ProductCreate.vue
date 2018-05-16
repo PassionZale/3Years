@@ -53,17 +53,10 @@
     </div>
 
     <div v-show="current === 1">
-      <div class="form-item-wrapper">
-        <label>缩略图：</label>
-        <Upload action="//jsonplaceholder.typicode.com/posts/" style="display:inline-block;">
-          <Button type="ghost" icon="ios-cloud-upload-outline">上传图片</Button>
-        </Upload>
-      </div>
+      
+      <c-product-thumb-uploader></c-product-thumb-uploader>
 
-      <div class="form-item-wrapper">
-        <label>轮播图：</label>
-        
-      </div>
+      <c-product-banners-uploader></c-product-banners-uploader>
 
       <hr>
       <Button type="primary" @click="step_1_pre">上一步</Button>
@@ -96,7 +89,10 @@
 
 <script>
 import { fetchCategories } from "../../../api/product";
+import cProductThumbUploader from "../../../components/upload/ProductThumbImg.vue";
+import cProductBannersUploader from "../../../components/upload/ProductBanners.vue";
 export default {
+  components: { cProductThumbUploader, cProductBannersUploader },
   data() {
     return {
       current: 1,

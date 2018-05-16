@@ -2,11 +2,8 @@ import axios from 'axios'
 import qs from 'qs'
 import store from '../vuex/store'
 import { getToken } from './auth'
+import { baseURL } from './base'
 import { superUserIsNotExist, superUserIsExist, defaultErrorMsg } from './error'
-
-const baseURL = process.env.NODE_ENV === 'production' ?
-    'https://www.url.com/backend' :
-    'http://127.0.0.1:8000/backend';
 
 const ajax = axios.create({
     baseURL: baseURL,
