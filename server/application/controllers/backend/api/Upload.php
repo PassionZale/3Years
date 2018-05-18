@@ -35,17 +35,44 @@ class Upload extends REST_Controller
         $this->upload->initialize($config);
 
         if (!$this->upload->do_upload('thumb_img')) {
-            $error = array('error' => $this->upload->display_errors());
-            print_r($error);
+            $errors = $this->upload->display_errors();
+            echoFail(strip_tags($errors));
         } else {
-            $arr_image = array('upload_data' => $this->upload->data());
-            $file_path = '/uploads/product/thumbs/' . $dir_name . '/' .$arr_image['file_name'];
-            echoMsg(0, $file_path);
+            $arr_image = $this->upload->data();
+            $file_name = $arr_image['orig_name'];
+            $file_path = '//' . $_SERVER['HTTP_HOST'] . '/uploads/product/thumbs/' . $dir_name . '/' . $arr_image['file_name'];
+            $result = array(
+                'name' => $file_name,
+                'url' => $file_path
+            );
+            echoSuccess($result);
         }
     }
 
     public function product_banners_post()
     {
+        $dir_name = date('Y-m-d');
+        $upload_path = $this->generate_folder('./uploads/product/banners/' . $dir_name . '/');
+        $config = array(
+            'upload_path' => $upload_path,
+            'allowed_types' => 'jpeg|jpg|png',
+            'max_size' => 2048,
+            'encrypt_name' => TRUE,
+        );
+        $this->upload->initialize($config);
 
+        if (!$this->upload->do_upload('banner')) {
+            $errors = $this->upload->display_errors();
+            echoFail(strip_tags($errors));
+        } else {
+            $arr_image = $this->upload->data();
+            $file_name = $arr_image['orig_name'];
+            $file_path = '//' . $_SERVER['HTTP_HOST'] . '/uploads/product/banners/' . $dir_name . '/' . $arr_image['file_name'];
+            $result = array(
+                'name' => $file_name,
+                'url' => $file_path
+            );
+            echoSuccess($result);
+        }
     }
 }

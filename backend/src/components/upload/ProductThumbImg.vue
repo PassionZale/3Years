@@ -2,8 +2,13 @@
     <div class="form-item-wrapper">
         <label>缩略图：</label>
         
-        <div class="thumb-file-wrapper" v-for="file in fileList">
-            <img :src="file.url" :alt="file.name">
+        <div class="upload-file-wrapper" v-for="file in fileList">
+          <template v-if="file.status === 'finished'">
+            <img :src="file.url" :alt="file.name" :title="file.name"/>
+          </template>
+          <template v-else>
+            <Progress v-if="file.showProgress" :percent="file.percentage" hide-info></Progress>
+          </template>
         </div>
 
         <Upload 
@@ -21,13 +26,15 @@
           style="display:inline-block;">
           <Button type="ghost" icon="ios-cloud-upload-outline">点击上传</Button>
         </Upload>
-      </div>
+
+    </div>
 </template>
 
 <script>
 import { ACTION_FOR_PRODUCT_THUMB_IMG } from "../../api/product";
 import { getToken } from "../../utils/auth";
 export default {
+  props: ['fileList'],  
   data() {
     return {
       upload: {
@@ -38,7 +45,7 @@ export default {
         max_size: 1024,
         show_upload_list: false
       },
-      fileList:[],
+      // fileList:[],
     };
   },
   mounted(){
@@ -56,19 +63,28 @@ export default {
             this.fileList.length = 0
         }
     },
-    handleSuccess(response, file, fileList) {
-        this.$Message.success('上传成功');
+    handleSuccess(response, file) {
+        if(response.ret_code === 0){
+          file.name = response.ret_msg.name;
+          file.url = response.ret_msg.url;
+          this.$Message.success('上传成功');
+        }else{
+          this.$Message.error(response.ret_msg);
+        }
     }
   }
 };
 </script>
 
 <style lang="less">
-.thumb-file-wrapper {
+.upload-file-wrapper {
     display: inline-block;
     width: 80px;
-    height: 80px;
+    height: auto;
+    vertical-align: middle;
+    margin-right: 15px;
     img {
+        display: block;
         max-width: 100%;
         height: auto;        
     }
