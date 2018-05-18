@@ -54,9 +54,9 @@
 
     <div v-show="current === 1">
       
-      <c-product-thumb-uploader></c-product-thumb-uploader>
+      <c-product-thumb-uploader :file-list.sync="data.thumb_img"></c-product-thumb-uploader>
 
-      <c-product-banners-uploader></c-product-banners-uploader>
+      <c-product-banners-uploader :file-list.sync="data.banners"></c-product-banners-uploader>
 
       <hr>
       <Button type="primary" @click="step_1_pre">上一步</Button>
@@ -105,8 +105,7 @@ export default {
         category: [],
         // 商品名称
         name: "",
-        // 缩略图
-        thumb_img: "",
+        
         // 原价
         orignal_price: 0.0,
         // 现价
@@ -117,6 +116,8 @@ export default {
         stock: 0,
         // 上下架
         status: 1,
+        // 缩略图
+        thumb_img: [],
         // 轮播图
         banners: []
       }
