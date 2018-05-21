@@ -34,7 +34,13 @@
 import { ACTION_FOR_PRODUCT_THUMB_IMG } from "../../api/product";
 import { getToken } from "../../utils/auth";
 export default {
-  props: ['fileList'],  
+  props: {
+    thumb: {
+      type: Object,
+      default: {},
+      required: true
+    }
+  },  
   data() {
     return {
       upload: {
@@ -45,7 +51,7 @@ export default {
         max_size: 1024,
         show_upload_list: false
       },
-      // fileList:[],
+      fileList:[]
     };
   },
   mounted(){
@@ -68,6 +74,7 @@ export default {
           file.name = response.ret_msg.name;
           file.url = response.ret_msg.url;
           this.$Message.success('上传成功');
+          this.$emit('update:thumb', {url: file.url});
         }else{
           this.$Message.error(response.ret_msg);
         }

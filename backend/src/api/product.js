@@ -1,6 +1,14 @@
 import ajax from '../utils/ajax'
 import { baseURL } from '../utils/base'
 
+export function createProduct(data){
+    return ajax({
+        method: 'post',
+        url: '/api/product',
+        data
+    });
+}
+
 export function fetchParentCategories() {
     return ajax({
         method: 'get',

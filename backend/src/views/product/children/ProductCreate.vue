@@ -14,7 +14,7 @@
       <div class="form-item-wrapper">
         <label>排序：</label>
         <Poptip trigger="focus" title="注意！" content="排序默认为0，值越大则越靠前" placement="right">
-          <InputNumber :max="10000" :min="0" :step="1" v-model="data.sort" style="width: 300px;"></InputNumber>
+          <InputNumber :min="0" :step="1" v-model="data.sort" style="width: 300px;"></InputNumber>
         </Poptip>
       </div>
       <div class="form-item-wrapper">
@@ -27,19 +27,19 @@
       </div>
       <div class="form-item-wrapper">
         <label>商品原价：</label>
-        <InputNumber :max="100000000" :min="0" :step="0.01" v-model="data.orignal_price" style="width: 300px;"></InputNumber>
+        <InputNumber :min="0" :step="0.01" v-model="data.orignal_price" style="width: 300px;"></InputNumber>
       </div>
       <div class="form-item-wrapper">
         <label>商品现价：</label>
-        <Input type="text" v-model="data.current_price" placeholder="请输入商品现价：" clearable style="width: 300px;"></Input>
+        <InputNumber :min="0" :step="0.01" v-model="data.current_price" style="width: 300px;"></InputNumber>
       </div>
       <div class="form-item-wrapper">
         <label>已售数量：</label>
-        <InputNumber :max="100000000" :min="0" :step="1" v-model="data.sold" style="width: 300px;"></InputNumber>
+        <InputNumber :min="0" :step="1" v-model="data.sold" style="width: 300px;"></InputNumber>
       </div>
       <div class="form-item-wrapper">
         <label>库存数量：</label>
-        <InputNumber :max="100000000" :min="0" :step="1" v-model="data.stock" style="width: 300px;"></InputNumber>
+        <InputNumber :min="0" :step="1" v-model="data.stock" style="width: 300px;"></InputNumber>
       </div>
       <div class="form-item-wrapper">
         <label>上架状态</label>
@@ -54,25 +54,93 @@
 
     <div v-show="current === 1">
       
-      <c-product-thumb-uploader :file-list.sync="data.thumb_img"></c-product-thumb-uploader>
+      <c-product-thumb-uploader :thumb.sync="data.thumb_img"></c-product-thumb-uploader>
 
-      <c-product-banners-uploader :file-list.sync="data.banners"></c-product-banners-uploader>
+      <c-product-banners-uploader :banners.sync="data.banners"></c-product-banners-uploader>
 
       <hr>
       <Button type="primary" @click="step_1_pre">上一步</Button>
       <Button type="primary" @click="step_1_next">下一步</Button>
     </div>
 
-    <div class="form-item-wrapper" v-show="current === 2">
-      <p>详情简介</p>
+    <div v-show="current === 2">
+      <div class="form-item-wrapper">
+        <label>商品简介：</label>
+        <Input v-model="data.base_info" type="textarea" :autosize="{minRows: 6}" placeholder="请输入商品简介... ..." style="display: inline-block; width: 300px;"></Input>
+      </div>
+      <div class="form-item-wrapper">
+        <label>商品详情：</label>
+        <Input v-model="data.detail_info" type="textarea" :autosize="{minRows: 6}" placeholder="请输入商品详情... ..." style="display: inline-block; width: 300px;"></Input>
+      </div>
       <hr>
       <Button type="primary" @click="step_2_pre">上一步</Button>
       <Button type="primary" @click="step_2_next">下一步</Button>
     </div>
 
-    <div class="form-item-wrapper" v-show="current === 3">
-      <p>配置规格</p>
-      <hr>
+    <div v-show="current === 3">
+      <template v-for="(attribute, attr_index) in attributes">
+        <div class="form-item-wrapper">
+          <label>{{ attribute.name }}：</label>
+          <label v-for="item in attribute.items" class="item-label">
+            <input 
+            v-model="attribute.selectedItems"
+            type="checkbox" 
+            :value="item"/>
+            {{ item.name }}
+          </label>
+        </div>
+      </template>
+
+      <div v-show="data.skus.length">
+        <hr>
+        <div class="ivu-table-wrapper">
+          <div class="ivu-table ivu-table-stripe">
+            <div class="ivu-table-header">
+              <table cellspacing="0" cellpadding="0" border="0" style="width: 100%">
+                <thead>
+                  <tr>
+                    <th v-for="attribute in attributes" v-if="attribute.selectedItems.length">
+                      <div class="ivu-table-cell">
+                        <span>{{ attribute.name }}</span>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="ivu-table-cell">
+                        <span>商品库存</span>
+                      </div>
+                    </th>
+                    <th>
+                      <div class="ivu-table-cell">
+                        <span>商品价格</span>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <div class="ivu-table-body">
+              <table cellspacing="0" cellpadding="0" border="0" style="width: 100%">
+                <tbody class="ivu-table-tbody">
+                  <tr class="ivu-table-row" v-for="sku in data.skus">
+                    <td v-for="attribute in attributes" v-if="attribute.selectedItems.length">
+                      <div class="ivu-table-cell">
+                        <span>{{ get_item_name(sku, attribute) }}</span>
+                      </div>
+                    </td>
+                    <td>
+                      <InputNumber :min="0" :step="1" v-model="sku.sku_stock" placeholder="填写商品库存" style="width: 100px;"></InputNumber>
+                    </td>
+                    <td>
+                      <InputNumber :min="0.00" :formatter="value => `¥${value}`" :parser="value => value.replace('¥', '')" :step="0.01" v-model="sku.sku_price" placeholder="填写商品价格" style="width: 100px;"></InputNumber>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <hr> 
       <Button type="primary" @click="step_3_pre">上一步</Button>
       <Button type="primary" @click="step_3_next">下一步</Button>
     </div>
@@ -88,16 +156,22 @@
 </template>
 
 <script>
-import { fetchCategories } from "../../../api/product";
+import { descartes } from "../../../utils/base";
+import {
+  fetchCategories,
+  fetchAttributes,
+  createProduct
+} from "../../../api/product";
 import cProductThumbUploader from "../../../components/upload/ProductThumbImg.vue";
 import cProductBannersUploader from "../../../components/upload/ProductBanners.vue";
 export default {
   components: { cProductThumbUploader, cProductBannersUploader },
   data() {
     return {
-      current: 1,
+      current: 0,
       btn_loading: false,
       categories: [],
+      attributes: [],
       data: {
         // 排序
         sort: 0,
@@ -105,11 +179,10 @@ export default {
         category: [],
         // 商品名称
         name: "",
-        
         // 原价
-        orignal_price: 0.0,
+        original_price: 0.00,
         // 现价
-        current_price: 0.0,
+        current_price: 0.00,
         // 已售数
         sold: 0,
         // 库存数
@@ -117,9 +190,15 @@ export default {
         // 上下架
         status: 1,
         // 缩略图
-        thumb_img: [],
+        thumb_img: {},
         // 轮播图
-        banners: []
+        banners: [],
+        // 商品简介
+        base_info: "",
+        // 商品详情
+        detail_info: "",
+        // 规格组合
+        skus: []
       }
     };
   },
@@ -130,7 +209,61 @@ export default {
       })
       .catch();
   },
+  computed: {
+    selectedListner: function() {
+      let length = 0;
+      this.attributes.map(item => {
+        length += item.selectedItems.length;
+      });
+      return length;
+    }
+  },
+  watch: {
+    selectedListner: {
+      handler: "rest_sku"
+    },
+    "data.category": {
+      handler: "step_3_init"
+    }
+  },
   methods: {
+    get_item_name(sku, attribute) {
+      let item_name = "";
+      sku.values.map(value => {
+        if (value.attribute_id === attribute.id) {
+          attribute.selectedItems.map(item => {
+            if (value.item_id === item.id) {
+              item_name = item.name;
+              return false;
+            }
+          });
+        }
+      });
+      return item_name;
+    },
+    rest_sku(val, oldVal) {
+      let ori = [];
+      // 每次勾选规格时，重置 skus
+      this.data.skus.length = 0;
+      this.attributes.map(item => {
+        if (item.selectedItems.length) {
+          ori.push(item.selectedItems);
+        }
+      });
+      let ret = descartes(ori);
+      ret.map(item => {
+        var sku = { sku_price: 0.0, sku_stock: 0, values: [] };
+        item.map(value => {
+          sku.values.push({
+            attribute_id: value.attribute_id,
+            item_id: value.id,
+            item_name: value.name
+          });
+        });
+
+        this.data.skus.push(sku);
+      });
+    },
     step_0_next() {
       this.current += 1;
     },
@@ -146,6 +279,17 @@ export default {
     step_2_next() {
       this.current += 1;
     },
+    step_3_init() {
+      let parent_category_id = this.data.category[0];
+      fetchAttributes(parent_category_id, "all")
+        .then(response => {
+          this.attributes = response.ret_msg.data.map(item => {
+            item.selectedItems = [];
+            return item;
+          });
+        })
+        .catch();
+    },
     step_3_pre() {
       this.current -= 1;
     },
@@ -157,8 +301,29 @@ export default {
     },
     submit() {
       this.btn_loading = true;
+      createProduct(this.data)
+        .then(response => {
+          this.btn_loading = false;
+          if (response.ret_code === 0) {
+            this.$Message.success("商品创建成功");
+            this.$router.push('/product/commodity');
+          } else {
+            this.$Message.error("商品创建失败");
+          }
+        })
+        .catch(error => {
+          this.btn_loading = false;
+        });
     }
   }
 };
 </script>
 
+<style lang="less">
+.item-label {
+  width: 150px;
+  input {
+    margin-top: 4px;
+  }
+}
+</style>

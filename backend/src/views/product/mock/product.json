@@ -1,0 +1,55 @@
+{
+    "sort": 0,
+    "category": ["6", "14"],
+    "name": "ONLY 连衣裙 （潮款）",
+    "original_price": 600,
+    "current_price": 200,
+    "sold": 10000,
+    "stock": 300,
+    "status": 1,
+    "thumb_img": {
+      "url":
+        "//server.3years.com/uploads/product/thumbs/2018-05-21/8414531869498f65e8f5caad6d693505.jpg"
+    },
+    "banners": [
+      {
+        "url":
+          "//server.3years.com/uploads/product/banners/2018-05-21/f7fbbdce04da442fb31e91c0e4c0b97d.jpg"
+      },
+      {
+        "url":
+          "//server.3years.com/uploads/product/banners/2018-05-21/fdf98aa1b283b10fc6ca12b5b1522e77.jpg"
+      }
+    ],
+    "base_info": "base_info",
+    "detail_info": "detail_info",
+    "skus": [
+      {
+        "sku_price": 100,
+        "sku_stock": 100,
+        "values": [
+          { "attribute_id": "17", "item_id": "84", "item_name": "藏青色" },
+          { "attribute_id": "18", "item_id": "86", "item_name": "XXL" },
+          { "attribute_id": "19", "item_id": "48", "item_name": "英伦" }
+        ]
+      },
+      {
+        "sku_price": 200,
+        "sku_stock": 200,
+        "values": [
+          { "attribute_id": "17", "item_id": "84", "item_name": "藏青色" },
+          { "attribute_id": "18", "item_id": "85", "item_name": "XL" },
+          { "attribute_id": "19", "item_id": "48", "item_name": "英伦" }
+        ]
+      },
+      {
+        "sku_price": 300,
+        "sku_stock": 300,
+        "values": [
+          { "attribute_id": "17", "item_id": "84", "item_name": "藏青色" },
+          { "attribute_id": "18", "item_id": "87", "item_name": "SM" },
+          { "attribute_id": "19", "item_id": "48", "item_name": "英伦" }
+        ]
+      }
+    ]
+  }

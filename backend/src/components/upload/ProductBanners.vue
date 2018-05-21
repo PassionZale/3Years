@@ -39,7 +39,13 @@
 import { ACTION_FOR_PRODUCT_BANNERS } from "../../api/product";
 import { getToken } from "../../utils/auth";
 export default {
-  props: ['fileList'],  
+  props: {
+    banners: {
+      type: Array,
+      default: [],
+      required: true
+    }
+  },
   data() {
     return {
       upload: {
@@ -50,6 +56,7 @@ export default {
         max_size: 2048,
         show_upload_list: false
       },
+      fileList: []
     };
   },
   mounted() {
@@ -63,11 +70,18 @@ export default {
       this.$Message.error("只允许上传1MB以内的文件");
     },
     handleBeforeUpload() {},
-    handleSuccess(response, file) {
+    handleSuccess(response, file, fileList) {
       if (response.ret_code === 0) {
         file.name = response.ret_msg.name;
         file.url = response.ret_msg.url;
         this.$Message.success("上传成功");
+        // 上传成功后更新 props
+        this.$emit(
+          "update:banners",
+          fileList.map(item => {
+            return { url: item.url };
+          })
+        );
       } else {
         this.$Message.error(response.ret_msg);
       }
