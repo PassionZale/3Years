@@ -23,6 +23,7 @@ class Attribute_model extends CI_Model
 
     public function all($category_id, $page)
     {
+
         $response = array(
             'paginate' => [],
             'data' => []
@@ -40,7 +41,10 @@ class Attribute_model extends CI_Model
         }
         $this->db->join('product_categories as c', 'c.id = a.category_id');
 
-        $this->db->limit($this->page_size, ($page - 1)*$this->page_size);
+        if($page !== 'all'){
+            $this->db->limit($this->page_size, ($page - 1)*$this->page_size);
+        }
+
         $query = $this->db->get();
 
         $attributes = $query->result_array();

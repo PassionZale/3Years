@@ -13,6 +13,7 @@ class Product extends REST_Controller
         $this->load->library('form_validation', 'form');
         $this->load->model('Category_model', 'Category');
         $this->load->model('Attribute_model', 'Attribute');
+        $this->load->model('Product_model', 'Product');
     }
 
     public function index_get($id)
@@ -21,7 +22,9 @@ class Product extends REST_Controller
 
     public function index_post()
     {
-
+        $data = $this->input->post();
+        $result = $this->Product->create($data);
+        $result ? echoSuccess() : echoFail();
     }
 
     public function index_put($id)
@@ -62,7 +65,8 @@ class Product extends REST_Controller
         ), REST_Controller::HTTP_OK);
     }
 
-    public function categories_get(){
+    public function categories_get()
+    {
         $categories = $this->Category->all();
         echoMsg(0, $categories);
     }
@@ -119,7 +123,9 @@ class Product extends REST_Controller
         $category_id = $this->get('category_id');
         $page = $this->get('page');
         $category_id === null && $category_id = 'all';
-        $page === null && $page = 1;
+        if ($page !== 'all' && $page === null) {
+            $page = 1;
+        }
         $attributes = $this->Attribute->all($category_id, $page);
         echoMsg(0, $attributes);
     }
