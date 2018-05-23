@@ -1,12 +1,41 @@
 import ajax from '../utils/ajax'
 import { baseURL } from '../utils/base'
 
-export function createProduct(data){
+export const ACTION_FOR_PRODUCT_THUMB_IMG = `${baseURL}/api/upload/product_thumb_img`;
+
+export const ACTION_FOR_PRODUCT_BANNERS = `${baseURL}/api/upload/product_banners`;
+
+export function createProduct(data) {
     return ajax({
         method: 'post',
         url: '/api/product',
         data
     });
+}
+
+export function fetchProduct(id = ''){
+    return ajax({
+        method: 'get',
+        url: `/api/product/${id}`
+    });
+}
+
+export function fetchProducts(page = 1, category = 'all', keyword = '') {
+    let url = `/api/product?page=${page}&category=${category}`
+    if (keyword !== '') {
+        url += `&keyword=${keyword}`;
+    }
+    return ajax({
+        method: 'get',
+        url
+    });
+}
+
+export function deleteProduct(id){
+    return ajax({
+        method: 'delete',
+        url: `/api/product/${id}`
+    })
 }
 
 export function fetchParentCategories() {
@@ -96,7 +125,3 @@ export function deleteAttribute(id = '') {
         url: `/api/product/attribute/${id}`,
     });
 }
-
-export const ACTION_FOR_PRODUCT_THUMB_IMG = `${baseURL}/api/upload/product_thumb_img`;
-
-export const ACTION_FOR_PRODUCT_BANNERS = `${baseURL}/api/upload/product_banners`;

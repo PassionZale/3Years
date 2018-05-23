@@ -23,6 +23,7 @@
           :before-upload="handleBeforeUpload"
           :on-success="handleSuccess"
           :show-upload-list="upload.show_upload_list"
+          :default-file-list="defaultFileList"
           style="display:inline-block;">
           <Button type="ghost" icon="ios-cloud-upload-outline">点击上传</Button>
         </Upload>
@@ -39,6 +40,10 @@ export default {
       type: Object,
       default: {},
       required: true
+    },
+    defaultFileList: {
+      type: Array,
+      default: {}
     }
   },  
   data() {
@@ -49,7 +54,7 @@ export default {
         headers: { Authorization: getToken() },
         format: ["jpg", "jpeg", "png"],
         max_size: 1024,
-        show_upload_list: false
+        show_upload_list: false,
       },
       fileList:[]
     };

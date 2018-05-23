@@ -27,7 +27,7 @@
       </div>
       <div class="form-item-wrapper">
         <label>商品原价：</label>
-        <InputNumber :min="0" :step="0.01" v-model="data.orignal_price" style="width: 300px;"></InputNumber>
+        <InputNumber :min="0" :step="0.01" v-model="data.original_price" style="width: 300px;"></InputNumber>
       </div>
       <div class="form-item-wrapper">
         <label>商品现价：</label>

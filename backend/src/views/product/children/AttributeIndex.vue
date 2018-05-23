@@ -10,12 +10,12 @@
 
     <br><br>
 
-    <Select v-model="search.category_id" placeholder="请选择分类" filterable style="width: 300px" @on-change="change">
+    <div class="form-item-wrapper">
+      <Select v-model="search.category_id" placeholder="请选择分类" filterable style="width: 300px" @on-change="change">
         <Option value="all" :key="0">全部分类</Option>
         <Option v-for="item in categories" :value="item.id" :key="item.id" >{{ item.name }}</Option>
-    </Select>
-
-    <br><br>
+      </Select>  
+    </div>
 
     <Table :loading="table.loading" :columns="table.columns" :data="table.data"></Table>
 
