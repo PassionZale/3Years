@@ -16,8 +16,24 @@ class Product extends REST_Controller
         $this->load->model('Product_model', 'Product');
     }
 
-    public function index_get($id)
+    public function index_get($id = FALSE)
     {
+        if (!$id) {
+            $page = $this->get('page');
+            $category_id = $this->get('category');
+            $keyword = $this->get('keyword');
+            $page === null && $page = 1;
+            $category_id === null && $category_id = 'all';
+            $response = $this->Product->all($page, $category_id, $keyword);
+        } else {
+            $response = $this->Product->show($id);
+        }
+        echoSuccess($response);
+    }
+
+    public function variants_get($id){
+        $variants = $this->Product->variants($id);
+        echoSuccess($variants);
     }
 
     public function index_post()
@@ -34,7 +50,8 @@ class Product extends REST_Controller
 
     public function index_delete($id)
     {
-
+        $result = $this->Product->delete($id);
+        $result ? echoSuccess() : echoFail();
     }
 
     public function childCategories_get($id)

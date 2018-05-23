@@ -42,7 +42,7 @@ class Attribute_model extends CI_Model
         $this->db->join('product_categories as c', 'c.id = a.category_id');
 
         if($page !== 'all'){
-            $this->db->limit($this->page_size, ($page - 1)*$this->page_size);
+            $this->db->limit($this->page_size, ($page - 1) * $this->page_size);
         }
 
         $query = $this->db->get();
