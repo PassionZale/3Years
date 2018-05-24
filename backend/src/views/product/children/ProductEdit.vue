@@ -1,62 +1,176 @@
 <template>
   <div>
-    <div class="form-item-wrapper">
-      <label>排序：</label>
-      <Poptip trigger="focus" title="注意！" content="排序默认为0，值越大则越靠前" placement="right">
-        <InputNumber :min="0" :step="1" v-model="data.sort" style="width: 300px;"></InputNumber>
-      </Poptip>
-    </div>
-    <div class="form-item-wrapper">
-      <label>所属分类：</label>
-      <Cascader v-model="data.category" :data="categories" style="width: 300px;display: inline-block;"></Cascader>
-    </div>
-    <div class="form-item-wrapper">
-      <label>商品名称：</label>
-      <Input type="text" v-model="data.name" placeholder="请输入商品名称" clearable style="width: 300px;"></Input>
-    </div>
-    <div class="form-item-wrapper">
-      <label>商品原价：</label>
-      <InputNumber :min="0" :step="0.01" v-model="data.original_price" style="width: 300px;"></InputNumber>
-    </div>
-    <div class="form-item-wrapper">
-      <label>商品现价：</label>
-      <InputNumber :min="0" :step="0.01" v-model="data.current_price" style="width: 300px;"></InputNumber>
-    </div>
-    <div class="form-item-wrapper">
-      <label>已售数量：</label>
-      <InputNumber :min="0" :step="1" v-model="data.sold" style="width: 300px;"></InputNumber>
-    </div>
-    <div class="form-item-wrapper">
-      <label>库存数量：</label>
-      <InputNumber :min="0" :step="1" v-model="data.stock" style="width: 300px;"></InputNumber>
-    </div>
-    <div class="form-item-wrapper">
-      <label>上架状态</label>
-      <RadioGroup v-model="data.status" >
-        <Radio :label="1">上架</Radio>
-        <Radio :label="0">下架</Radio>
-      </RadioGroup>
-    </div>
 
-    <hr>
+    <Tabs>
+        <TabPane label="基本信息" name="1">
+          <div class="form-item-wrapper">
+            <label>排序：</label>
+            <Poptip trigger="focus" title="注意！" content="排序默认为0，值越大则越靠前" placement="right">
+              <InputNumber :min="0" :step="1" v-model="data.sort" style="width: 300px;"></InputNumber>
+            </Poptip>
+          </div>
+          <div class="form-item-wrapper">
+            <label>所属分类：</label>
+            <Cascader v-model="data.category" :data="categories" style="width: 300px;display: inline-block;"></Cascader>
+          </div>
+          <div class="form-item-wrapper">
+            <label>商品名称：</label>
+            <Input type="text" v-model="data.name" placeholder="请输入商品名称" clearable style="width: 300px;"></Input>
+          </div>
+          <div class="form-item-wrapper">
+            <label>商品原价：</label>
+            <InputNumber :min="0" :step="0.01" v-model="data.original_price" style="width: 300px;"></InputNumber>
+          </div>
+          <div class="form-item-wrapper">
+            <label>商品现价：</label>
+            <InputNumber :min="0" :step="0.01" v-model="data.current_price" style="width: 300px;"></InputNumber>
+          </div>
+          <div class="form-item-wrapper">
+            <label>已售数量：</label>
+            <InputNumber :min="0" :step="1" v-model="data.sold" style="width: 300px;"></InputNumber>
+          </div>
+          <div class="form-item-wrapper">
+            <label>库存数量：</label>
+            <InputNumber :min="0" :step="1" v-model="data.stock" style="width: 300px;"></InputNumber>
+          </div>
+          <div class="form-item-wrapper">
+            <label>上架状态</label>
+            <RadioGroup v-model="data.status" >
+              <Radio :label="1">上架</Radio>
+              <Radio :label="0">下架</Radio>
+            </RadioGroup>
+          </div>
 
-    <c-product-thumb-uploader :thumb.sync="data.thumb_img" :default-file-list="defaultThumbList"></c-product-thumb-uploader>
+          <hr>
+          <div class="form-item-wrapper">
+            <Button type="primary" @click="update('info')" :loading="btn_loading">保存基本信息</Button>
+          </div>
+        </TabPane>
 
-    <c-product-banners-uploader :banners.sync="data.banners" :default-file-list="defaultBannerList"></c-product-banners-uploader>
+        <TabPane label="图片上传" name="2">
+          <c-product-thumb-uploader :thumb.sync="data.thumb_img" :default-file-list="defaultThumbList"></c-product-thumb-uploader>
+          <c-product-banners-uploader :banners.sync="data.banners" :default-file-list="defaultBannerList"></c-product-banners-uploader>
+          <hr>
+          <div class="form-item-wrapper">
+            <Button type="primary" @click="update('image')" :loading="btn_loading">保存图片上传</Button>
+          </div>
+        </TabPane>
 
+        <TabPane label="详情简介" name="3">
+          <div class="form-item-wrapper">
+            <label>商品简介：</label>
+            <Input v-model="data.base_info" type="textarea" :autosize="{minRows: 6}" placeholder="请输入商品简介... ..." style="display: inline-block; width: 300px;"></Input>
+          </div>
+          <div class="form-item-wrapper">
+            <label>商品详情：</label>
+            <Input v-model="data.detail_info" type="textarea" :autosize="{minRows: 6}" placeholder="请输入商品详情... ..." style="display: inline-block; width: 300px;"></Input>
+          </div>
 
-    <hr>
-    <div class="form-item-wrapper">
-      <Button type="primary" @click="click" :loading="btn_loading">保存修改</Button>
-    </div>
+          <hr>
+          <div class="form-item-wrapper">
+            <Button type="primary" @click="update('detail')" :loading="btn_loading">保存详情简介</Button>
+          </div>
+        </TabPane>
+
+        <TabPane label="配置规格" name="4">
+          <div v-for="(attribute, attr_index) in attributes" v-show="attribute_reset">
+            <div class="form-item-wrapper">
+              <label>{{ attribute.name }}：</label>
+              <label v-for="item in attribute.items" class="item-label">
+                <input 
+                v-model="attribute.selectedItems"
+                type="checkbox" 
+                :value="item"/>
+                {{ item.name }}
+              </label>
+            </div>
+          </div>
+
+          <div v-show="data.skus.length">
+            <div class="ivu-table-wrapper">
+              <div class="ivu-table ivu-table-stripe">
+                <div class="ivu-table-header">
+                  <table cellspacing="0" cellpadding="0" border="0" style="width: 100%">
+                    <thead>
+                      <tr>
+                        <th v-for="attribute in attributes" v-if="attribute.selectedItems.length">
+                          <div class="ivu-table-cell">
+                            <span>{{ attribute.name }}</span>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="ivu-table-cell">
+                            <span>商品库存</span>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="ivu-table-cell">
+                            <span>商品价格</span>
+                          </div>
+                        </th>
+                        <th>
+                          <div class="ivu-table-cell">
+                            <span>操作</span>
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+                  </table>
+                </div>
+                <div class="ivu-table-body">
+                  <table cellspacing="0" cellpadding="0" border="0" style="width: 100%">
+                    <tbody class="ivu-table-tbody">
+                      <tr class="ivu-table-row" v-for="sku in data.skus">
+                        <td v-for="attribute in attributes" v-if="attribute.selectedItems.length">
+                          <div class="ivu-table-cell">
+                            <span>{{ get_item_name(sku, attribute) }}</span>
+                          </div>
+                        </td>
+                        <td>
+                          <InputNumber :min="0" :step="1" v-model="sku.sku_stock" placeholder="填写商品库存" style="width: 100px;"></InputNumber>
+                        </td>
+                        <td>
+                          <InputNumber :min="0.00" :formatter="value => `¥${value}`" :parser="value => value.replace('¥', '')" :step="0.01" v-model="sku.sku_price" placeholder="填写商品价格" style="width: 100px;"></InputNumber>
+                        </td>
+                        <td>
+                          <div class="ivu-table-cell">
+                            <div>
+                              <Button type="primary" @click="updateSku(sku)">保存</Button>
+                              <Button type="error" @click="deleteSku(sku)">删除</Button>
+                            </div>
+                          </div>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <hr>
+
+          <div class="form-item-wrapper" v-show="!attribute_reset">
+            <Button type="warning" @click="resetSku">重置规格</Button>
+          </div>
+
+          <div class="form-item-wrapper" v-show="attribute_reset">
+            <Button type="primary" @click="update('variant')" :loading="btn_loading">保存规格</Button>
+          </div>
+
+        </TabPane>
+    </Tabs>
+
   </div>
 </template>
 
 <script>
+import { descartes } from "../../../utils/base";
 import {
   fetchCategories,
   fetchAttributes,
-  fetchProduct
+  fetchProduct,
+  updateProduct
 } from "../../../api/product";
 import cProductThumbUploader from "../../../components/upload/ProductThumbImg.vue";
 import cProductBannersUploader from "../../../components/upload/ProductBanners.vue";
@@ -66,7 +180,9 @@ export default {
     return {
       id: this.$route.params.id,
       categories: [],
+      attributes: [],
       btn_loading: false,
+      attribute_reset: false,
       data: {
         // 排序
         sort: 0,
@@ -106,6 +222,21 @@ export default {
         item.name = this.data.name;
         return item;
       });
+    },
+    selectedListner: function() {
+      let length = 0;
+      this.attributes.map(item => {
+        length += item.selectedItems.length;
+      });
+      return length;
+    }
+  },
+  watch: {
+    selectedListner: {
+      handler: "rebuildSkus"
+    },
+    "data.category": {
+      handler: "initAttributes"
     }
   },
   created() {
@@ -122,7 +253,121 @@ export default {
       .catch();
   },
   methods: {
-    click() {}
+    initAttributes() {
+      let parent_category_id = this.data.category[0];
+      fetchAttributes(parent_category_id, "all")
+        .then(response => {
+          this.attributes = response.ret_msg.data.map(attribute => {
+            attribute.selectedItems = [];
+            attribute.items.map(item => {
+              this.data.skus.map(sku => {
+                sku.values.map(value => {
+                  if (
+                    item.attribute_id === value.attribute_id &&
+                    item.id === value.item_id
+                  ) {
+                    attribute.selectedItems.push(item);
+                    return false;
+                  }
+                });
+              });
+            });
+            return attribute;
+          });
+        })
+        .catch();
+    },
+    get_item_name(sku, attribute) {
+      let item_name = "";
+      sku.values.map(value => {
+        if (value.attribute_id === attribute.id) {
+          attribute.selectedItems.map(item => {
+            if (value.item_id === item.id) {
+              item_name = item.name;
+              return false;
+            }
+          });
+        }
+      });
+      return item_name;
+    },
+    rebuildSkus(val, oldVal) {
+      if (this.attribute_reset) {
+        let ori = [];
+        this.data.skus.length = 0;
+        this.attributes.map(item => {
+          if (item.selectedItems.length) {
+            ori.push(item.selectedItems);
+          }
+        });
+        let ret = descartes(ori);
+        ret.map(item => {
+          var sku = { sku_price: 0.0, sku_stock: 0, values: [] };
+          item.map(value => {
+            sku.values.push({
+              attribute_id: value.attribute_id,
+              item_id: value.id
+            });
+          });
+
+          this.data.skus.push(sku);
+        });
+      }
+    },
+    buildData(type) {
+      let data = {};
+      switch (type) {
+        case "info":
+          data = Object.assign({}, data, {
+            sort: this.data.sort,
+            category: this.data.category,
+            name: this.data.name,
+            original_price: this.data.original_price,
+            current_price: this.data.current_price,
+            sold: this.data.sold,
+            stock: this.data.stock,
+            status: this.data.status
+          });
+          break;
+        case "image":
+          data = Object.assign({}, data, {
+            thumb_img: this.data.thumb_img,
+            banners: this.data.banners
+          });
+          break;
+        case "detail":
+          data = Object.assign({}, data, {
+            base_info: this.data.base_info,
+            detail_info: this.data.detail_info
+          });
+          break;
+        case "variant":
+          break;
+        default:
+          break;
+      }
+      return data;
+    },
+    update(type) {
+      this.btn_loading = true;
+      let data = this.buildData(type);
+      updateProduct(type, this.id, data)
+        .then(response => {
+          this.btn_loading = false;
+        })
+        .catch(error => {
+          this.btn_loading = false;
+        });
+    },
+    resetSku() {
+      this.attribute_reset = !this.attribute_reset;
+      this.data.skus.length = 0;
+      this.attributes.map(attribute => {
+        attribute.selectedItems.length = 0;
+      });
+    },
+    updateSku(sku) {},
+    deleteSku(sku) {}
   }
 };
 </script>

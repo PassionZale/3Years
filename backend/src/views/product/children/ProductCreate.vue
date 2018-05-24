@@ -6,7 +6,6 @@
       <Step title="图片上传"></Step>
       <Step title="详情简介"></Step>
       <Step title="配置规格"></Step>
-      <Step title="确认创建"></Step>
     </Steps>
     <hr>
 
@@ -142,13 +141,6 @@
       </div>
       <hr> 
       <Button type="primary" @click="step_3_pre">上一步</Button>
-      <Button type="primary" @click="step_3_next">下一步</Button>
-    </div>
-
-    <div class="form-item-wrapper" v-show="current === 4">
-      <p>确认创建</p>
-      <hr>
-      <Button type="primary" @click="step_4_pre">上一步</Button>
       <Button type="success" @click="submit" :loading="btn_loading">确认创建</Button>
     </div>
 
@@ -220,7 +212,7 @@ export default {
   },
   watch: {
     selectedListner: {
-      handler: "rest_sku"
+      handler: "rebuildSkus"
     },
     "data.category": {
       handler: "step_3_init"
@@ -241,7 +233,7 @@ export default {
       });
       return item_name;
     },
-    rest_sku(val, oldVal) {
+    rebuildSkus(val, oldVal) {
       let ori = [];
       // 每次勾选规格时，重置 skus
       this.data.skus.length = 0;
@@ -256,8 +248,7 @@ export default {
         item.map(value => {
           sku.values.push({
             attribute_id: value.attribute_id,
-            item_id: value.id,
-            item_name: value.name
+            item_id: value.id
           });
         });
 
@@ -291,12 +282,6 @@ export default {
         .catch();
     },
     step_3_pre() {
-      this.current -= 1;
-    },
-    step_3_next() {
-      this.current += 1;
-    },
-    step_4_pre() {
       this.current -= 1;
     },
     submit() {

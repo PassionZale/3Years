@@ -71,35 +71,6 @@ class Product_model extends CI_Model
         return $response;
     }
 
-    public function variants($id)
-    {
-        $query = $this->db->get_where('product_skus', ['product_id' => $id]);
-        // 10,11,12
-        $skus = $query->result_array();
-        $response = [];
-        foreach ($skus as $sku) {
-            $query = $this->db->get_where('product_skus_items', ['sku_id' => $sku['id']]);
-            $variants = $query->result_array();
-
-            $sku['variants'][] = $variants;
-
-//            foreach($variants as $variant){
-//                $query = $this->db->select('id, name')->from('product_attributes')->get();
-//                
-//                $query = $this->db->select('a.name, i.name')
-//                    ->from('product_attributes as a, product_items as i')
-//                    ->where('a.id', $variant['attribute_id'])
-//                    ->where('i.id', $variant['item_id'])
-//                    ->get();
-//                $data = $query->row_array();
-//                $sku['variants'][] = $data;
-//            }
-
-            $response[] = $sku;
-        }
-        return $response;
-    }
-
     public function show($id)
     {
         // product_proudcts
@@ -239,5 +210,22 @@ class Product_model extends CI_Model
         $this->db->where('id', $id);
         $result = $this->db->update('product_products', ['status' => 0]);
         return $result;
+    }
+
+    public function update_info($id, $data)
+    {
+
+    }
+
+    public function update_image($id, $data)
+    {
+    }
+
+    public function update_detail($id, $data)
+    {
+    }
+
+    public function update_variant($id, $data)
+    {
     }
 }

@@ -31,11 +31,6 @@ class Product extends REST_Controller
         echoSuccess($response);
     }
 
-    public function variants_get($id){
-        $variants = $this->Product->variants($id);
-        echoSuccess($variants);
-    }
-
     public function index_post()
     {
         $data = $this->input->post();
@@ -43,9 +38,30 @@ class Product extends REST_Controller
         $result ? echoSuccess() : echoFail();
     }
 
-    public function index_put($id)
+    /**
+     * @param $type "info" "image" "detail" "variant"
+     * @param $id
+     */
+    public function index_put($type, $id)
     {
-
+        $data = $this->put();
+        switch ($type) {
+            case 'info':
+                $this->Product->update_info($id, $data);
+                break;
+            case 'image':
+                $this->Product->update_image($id, $data);
+                break;
+            case 'detail':
+                $this->Product->update_detail($id, $data);
+                break;
+            case 'variant':
+                $this->Product->update_variant($id, $data);
+                break;
+            default:
+                break;
+        }
+        echoSuccess();
     }
 
     public function index_delete($id)
