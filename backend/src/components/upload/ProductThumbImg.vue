@@ -2,7 +2,7 @@
     <div class="form-item-wrapper">
         <label>缩略图：</label>
         
-        <div class="upload-file-wrapper" v-for="file in fileList">
+        <div class="upload-file-wrapper" v-for="file in fileList" v-if="fileList.length">
           <template v-if="file.status === 'finished'">
             <img :src="file.url" :alt="file.name" :title="file.name"/>
           </template>
@@ -38,12 +38,12 @@ export default {
   props: {
     thumb: {
       type: Object,
-      default: {},
+      default: function() {return {}},
       required: true
     },
     defaultFileList: {
       type: Array,
-      default: {}
+      default: function() {return []},
     }
   },  
   data() {
@@ -60,7 +60,10 @@ export default {
     };
   },
   mounted(){
-      this.fileList = this.$refs.thumb_uploader.fileList;
+    this.fileList = this.$refs.thumb_uploader.fileList;
+  },
+  updated(){
+    this.fileList = this.$refs.thumb_uploader.fileList;
   },
   methods: {
     handleFormatError() {

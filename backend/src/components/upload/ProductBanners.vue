@@ -26,6 +26,7 @@
           :before-upload="handleBeforeUpload"
           :on-success="handleSuccess"
           :show-upload-list="upload.show_upload_list"
+          :default-file-list="defaultFileList"
           style="display: inline-block;width:58px;vertical-align: middle;">
           <div style="width: 58px;height:58px;line-height: 58px;">
             <Icon type="camera" size="20"></Icon>
@@ -42,8 +43,16 @@ export default {
   props: {
     banners: {
       type: Array,
-      default: [],
+      default: function() {
+        return [];
+      },
       required: true
+    },
+    defaultFileList: {
+      type: Array,
+      default: function() {
+        return [];
+      }
     }
   },
   data() {
@@ -62,6 +71,9 @@ export default {
   mounted() {
     this.fileList = this.$refs.banners_uploader.fileList;
   },
+  updated() {
+    this.fileList = this.$refs.banners_uploader.fileList;
+  },
   methods: {
     handleFormatError() {
       this.$Message.error("只允许上传.PNG、.JPG、.JPEG文件");
@@ -75,13 +87,7 @@ export default {
         file.name = response.ret_msg.name;
         file.url = response.ret_msg.url;
         this.$Message.success("上传成功");
-        // 上传成功后更新 props
-        this.$emit(
-          "update:banners",
-          fileList.map(item => {
-            return { url: item.url };
-          })
-        );
+        this.updateProps();
       } else {
         this.$Message.error(response.ret_msg);
       }
@@ -89,6 +95,16 @@ export default {
     handleRemove(file) {
       const fileList = this.$refs.banners_uploader.fileList;
       this.$refs.banners_uploader.fileList.splice(fileList.indexOf(file), 1);
+      this.updateProps();
+    },
+    // 更新 props
+    updateProps(){
+      this.$emit(
+          "update:banners",
+          this.fileList.map(item => {
+            return { name: item.name, url: item.url };
+          })
+        );
     }
   }
 };

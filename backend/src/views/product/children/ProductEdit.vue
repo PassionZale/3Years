@@ -40,9 +40,9 @@
 
     <hr>
 
-    <c-product-thumb-uploader :thumb.sync="data.thumb_img" :default-file-list="[{url: data.thumb_img.url, name: data.name}]"></c-product-thumb-uploader>
+    <c-product-thumb-uploader :thumb.sync="data.thumb_img" :default-file-list="defaultThumbList"></c-product-thumb-uploader>
 
-    <c-product-banners-uploader :banners.sync="data.banners"></c-product-banners-uploader>
+    <c-product-banners-uploader :banners.sync="data.banners" :default-file-list="defaultBannerList"></c-product-banners-uploader>
 
 
     <hr>
@@ -96,6 +96,17 @@ export default {
         skus: []
       }
     };
+  },
+  computed: {
+    defaultThumbList: function() {
+      return [{ url: this.data.thumb_img.url, name: this.data.name }];
+    },
+    defaultBannerList: function() {
+      return this.data.banners.map(item => {
+        item.name = this.data.name;
+        return item;
+      });
+    }
   },
   created() {
     fetchCategories()
