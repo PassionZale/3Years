@@ -13,7 +13,7 @@ export function createProduct(data) {
     });
 }
 
-export function fetchProduct(id = ''){
+export function fetchProduct(id = '') {
     return ajax({
         method: 'get',
         url: `/api/product/${id}`
@@ -31,11 +31,19 @@ export function fetchProducts(page = 1, category = 'all', keyword = '') {
     });
 }
 
-export function deleteProduct(id){
+export function deleteProduct(id) {
     return ajax({
         method: 'delete',
         url: `/api/product/${id}`
     })
+}
+
+export function updateProduct(type = '', id = '', data) {
+    return ajax({
+        method: 'put',
+        url: `/api/product/${type}/${id}`,
+        data
+    });
 }
 
 export function fetchParentCategories() {
