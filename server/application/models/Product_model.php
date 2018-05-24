@@ -137,6 +137,26 @@ class Product_model extends CI_Model
         $query = $this->db->select('imgurl as url')->where('product_id', $id)->from('product_products_banners')->get();
         $product['banners'] = $query->result_array();
 
+        // product_skus
+        $query = $this->db->select('id, price, stock')
+            ->where('product_id', $id)
+            ->from('product_skus')
+            ->get();
+        $result = $query->result_array();
+        $skus = [];
+        foreach ($result as $sku) {
+            $variant = array(
+                'sku_id' => $sku['id'],
+                'sku_price' => (float)$sku['price'],
+                'sku_stock' => (int)$sku['stock'],
+            );
+            $query = $this->db->select('item_id, attribute_id')->where('sku_id', $sku['id'])->from('product_skus_items')->get();
+            $values = $query->result_array();
+            $variant['values'] = $values;
+            $skus[] = $variant;
+        }
+        $product['skus'] = $skus;
+
         return $product;
     }
 
