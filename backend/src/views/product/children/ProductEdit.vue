@@ -2,7 +2,7 @@
   <div>
 
     <Tabs>
-        <TabPane label="基本信息" name="1">
+        <TabPane label="基本信息">
           <div class="form-item-wrapper">
             <label>排序：</label>
             <Poptip trigger="focus" title="注意！" content="排序默认为0，值越大则越靠前" placement="right">
@@ -49,7 +49,7 @@
           </div>
         </TabPane>
 
-        <TabPane label="图片上传" name="2">
+        <TabPane label="图片上传">
           <c-product-thumb-uploader :thumb.sync="data.thumb_img" :default-file-list="defaultThumbList"></c-product-thumb-uploader>
           <c-product-banners-uploader :banners.sync="data.banners" :default-file-list="defaultBannerList"></c-product-banners-uploader>
           <hr>
@@ -58,14 +58,17 @@
           </div>
         </TabPane>
 
-        <TabPane label="详情简介" name="3">
+        <TabPane label="详情简介">
           <div class="form-item-wrapper">
             <label>商品简介：</label>
             <Input v-model="data.base_info" type="textarea" :autosize="{minRows: 6}" placeholder="请输入商品简介... ..." style="display: inline-block; width: 300px;"></Input>
           </div>
+
           <div class="form-item-wrapper">
             <label>商品详情：</label>
-            <Input v-model="data.detail_info" type="textarea" :autosize="{minRows: 6}" placeholder="请输入商品详情... ..." style="display: inline-block; width: 300px;"></Input>
+            <div ref="product_edit_editor">
+              <p>请输入商品详情... ...</p>
+            </div>
           </div>
 
           <hr>
@@ -74,7 +77,7 @@
           </div>
         </TabPane>
 
-        <TabPane label="配置规格" name="4">
+        <TabPane label="配置规格">
           <div v-for="(attribute, attr_index) in attributes" v-show="attribute_reset">
             <div class="form-item-wrapper">
               <label>{{ attribute.name }}：</label>
@@ -165,7 +168,15 @@
 </template>
 
 <script>
-import { descartes } from "../../../utils/base";
+import {
+  descartes,
+  editorMenu,
+  editorUploadImgServer,
+  uploadImgMaxSize,
+  uploadImgMaxLength,
+  uploadFileName,
+  uploadImgHeaders
+} from "../../../utils/base";
 import {
   fetchCategories,
   fetchAttributes,
@@ -173,10 +184,11 @@ import {
   updateProduct,
   updateSku,
   deleteSku,
-  createSku,
+  createSku
 } from "../../../api/product";
 import cProductThumbUploader from "../../../components/upload/ProductThumbImg.vue";
 import cProductBannersUploader from "../../../components/upload/ProductBanners.vue";
+import E from "wangeditor";
 export default {
   components: { cProductThumbUploader, cProductBannersUploader },
   data() {
@@ -184,6 +196,7 @@ export default {
       id: this.$route.params.id,
       categories: [],
       attributes: [],
+      editor: "",
       btn_loading: false,
       attribute_reset: false,
       data: {
@@ -252,10 +265,49 @@ export default {
     fetchProduct(this.id)
       .then(response => {
         this.data = response.ret_msg;
+        this.create_editor();
       })
       .catch();
   },
+  beforeDestroy() {
+    this.destroy_editor();
+  },
   methods: {
+    create_editor() {
+      this.editor = new E(this.$refs.product_edit_editor);
+      // this.editor.customConfig.debug = true;
+      this.editor.customConfig.menus = editorMenu;
+      this.editor.customConfig.uploadImgServer = editorUploadImgServer;
+      this.editor.customConfig.uploadImgMaxSize = uploadImgMaxSize;
+      this.editor.customConfig.uploadImgMaxLength = uploadImgMaxLength;
+      // this.editor.customConfig.uploadFileName = uploadFileName;
+      this.editor.customConfig.uploadImgHeaders = uploadImgHeaders;
+
+      let vm = this;
+      this.editor.customConfig.uploadImgHooks = {
+        fail: function (xhr, editor, result) {
+          console.log(result);
+          vm.$Message.error(result.msg);
+        },
+        error: function (xhr, editor) {
+          vm.$Message.error('图片上传失败');
+        },
+        success: function(xhr, editor, result){}
+      }
+
+      this.editor.customConfig.customAlert = function (info) {
+          vm.$Message.error(info);
+      }
+
+      this.editor.customConfig.onchange = html => {
+        this.data.detail_info = html;
+      };
+      this.editor.create();
+      this.editor.txt.html(this.data.detail_info);
+    },
+    destroy_editor() {
+      this.editor = null;
+    },
     initAttributes() {
       let parent_category_id = this.data.category[0];
       fetchAttributes(parent_category_id, "all")
@@ -305,7 +357,12 @@ export default {
         });
         let ret = descartes(ori);
         ret.map(item => {
-          var sku = {product_id: this.id, sku_price: 0.0, sku_stock: 0, values: [] };
+          var sku = {
+            product_id: this.id,
+            sku_price: 0.0,
+            sku_stock: 0,
+            values: []
+          };
           item.map(value => {
             sku.values.push({
               attribute_id: value.attribute_id,
@@ -354,10 +411,10 @@ export default {
       let data = this.buildData(type);
       updateProduct(type, this.id, data)
         .then(response => {
-          if(response.ret_code === 0){
-            this.$Message.success('保存成功');
-          }else{
-            this.$Message.error('保存失败');
+          if (response.ret_code === 0) {
+            this.$Message.success("保存成功");
+          } else {
+            this.$Message.error("保存失败");
           }
           this.btn_loading = false;
         })
@@ -373,37 +430,45 @@ export default {
       });
     },
     updateSku(sku) {
-      let data = {price: sku.sku_price, stock: sku.sku_stock};
-      updateSku(sku.sku_id, data).then(response => {
-        if(response.ret_code === 0){
-          this.$Message.success('保存成功');
-        }else{
-          this.$Message.success('保存失败');
-        }
-      }).catch();
+      let data = { price: sku.sku_price, stock: sku.sku_stock };
+      updateSku(sku.sku_id, data)
+        .then(response => {
+          if (response.ret_code === 0) {
+            this.$Message.success("保存成功");
+          } else {
+            this.$Message.success("保存失败");
+          }
+        })
+        .catch();
     },
     deleteSku(index) {
       let sku = this.data.skus[index];
-      deleteSku(sku.sku_id).then(response => {
-        if(response.ret_code === 0){
-          this.data.skus.splice(index, 1);
-          this.$Message.success('删除成功');
-        }else{
-          this.$Message.error('删除失败');
-        }
-      }).catch();
+      deleteSku(sku.sku_id)
+        .then(response => {
+          if (response.ret_code === 0) {
+            this.data.skus.splice(index, 1);
+            this.$Message.success("删除成功");
+          } else {
+            this.$Message.error("删除失败");
+          }
+        })
+        .catch();
     },
-    saveSku(){
+    saveSku() {
       this.btn_loading = true;
-      createSku(this.data.skus).then(response => {
-        if(response.ret_code === 0){
-          this.attribute_reset = !this.attribute_reset;
-          this.$Message.success('保存成功');
-        }else{
-          this.$Message.error('保存失败');
-        }
-        this.btn_loading = false;
-      }).catch(error => {this.btn_loading = false;});
+      createSku(this.data.skus)
+        .then(response => {
+          if (response.ret_code === 0) {
+            this.attribute_reset = !this.attribute_reset;
+            this.$Message.success("保存成功");
+          } else {
+            this.$Message.error("保存失败");
+          }
+          this.btn_loading = false;
+        })
+        .catch(error => {
+          this.btn_loading = false;
+        });
     }
   }
 };

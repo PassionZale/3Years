@@ -1,3 +1,5 @@
+import { getToken } from './auth';
+
 export const baseURL = process.env.NODE_ENV === 'production' ?
     'https://www.url.com/backend' :
     'http://server.3years.com/backend';
@@ -48,3 +50,39 @@ export function descartes(list) {
         }
     }
 }
+
+// 富文本编辑器 自定义工具栏
+export const editorMenu = [
+    "head", // 标题
+    "bold", // 粗体
+    "fontSize", // 字号
+    "fontName", // 字体
+    "italic", // 斜体
+    "underline", // 下划线
+    "strikeThrough", // 删除线
+    "foreColor", // 文字颜色
+    "backColor", // 背景颜色
+    "link", // 插入链接
+    "list", // 列表
+    "justify", // 对齐方式
+    "image", // 插入图片
+    "table", // 表格
+    "video", // 插入视频
+    "undo", // 撤销
+    "redo" // 重复
+];
+
+// 富文本编辑器 上传图片服务端接口地址
+export const editorUploadImgServer = `${baseURL}/api/upload/product_editor_images`;
+
+// 富文本编辑器 上传图片大小限制为 2MB
+export const uploadImgMaxSize = 2 * 1024 * 1024;
+
+// 富文本编辑器 上传图片每次最多上传5张
+export const uploadImgMaxLength = 5;
+
+// 富文本编辑器 上传图片自定义 filename
+export const uploadFileName = 'editor_images';
+
+// 富文本编辑器 上传图片自定义 Headers
+export const uploadImgHeaders = { 'Authorization': getToken() };

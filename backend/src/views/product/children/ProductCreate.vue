@@ -69,7 +69,9 @@
       </div>
       <div class="form-item-wrapper">
         <label>商品详情：</label>
-        <Input v-model="data.detail_info" type="textarea" :autosize="{minRows: 6}" placeholder="请输入商品详情... ..." style="display: inline-block; width: 300px;"></Input>
+        <div ref="product_create_editor">
+          <p>请输入商品详情... ...</p>
+        </div>
       </div>
       <hr>
       <Button type="primary" @click="step_2_pre">上一步</Button>
@@ -148,7 +150,15 @@
 </template>
 
 <script>
-import { descartes } from "../../../utils/base";
+import {
+  descartes,
+  editorMenu,
+  editorUploadImgServer,
+  uploadImgMaxSize,
+  uploadImgMaxLength,
+  uploadFileName,
+  uploadImgHeaders
+} from "../../../utils/base";
 import {
   fetchCategories,
   fetchAttributes,
@@ -156,6 +166,7 @@ import {
 } from "../../../api/product";
 import cProductThumbUploader from "../../../components/upload/ProductThumbImg.vue";
 import cProductBannersUploader from "../../../components/upload/ProductBanners.vue";
+import E from "wangeditor";
 export default {
   components: { cProductThumbUploader, cProductBannersUploader },
   data() {
@@ -164,6 +175,7 @@ export default {
       btn_loading: false,
       categories: [],
       attributes: [],
+      editor: "",
       data: {
         // 排序
         sort: 0,
@@ -172,9 +184,9 @@ export default {
         // 商品名称
         name: "",
         // 原价
-        original_price: 0.00,
+        original_price: 0.0,
         // 现价
-        current_price: 0.00,
+        current_price: 0.0,
         // 已售数
         sold: 0,
         // 库存数
@@ -194,12 +206,18 @@ export default {
       }
     };
   },
+  mounted() {
+    this.create_editor();
+  },
   created() {
     fetchCategories()
       .then(response => {
         this.categories = response.ret_msg;
       })
       .catch();
+  },
+  beforeDestroy() {
+    this.destroy_editor();
   },
   computed: {
     selectedListner: function() {
@@ -219,6 +237,22 @@ export default {
     }
   },
   methods: {
+    create_editor() {
+      this.editor = new E(this.$refs.product_create_editor);
+      this.editor.customConfig.menus = editorMenu;
+      this.editor.customConfig.uploadImgServer = editorUploadImgServer;
+      this.editor.customConfig.uploadImgMaxSize = uploadImgMaxSize;
+      this.editor.customConfig.uploadImgMaxLength = uploadImgMaxLength;
+      this.editor.customConfig.uploadFileName = uploadFileName;
+      this.editor.customConfig.uploadImgHeaders = uploadImgHeaders;
+      this.editor.customConfig.onchange = html => {
+        this.data.detail_info = html;
+      };
+      this.editor.create();
+    },
+    destroy_editor() {
+      this.editor = null;
+    },
     get_item_name(sku, attribute) {
       let item_name = "";
       sku.values.map(value => {
@@ -291,7 +325,7 @@ export default {
           this.btn_loading = false;
           if (response.ret_code === 0) {
             this.$Message.success("商品创建成功");
-            this.$router.push('/product/commodity');
+            this.$router.push("/product/commodity");
           } else {
             this.$Message.error("商品创建失败");
           }
