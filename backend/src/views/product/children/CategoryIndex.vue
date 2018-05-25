@@ -8,10 +8,13 @@
       </Button>
     </router-link>
     <br><br>
-    <RadioGroup v-model="data.category_id" type="button" @on-change="change">
-        <Radio :label="item.id" v-for="item in parentCategories" :key="item.id">{{item.name}}</Radio>
-    </RadioGroup>
-    <br><br>
+    <div class="form-item-wrapper">
+      <label>选择分类：</label>
+      <RadioGroup v-model="data.category_id" type="button" @on-change="change">
+          <Radio :label="item.id" v-for="item in parentCategories" :key="item.id">{{item.name}}</Radio>
+      </RadioGroup>
+    </div>
+    
     <Table :loading="table.loading" :row-class-name="highlight_parent_category_row" :columns="table.columns" :data="table.data"></Table>
 
     <Modal v-model="modal.show" width="360">
