@@ -14,6 +14,7 @@ class Product extends REST_Controller
         $this->load->model('Category_model', 'Category');
         $this->load->model('Attribute_model', 'Attribute');
         $this->load->model('Product_model', 'Product');
+        $this->load->model('Sku_model', 'Sku');
     }
 
     public function index_get($id = FALSE)
@@ -39,7 +40,8 @@ class Product extends REST_Controller
     }
 
     /**
-     * @param $type "info" "image" "detail" "variant"
+     * 根据选定类型，部分更新商品数据
+     * @param $type "info" "image" "detail"
      * @param $id
      */
     public function index_put($type, $id)
@@ -47,26 +49,43 @@ class Product extends REST_Controller
         $data = $this->put();
         switch ($type) {
             case 'info':
-                $this->Product->update_info($id, $data);
+                $result = $this->Product->update_info($id, $data);
                 break;
             case 'image':
-                $this->Product->update_image($id, $data);
+                $result = $this->Product->update_image($id, $data);
                 break;
             case 'detail':
-                $this->Product->update_detail($id, $data);
-                break;
-            case 'variant':
-                $this->Product->update_variant($id, $data);
+                $result = $this->Product->update_detail($id, $data);
                 break;
             default:
-                break;
+                $result = FALSE;
         }
-        echoSuccess();
+        $result ? echoSuccess() : echoFail();
     }
 
     public function index_delete($id)
     {
         $result = $this->Product->delete($id);
+        $result ? echoSuccess() : echoFail();
+    }
+
+    public function sku_put($id)
+    {
+        $data = $this->put();
+        $result = $this->Sku->update($id, $data);
+        $result ? echoSuccess() : echoFail();
+    }
+
+    public function sku_delete($id)
+    {
+        $result = $this->Sku->delete($id);
+        $result ? echoSuccess() : echoFail();
+    }
+
+    public function sku_post()
+    {
+        $data = $this->input->post();
+        $result = $this->Sku->create($data);
         $result ? echoSuccess() : echoFail();
     }
 

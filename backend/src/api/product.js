@@ -46,6 +46,29 @@ export function updateProduct(type = '', id = '', data) {
     });
 }
 
+export function updateSku(id = '', data) {
+    return ajax({
+        method: 'put',
+        url: `/api/product/sku/${id}`,
+        data
+    })
+}
+
+export function deleteSku(id = '') {
+    return ajax({
+        method: 'delete',
+        url: `/api/product/sku/${id}`
+    });
+}
+
+export function createSku(data){
+    return ajax({
+        method: 'post',
+        url: '/api/product/sku',
+        data
+    });
+}
+
 export function fetchParentCategories() {
     return ajax({
         method: 'get',

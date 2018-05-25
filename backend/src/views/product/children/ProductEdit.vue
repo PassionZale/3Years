@@ -11,7 +11,9 @@
           </div>
           <div class="form-item-wrapper">
             <label>所属分类：</label>
-            <Cascader v-model="data.category" :data="categories" style="width: 300px;display: inline-block;"></Cascader>
+            <Tooltip content="移除全部规格后，才可切换分类。" :disabled="data.skus.length ? false : true">
+              <Cascader v-model="data.category" :data="categories" style="width: 300px;display: inline-block;" :disabled="data.skus.length ? true : false"></Cascader>
+            </Tooltip>
           </div>
           <div class="form-item-wrapper">
             <label>商品名称：</label>
@@ -108,7 +110,7 @@
                             <span>商品价格</span>
                           </div>
                         </th>
-                        <th>
+                        <th v-if="!attribute_reset">
                           <div class="ivu-table-cell">
                             <span>操作</span>
                           </div>
@@ -120,7 +122,7 @@
                 <div class="ivu-table-body">
                   <table cellspacing="0" cellpadding="0" border="0" style="width: 100%">
                     <tbody class="ivu-table-tbody">
-                      <tr class="ivu-table-row" v-for="sku in data.skus">
+                      <tr class="ivu-table-row" v-for="(sku,index) in data.skus">
                         <td v-for="attribute in attributes" v-if="attribute.selectedItems.length">
                           <div class="ivu-table-cell">
                             <span>{{ get_item_name(sku, attribute) }}</span>
@@ -132,11 +134,11 @@
                         <td>
                           <InputNumber :min="0.00" :formatter="value => `¥${value}`" :parser="value => value.replace('¥', '')" :step="0.01" v-model="sku.sku_price" placeholder="填写商品价格" style="width: 100px;"></InputNumber>
                         </td>
-                        <td>
+                        <td v-if="!attribute_reset">
                           <div class="ivu-table-cell">
                             <div>
-                              <Button type="primary" @click="updateSku(sku)">保存</Button>
-                              <Button type="error" @click="deleteSku(sku)">删除</Button>
+                              <Button type="primary" size="small" @click="updateSku(sku)">保存</Button>
+                              <Button type="error" size="small" @click="deleteSku(index)">删除</Button>
                             </div>
                           </div>
                         </td>
@@ -147,15 +149,13 @@
               </div>
             </div>
           </div>
-
+          <div class="form-item-wrapper" v-show="data.skus.length === 0 && !attribute_reset">
+            <p style="text-align:center;">规格已全部移除，请<Button style="margin-left: 10px;" type="dashed" @click="resetSku">创建规格</Button></p>
+          </div>
           <hr>
 
-          <div class="form-item-wrapper" v-show="!attribute_reset">
-            <Button type="warning" @click="resetSku">重置规格</Button>
-          </div>
-
           <div class="form-item-wrapper" v-show="attribute_reset">
-            <Button type="primary" @click="update('variant')" :loading="btn_loading">保存规格</Button>
+            <Button type="primary" @click="saveSku" :loading="btn_loading" :disabled="data.skus.length ? false : true">保存规格</Button>
           </div>
 
         </TabPane>
@@ -170,7 +170,10 @@ import {
   fetchCategories,
   fetchAttributes,
   fetchProduct,
-  updateProduct
+  updateProduct,
+  updateSku,
+  deleteSku,
+  createSku,
 } from "../../../api/product";
 import cProductThumbUploader from "../../../components/upload/ProductThumbImg.vue";
 import cProductBannersUploader from "../../../components/upload/ProductBanners.vue";
@@ -302,7 +305,7 @@ export default {
         });
         let ret = descartes(ori);
         ret.map(item => {
-          var sku = { sku_price: 0.0, sku_stock: 0, values: [] };
+          var sku = {product_id: this.id, sku_price: 0.0, sku_stock: 0, values: [] };
           item.map(value => {
             sku.values.push({
               attribute_id: value.attribute_id,
@@ -341,8 +344,6 @@ export default {
             detail_info: this.data.detail_info
           });
           break;
-        case "variant":
-          break;
         default:
           break;
       }
@@ -353,6 +354,11 @@ export default {
       let data = this.buildData(type);
       updateProduct(type, this.id, data)
         .then(response => {
+          if(response.ret_code === 0){
+            this.$Message.success('保存成功');
+          }else{
+            this.$Message.error('保存失败');
+          }
           this.btn_loading = false;
         })
         .catch(error => {
@@ -366,8 +372,39 @@ export default {
         attribute.selectedItems.length = 0;
       });
     },
-    updateSku(sku) {},
-    deleteSku(sku) {}
+    updateSku(sku) {
+      let data = {price: sku.sku_price, stock: sku.sku_stock};
+      updateSku(sku.sku_id, data).then(response => {
+        if(response.ret_code === 0){
+          this.$Message.success('保存成功');
+        }else{
+          this.$Message.success('保存失败');
+        }
+      }).catch();
+    },
+    deleteSku(index) {
+      let sku = this.data.skus[index];
+      deleteSku(sku.sku_id).then(response => {
+        if(response.ret_code === 0){
+          this.data.skus.splice(index, 1);
+          this.$Message.success('删除成功');
+        }else{
+          this.$Message.error('删除失败');
+        }
+      }).catch();
+    },
+    saveSku(){
+      this.btn_loading = true;
+      createSku(this.data.skus).then(response => {
+        if(response.ret_code === 0){
+          this.attribute_reset = !this.attribute_reset;
+          this.$Message.success('保存成功');
+        }else{
+          this.$Message.error('保存失败');
+        }
+        this.btn_loading = false;
+      }).catch(error => {this.btn_loading = false;});
+    }
   }
 };
 </script>

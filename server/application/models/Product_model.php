@@ -214,18 +214,39 @@ class Product_model extends CI_Model
 
     public function update_info($id, $data)
     {
-
+        $data['category_id'] = $data['category'][1];
+        unset($data['category']);
+        $data['updated_at'] = current_date();
+        return $this->db->where('id', $id)->update('product_products', $data);
     }
 
     public function update_image($id, $data)
     {
+        $thumb = array('thumb_img' => $data['thumb_img']['url']);
+        $banners = [];
+        foreach ($data['banners'] as $banner) {
+            $banners[] = array(
+                'product_id' => $id,
+                'imgurl' => $banner['url']
+            );
+        }
+        $this->db->trans_start();
+
+        $this->db->where('id', $id)->update('product_products', $thumb);
+        $this->db->where('product_id', $id)->delete('product_products_banners');
+        $this->db->insert_batch('product_products_banners', $banners);
+
+        $this->db->trans_complete();
+        if ($this->db->trans_status() === FALSE) {
+            return FALSE;
+        }
+
+        return TRUE;
     }
 
     public function update_detail($id, $data)
     {
+        return $this->db->where('id', $id)->update('product_products', $data);
     }
 
-    public function update_variant($id, $data)
-    {
-    }
 }
