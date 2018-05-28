@@ -47,6 +47,32 @@
                 </MenuItem>
             </router-link>
         </MenuGroup>
+        <MenuGroup title="商城设置">
+            <router-link :to="{ path: '/shop/freight' }">
+                <MenuItem name="运费管理">
+                    <Icon type="social-yen"></Icon>
+                    运费管理
+                </MenuItem>
+            </router-link>            
+            <router-link :to="{ path: '/shop/banner' }">
+                <MenuItem name="轮播图管理">
+                    <Icon type="images"></Icon>
+                    轮播图管理
+                </MenuItem>
+            </router-link>
+            <router-link :to="{ path: '/shop/topic' }">
+                <MenuItem name="专题管理">
+                    <Icon type="pound"></Icon>
+                    专题管理
+                </MenuItem>
+            </router-link>
+            <router-link :to="{ path: '/shop/recommend' }">
+                <MenuItem name="推荐管理">
+                    <Icon type="android-favorite"></Icon>
+                    推荐管理
+                </MenuItem>
+            </router-link>
+        </MenuGroup>
     </Menu>
 </Sider>
 </template>

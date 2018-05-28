@@ -66,7 +66,7 @@
 
           <div class="form-item-wrapper">
             <label>商品详情：</label>
-            <div ref="product_edit_editor">
+            <div ref="product_edit_editor" style="width: 700px; margin-top: 15px;">
               <p>请输入商品详情... ...</p>
             </div>
           </div>
@@ -275,7 +275,6 @@ export default {
   methods: {
     create_editor() {
       this.editor = new E(this.$refs.product_edit_editor);
-      // this.editor.customConfig.debug = true;
       this.editor.customConfig.menus = editorMenu;
       this.editor.customConfig.uploadImgServer = editorUploadImgServer;
       this.editor.customConfig.uploadImgMaxSize = uploadImgMaxSize;

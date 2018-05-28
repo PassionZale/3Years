@@ -3,6 +3,8 @@ import VueRouter from 'vue-router'
 import Layout from '../components/layouts/Index.vue'
 import systemRouter from './dynamic/systemRouter'
 import productRouter from './dynamic/productRouter'
+import shopRouter from './dynamic/shopRouter'
+
 
 Vue.use(VueRouter);
 
@@ -21,6 +23,7 @@ export const RouterMap = [
             // dynamic router list
             systemRouter,
             productRouter,
+            shopRouter,
         ]
     },
     { path: '*', name: '404', component: _import('404') },

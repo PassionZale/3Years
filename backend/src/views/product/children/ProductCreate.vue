@@ -69,7 +69,7 @@
       </div>
       <div class="form-item-wrapper">
         <label>商品详情：</label>
-        <div ref="product_create_editor">
+        <div ref="product_create_editor"  style="width: 700px; margin-top: 15px;">
           <p>请输入商品详情... ...</p>
         </div>
       </div>
