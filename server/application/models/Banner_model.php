@@ -30,7 +30,8 @@ class Banner_model extends CI_Model
 
     public function update($id, $data)
     {
-
+        $data['updated_at'] = current_date();
+        return $this->db->where('id', $id)->update('shop_banner', $data);
     }
 
     public function create($data)

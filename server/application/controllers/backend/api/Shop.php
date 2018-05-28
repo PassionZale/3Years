@@ -47,7 +47,15 @@ class Shop extends REST_Controller
 
     public function banner_put($id)
     {
-        echoSuccess();
+        $data = $this->put();
+        $this->form_validation->set_data($data);
+        if($this->form_validation->run('banner') === FALSE){
+            $errors = $this->form_validation->error_array();
+            echoFail(current($errors));
+        }else{
+            $result = $this->Banner->update($id, $data);
+            $result ? echoSuccess() : echoFail();
+        }
     }
 
     public function banner_delete($id)
