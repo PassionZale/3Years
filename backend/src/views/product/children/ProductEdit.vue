@@ -280,7 +280,7 @@ export default {
       this.editor.customConfig.uploadImgServer = editorUploadImgServer;
       this.editor.customConfig.uploadImgMaxSize = uploadImgMaxSize;
       this.editor.customConfig.uploadImgMaxLength = uploadImgMaxLength;
-      // this.editor.customConfig.uploadFileName = uploadFileName;
+      this.editor.customConfig.uploadFileName = uploadFileName;
       this.editor.customConfig.uploadImgHeaders = uploadImgHeaders;
 
       let vm = this;

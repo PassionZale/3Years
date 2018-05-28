@@ -90,8 +90,8 @@ class Upload extends REST_Controller
         $file_info = array();
 
         $files = $_FILES;
-        $loop = count($files);
-        // TODO
+        $loop = count($files['editor_images']['name']);
+
         for ($i = 0; $i < $loop; $i++) {
             $_FILES['editor_images']['name'] = $files['editor_images']['name'][$i];
             $_FILES['editor_images']['type'] = $files['editor_images']['type'][$i];
@@ -101,21 +101,18 @@ class Upload extends REST_Controller
             $this->upload->initialize($config);
             if (!$this->upload->do_upload('editor_images')) {
                 $errors = $this->upload->display_errors();
-                echoJson(['errno' => 1, 'msg' => strip_tags($errors)]);
-                return FALSE;
-                exit();
+                exit(echoJson(['errno' => 1, 'msg' => strip_tags($errors)]));
             } else {
-                $file_info[] = $this->upload->data();
+                $arr_image = $this->upload->data();
+                $file_path = '//' . $_SERVER['HTTP_HOST'] . '/uploads/product/editors/' . $dir_name . '/' . $arr_image['file_name'];
+                $file_info[] = $file_path;
             }
         }
 
-            var_dump($file_info);
-//        $file_path = '//' . $_SERVER['HTTP_HOST'] . '/uploads/product/editors/' . $dir_name . '/' . $arr_image['file_name'];
-
-//        echoJson(array(
-//            'errno' => 0,
-//            'data' => [$file_path]
-//        ));
+        echoJson(array(
+            'errno' => 0,
+            'data' => $file_info
+        ));
 
     }
 }

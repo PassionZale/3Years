@@ -82,7 +82,7 @@ export const uploadImgMaxSize = 2 * 1024 * 1024;
 export const uploadImgMaxLength = 5;
 
 // 富文本编辑器 上传图片自定义 filename
-export const uploadFileName = 'editor_images';
+export const uploadFileName = 'editor_images[]';
 
 // 富文本编辑器 上传图片自定义 Headers
 export const uploadImgHeaders = { 'Authorization': getToken() };
