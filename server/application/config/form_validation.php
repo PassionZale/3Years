@@ -166,4 +166,23 @@ $config = array(
         ),
         $sort
     ),
+    'banner' => array(
+        $sort,
+        array(
+            'field' => 'imgurl',
+            'label' => '轮播图',
+            'rules' => 'trim|required',
+            'errors' => array(
+                'required' => '%s 不能为空',
+            )
+        ),
+        array(
+            'field' => 'redirect',
+            'label' => '跳转链接',
+            'rules' => 'trim|required',
+            'errors' => array(
+                'required' => '%s 不能为空',
+            )
+        ),
+    ),
 );

@@ -9,7 +9,9 @@ class Shop extends REST_Controller
     function __construct()
     {
         parent::__construct();
+        $this->load->library('form_validation', 'form');
         $this->load->model('Freight_model', 'Freight');
+        $this->load->model('Banner_model', 'Banner');
     }
 
     public function freight_get()
@@ -22,6 +24,35 @@ class Shop extends REST_Controller
     {
         $data = $this->put();
         $result = $this->Freight->update($data);
+        $result ? echoSuccess() : echoFail();
+    }
+
+    public function banner_get($id = FALSE)
+    {
+        $banners = $this->Banner->show($id);
+        echoSuccess($banners);
+    }
+
+    public function banner_post()
+    {
+        if ($this->form_validation->run('banner') === FALSE) {
+            $errors = $this->form_validation->error_array();
+            echoFail(current($errors));
+        } else {
+            $data = $this->input->post();
+            $result = $this->Banner->create($data);
+            $result ? echoSuccess() : echoFail();
+        }
+    }
+
+    public function banner_put($id)
+    {
+        echoSuccess();
+    }
+
+    public function banner_delete($id)
+    {
+        $result = $this->Banner->delete($id);
         $result ? echoSuccess() : echoFail();
     }
 
