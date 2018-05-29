@@ -12,6 +12,7 @@ class Shop extends REST_Controller
         $this->load->library('form_validation', 'form');
         $this->load->model('Freight_model', 'Freight');
         $this->load->model('Banner_model', 'Banner');
+        $this->load->model('Recommend_model', 'Recommend');
     }
 
     public function freight_get()
@@ -49,10 +50,10 @@ class Shop extends REST_Controller
     {
         $data = $this->put();
         $this->form_validation->set_data($data);
-        if($this->form_validation->run('banner') === FALSE){
+        if ($this->form_validation->run('banner') === FALSE) {
             $errors = $this->form_validation->error_array();
             echoFail(current($errors));
-        }else{
+        } else {
             $result = $this->Banner->update($id, $data);
             $result ? echoSuccess() : echoFail();
         }
@@ -61,6 +62,30 @@ class Shop extends REST_Controller
     public function banner_delete($id)
     {
         $result = $this->Banner->delete($id);
+        $result ? echoSuccess() : echoFail();
+    }
+
+    public function recommend_get()
+    {
+        $recommends = $this->Recommend->show();
+        $query = $this->db->select('id, name')->from('product_products')->get();
+        $products = $query->result_array();
+        echoSuccess([
+            'recommends' => $recommends,
+            'products' => $products
+        ]);
+    }
+
+    public function recommend_post()
+    {
+        $data = $this->input->post();
+        $result = $this->Recommend->create($data);
+        $result ? echoSuccess($result) : echoFail();
+    }
+
+    public function recommend_delete($id)
+    {
+        $result = $this->Recommend->delete($id);
         $result ? echoSuccess() : echoFail();
     }
 
