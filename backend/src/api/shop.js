@@ -48,3 +48,25 @@ export function updateBanner(id, data){
         data
     });
 }
+
+export function fetchRecommend(){
+    return ajax({
+        method: 'get',
+        url: '/api/shop/recommend'
+    });
+}
+
+export function createRecommend(data){
+    return ajax({
+        method: 'post',
+        url: '/api/shop/recommend',
+        data
+    });
+}
+
+export function deleteRecommend(id){
+    return ajax({
+        method: 'delete',
+        url: `/api/shop/recommend/${id}`,
+    });
+}
