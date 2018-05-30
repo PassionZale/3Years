@@ -51,7 +51,7 @@ class Auth extends CI_Controller
         if ($this->UserModel->superuser_exist()) {
             header('Content-Type: text/plain; charset=utf-8');
             set_status_header(406, 'superuser is exist');
-            echoMsg('superuser is exist', ErrCode::getErrText(40001));
+            echoMsg('superuser is exist', '超级管理员已存在');
         } else {
             if ($this->form_validation->run('auth_register') === FALSE) {
                 $errors = $this->form_validation->error_array();
