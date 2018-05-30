@@ -10,7 +10,7 @@ class Wechat extends CI_Controller
         $this->load->library('CI_Wechat');
     }
 
-    // http://3years.lovchun.com/server/frontend/wechat/run
+    // http://server.3years.lovchun.com/frontend/wechat/run
     public function run()
     {
         $this->ci_wechat->valid();
