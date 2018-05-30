@@ -9,6 +9,7 @@ application/logs/*
 !application/*/.htaccess
 
 mysql_config.php
+wechat_config.php
 
 composer.lock
 superuser.lock
