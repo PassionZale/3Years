@@ -60,12 +60,6 @@
                     轮播图管理
                 </MenuItem>
             </router-link>
-            <!-- <router-link :to="{ path: '/shop/topic' }">
-                <MenuItem name="专题管理">
-                    <Icon type="pound"></Icon>
-                    专题管理
-                </MenuItem>
-            </router-link> -->
             <router-link :to="{ path: '/shop/recommend' }">
                 <MenuItem name="推荐管理">
                     <Icon type="android-favorite"></Icon>
