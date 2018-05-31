@@ -17,7 +17,7 @@ class Follow_model extends CI_Model
             'sex' => $follow['sex'],
             'city' => $follow['city'],
             'province' => $follow['province'],
-            'contry' => $follow['contry'],
+            'country' => $follow['country'],
             'subscribe' => $follow['subscribe'],
             'subscribe_time' => date('Y-m-d H:i:s', $follow['subscribe_time']),
             'subscribe_scene' => $follow['subscribe_scene'],

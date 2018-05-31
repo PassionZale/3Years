@@ -8,7 +8,7 @@ class Index extends CI_Controller
     {
         parent::__construct();
         $this->load->library('CI_Wechat');
-//        $this->load->model('Follow_model', 'Follow');
+        $this->load->model('Follow_model', 'Follow');
     }
 
     public function run()
@@ -16,7 +16,6 @@ class Index extends CI_Controller
         $this->ci_wechat->valid();
         $type = $this->ci_wechat->getRev()->getRevType();
         $openid = $this->ci_wechat->getRevFrom();
-		log_message('debug', $type . '====' . $openid);
         switch ($type){
             case 'text':
                 $this->ci_wechat->text('It\'s Beta Version...')->reply();
@@ -28,10 +27,10 @@ class Index extends CI_Controller
                         case 'subscribe':
                             $follow = $this->ci_wechat->getUserinfo($openid);
                             $this->ci_wechat->text('Welcome to subscribe 3Years.')->reply();
-                            //$this->Follow->subscribe($follow);
+                            $this->Follow->subscribe($follow);
                             break;
                         case 'unsubscribe':
-                            //$this->Follow->un_subscribe($openid);
+                            $this->Follow->un_subscribe($openid);
                             break;
                         default:
                             break;
