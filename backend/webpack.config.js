@@ -53,6 +53,15 @@ module.exports = {
     },
     extensions: ['*', '.js', '.vue', '.json']
   },
+  externals: {
+    'vue': 'Vue',
+    'vue-router': 'VueRouter',
+    'vuex': 'Vuex',
+    'iview': 'iview',
+    'wangeditor': 'wangEditor',
+    'axios': 'axios',
+    'qs': 'Qs',
+  },
   devServer: {
     historyApiFallback: true,
     noInfo: true,

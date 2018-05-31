@@ -10,7 +10,6 @@ class Index extends CI_Controller
         $this->load->library('CI_Wechat');
     }
 
-    // http://server.3years.lovchun.com/frontend/index/run
     public function run()
     {
         $this->ci_wechat->valid();

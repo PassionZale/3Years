@@ -4,7 +4,6 @@ import store from './vuex/store'
 import App from './App.vue'
 import iView from 'iview'
 import { getToken } from './utils/auth'
-import 'iview/dist/styles/iview.css';
 
 Vue.use(iView);
 
