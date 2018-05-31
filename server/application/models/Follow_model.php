@@ -8,6 +8,12 @@ class Follow_model extends CI_Model
         parent::__construct();
     }
 
+    public function all(){
+        // TODO 分页 & 筛选
+        $query = $this->db->get('wechat_follow');
+        return $query->result_array();
+    }
+
     public function subscribe($follow)
     {
         $data = array(
