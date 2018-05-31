@@ -24,7 +24,16 @@ class Follow_model extends CI_Model
             'qr_scene' => $follow['qr_scene'],
             'qr_scene_str' => $follow['qr_scene_str'],
         );
-        $this->db->replace('wechat_follow', $data);
+        $this->db->where('openid', $follow['openid']);
+        $query = $this->db->get('wechat_follow');
+        $this->db->reset_query();
+        if ($query->num_rows() > 0) {
+            $updates = $data;
+            unset($updates['openid']);
+            $this->db->where('openid', $follow['openid'])->update('wechat_follow', $updates);
+        } else {
+            $this->db->insert('wechat_follow', $data);
+        }
     }
 
     public function un_subscribe($openid)
