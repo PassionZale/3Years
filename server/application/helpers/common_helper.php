@@ -1,5 +1,26 @@
 <?php
 
+if (!function_exists('deal_emoji')) {
+    /**
+     * 处理含有 Emoji 字符的工具函数
+     * @param $msg 含有 Emoji 字符的字符串
+     * @param int $type type=0 表示写入数据库前的emoji转为HTML, type=1 表示读取之后渲染至HTML视图
+     * @return mixed|string
+     */
+    function deal_emoji($msg, $type = 1)
+    {
+        if ($type == 0) {
+            $msg = urlencode($msg);
+            $msg = json_encode($msg);
+        } else {
+            $msg = preg_replace("#\\\u([0-9a-f]+)#ie", "iconv('UCS-2','UTF-8', pack('H4', '\\1'))", $msg);
+            $msg = urldecode($msg);
+            $msg = str_replace('"', "", $msg);
+        }
+        return $msg;
+    }
+}
+
 if (!function_exists('http_post')) {
 
     /**
@@ -9,7 +30,8 @@ if (!function_exists('http_post')) {
      * @param boolean $post_file 是否文件上传
      * @return string content
      */
-    function http_post($url, $param, $post_file = false) {
+    function http_post($url, $param, $post_file = false)
+    {
         $oCurl = curl_init();
         if (stripos($url, "https://") !== FALSE) {
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -47,7 +69,8 @@ if (!function_exists('http_get')) {
      * GET 请求
      * @param string $url
      */
-    function http_get($url) {
+    function http_get($url)
+    {
         $oCurl = curl_init();
         if (stripos($url, "https://") !== FALSE) {
             curl_setopt($oCurl, CURLOPT_SSL_VERIFYPEER, FALSE);
@@ -68,8 +91,9 @@ if (!function_exists('http_get')) {
 
 }
 
-if (!function_exists('current_date')){
-    function current_date(){
+if (!function_exists('current_date')) {
+    function current_date()
+    {
         return date('Y-m-d H:i:s');
     }
 }
@@ -81,7 +105,8 @@ if (!function_exists('echoText')) {
      * @param type $arr
      * @return boolean
      */
-    function echoText($arr) {
+    function echoText($arr)
+    {
         header('Content-Type: text/plain; charset=utf-8');
         if (strpos(PHP_VERSION, '5.3') > -1) {
             // php 5.3-
@@ -103,7 +128,8 @@ if (!function_exists('echoMsg')) {
      * @param type $msg
      * @return type
      */
-    function echoMsg($code, $msg = '') {
+    function echoMsg($code, $msg = '')
+    {
         return echoJson(array(
             'ret_code' => $code,
             'ret_msg' => $msg
@@ -118,7 +144,8 @@ if (!function_exists('echoSuccess')) {
      * 输出成功JSON消息
      * @param string $msg
      */
-    function echoSuccess($msg='success') {
+    function echoSuccess($msg = 'success')
+    {
         echoMsg(0, $msg);
     }
 
@@ -130,7 +157,8 @@ if (!function_exists('echoFail')) {
      * 输出失败JSON消息
      * @param string $msg
      */
-    function echoFail($msg='failed') {
+    function echoFail($msg = 'failed')
+    {
         echoMsg(-1, $msg);
     }
 
@@ -143,7 +171,8 @@ if (!function_exists('echoJson')) {
      * @param type $arr
      * @return boolean
      */
-    function echoJson($arr) {
+    function echoJson($arr)
+    {
         header('Content-Type: application/json; charset=utf-8');
         if (strpos(PHP_VERSION, '5.3') > -1) {
             // php 5.3-
@@ -164,7 +193,8 @@ if (!function_exists('toJson')) {
      * @param type $arr
      * @return type
      */
-    function toJson($arr) {
+    function toJson($arr)
+    {
         return print_r(json_encode($arr), true);
     }
 
