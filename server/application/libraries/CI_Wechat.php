@@ -13,6 +13,7 @@ class CI_Wechat extends Wechat
         $this->_CI =& get_instance();
         $this->_CI->config->load('wechat');
         $options = $this->_CI->config->item('wechat');
+		$options['logcallback'] = 'log';
         $this->_CI->load->driver('cache');
         parent::__construct($options);
     }
@@ -48,6 +49,10 @@ class CI_Wechat extends Wechat
     {
         return $this->_CI->cache->delete($cachename);
     }
+
+	protected function log($log){
+		log_message('debug', $log);
+	}
 }
 
 
