@@ -27,6 +27,7 @@ class Index extends CI_Controller
                     switch ($info['event']) {
                         case 'subscribe':
                             $follow = $this->ci_wechat->getUserinfo($openid);
+                            log_message('debug', $follow);
                             $this->Follow->subscribe($follow);
                             $this->ci_wechat->text('Welcome to subscribe 3Years.')->reply();
                             break;
