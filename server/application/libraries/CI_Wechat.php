@@ -13,7 +13,7 @@ class CI_Wechat extends Wechat
         $this->_CI =& get_instance();
         $this->_CI->config->load('wechat');
         $options = $this->_CI->config->item('wechat');
-        $this->_CI->load->driver('cache', array('adapter' => 'apc', 'backup' => 'file'));
+        $this->_CI->load->driver('cache');
         parent::__construct($options);
     }
 
