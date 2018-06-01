@@ -68,7 +68,7 @@
             </router-link>
         </MenuGroup>
         <MenuGroup title="公众号设置">
-            <router-link :to="{ path: '/shop/freight' }">
+            <router-link :to="{ path: '/wechat/follow' }">
                 <MenuItem name="粉丝管理">
                     <Icon type="android-favorite"></Icon>
                     粉丝管理

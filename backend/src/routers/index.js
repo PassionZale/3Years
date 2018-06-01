@@ -4,6 +4,7 @@ import Layout from '../components/layouts/Index.vue'
 import systemRouter from './dynamic/systemRouter'
 import productRouter from './dynamic/productRouter'
 import shopRouter from './dynamic/shopRouter'
+import wechatRouter from './dynamic/wechatRouter'
 
 
 Vue.use(VueRouter);
@@ -24,6 +25,7 @@ export const RouterMap = [
             systemRouter,
             productRouter,
             shopRouter,
+            wechatRouter,
         ]
     },
     { path: '*', name: '404', component: _import('404') },
