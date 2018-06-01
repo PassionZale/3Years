@@ -5,7 +5,7 @@ require_once APPPATH . 'libraries/REST_Controller.php';
 
 use Restserver\Libraries\REST_Controller;
 
-class Follow extends REST_Controller
+class Wechat extends REST_Controller
 {
     function __construct()
     {
@@ -13,7 +13,7 @@ class Follow extends REST_Controller
         $this->load->model('Follow_model', 'Follow');
     }
 
-    public function index_get()
+    public function follow_get()
     {
         $result = $this->Follow->all();
         echoSuccess($result);

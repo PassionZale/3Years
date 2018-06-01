@@ -62,10 +62,18 @@
             </router-link>
             <router-link :to="{ path: '/shop/recommend' }">
                 <MenuItem name="推荐管理">
-                    <Icon type="android-favorite"></Icon>
+                    <Icon type="thumbsup"></Icon>
                     推荐管理
                 </MenuItem>
             </router-link>
+        </MenuGroup>
+        <MenuGroup title="公众号设置">
+            <router-link :to="{ path: '/shop/freight' }">
+                <MenuItem name="粉丝管理">
+                    <Icon type="android-favorite"></Icon>
+                    粉丝管理
+                </MenuItem>
+            </router-link>            
         </MenuGroup>
     </Menu>
 </Sider>
