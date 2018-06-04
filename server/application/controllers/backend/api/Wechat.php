@@ -15,7 +15,8 @@ class Wechat extends REST_Controller
 
     public function follow_get()
     {
-        $result = $this->Follow->all();
+        $data = $this->get();
+        $result = $this->Follow->all($data);
         echoSuccess($result);
     }
 

@@ -1,26 +1,5 @@
 <?php
 
-if (!function_exists('deal_emoji')) {
-    /**
-     * 处理含有 Emoji 字符的工具函数
-     * @param $msg 含有 Emoji 字符的字符串
-     * @param int $type type=0 表示写入数据库前的emoji转为HTML, type=1 表示读取之后渲染至HTML视图
-     * @return mixed|string
-     */
-    function deal_emoji($msg, $type = 1)
-    {
-        if ($type == 0) {
-            $msg = urlencode($msg);
-            $msg = json_encode($msg);
-        } else {
-            $msg = preg_replace("#\\\u([0-9a-f]+)#i", "iconv('UCS-2','UTF-8', pack('H4', '\\1'))", $msg);
-            $msg = urldecode($msg);
-            $msg = str_replace('"', "", $msg);
-        }
-        return $msg;
-    }
-}
-
 if (!function_exists('http_post')) {
 
     /**

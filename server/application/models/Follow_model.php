@@ -3,21 +3,52 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Follow_model extends CI_Model
 {
+    private $page_size = 10;
+
     function __construct()
     {
         parent::__construct();
         $this->load->library('CI_Emoji');
     }
 
-    public function all(){
-        // TODO 分页 & 筛选
-        $query = $this->db->get('wechat_follow');
+    public function total(){
+        $this->db->select('id');
+        $total = $this->db->from('wechat_follow')->count_all_results();
+        return $total;
+    }
+
+    public function all($filter = array())
+    {
+
+        $response = array(
+            'paginate' => [],
+            'data' => [],
+        );
+
+        $this->db->select('id, openid, headimgurl, nickname, sex, country, province, city, subscribe, subscribe_time');
+        $this->db->from('wechat_follow');
+
+        if($filter){
+            $page = $filter['page'];
+        }else{
+            $page = 1;
+        }
+        $this->db->limit($this->page_size, ($page - 1) * $this->page_size);
+        $query = $this->db->get();
+
         $follows = [];
-        foreach($query->result_array() as $follow){
+        foreach ($query->result_array() as $follow) {
             $follow['nickname'] = $this->ci_emoji->de($follow['nickname']);
             $follows[] = $follow;
         }
-        return $follows;
+
+        $response['data'] = $follows;
+        $response['paginate'] = array(
+            'page' => $page,
+            'total' => $this->total()
+        );
+
+        return $response;
     }
 
     public function subscribe($follow)

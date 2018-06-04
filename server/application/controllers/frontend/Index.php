@@ -42,4 +42,9 @@ class Index extends CI_Controller
         }
     }
 
+    public function init_follows(){
+        $openids = $this->ci_wechat->getUserList();
+        var_dump($openids);
+    }
+
 }
