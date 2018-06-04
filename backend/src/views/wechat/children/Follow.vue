@@ -1,5 +1,8 @@
 <template>
-    <Table :load="table.loading" :columns="table.columns" :data="table.data"></Table>
+    <div class="form-item-wrapper">
+      <Table :load="table.loading" :columns="table.columns" :data="table.data"></Table>
+      <Page :total="page.total" :current.sync="search.page" @on-change="loadPage" show-elevator></Page>
+    </div>
 </template>
 
 <script>
@@ -7,7 +10,12 @@ import { fetchFollows } from "../../../api/wechat";
 export default {
   data() {
     return {
-      search: {},
+      page: {
+        total: 0
+      },
+      search: {
+        page: 1
+      },
       table: {
         loading: false,
         columns: [
@@ -79,18 +87,29 @@ export default {
       }
     };
   },
+
   created() {
-    this.table.loading = true;
-    fetchFollows(this.search)
-      .then(response => {
-        this.table.data = response.ret_msg;
-        this.$nextTick(function() {
+    this.initTable();
+  },
+  methods: {
+    loadPage(current = 1) {
+      this.search.page = current;
+      this.initTable();
+    },
+    initTable() {
+      this.table.loading = true;
+      fetchFollows(this.search)
+        .then(response => {
+          this.table.data = response.ret_msg.data;
+          this.page.total = response.ret_msg.paginate.total;
+          this.$nextTick(function() {
+            this.table.loading = false;
+          });
+        })
+        .catch(error => {
           this.table.loading = false;
         });
-      })
-      .catch(error => {
-        this.table.loading = false;
-      });
+    }
   }
 };
 </script>

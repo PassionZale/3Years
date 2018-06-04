@@ -44,7 +44,10 @@ class Index extends CI_Controller
 
     public function init_follows(){
         $openids = $this->ci_wechat->getUserList();
-        var_dump($openids);
+        foreach ($openids['data']['openid'] as $openid){
+            $follow = $this->ci_wechat->getUserInfo($openid);
+            var_dump($follow);
+        }
     }
 
 }
