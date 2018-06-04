@@ -1,6 +1,7 @@
 <template>
     <div class="form-item-wrapper">
       <Table :load="table.loading" :columns="table.columns" :data="table.data"></Table>
+      <br>
       <Page :total="page.total" :current.sync="search.page" @on-change="loadPage" show-elevator></Page>
     </div>
 </template>
@@ -81,6 +82,42 @@ export default {
           {
             title: "最后关注时间",
             key: "subscribe_time"
+          },
+          {
+            title: "渠道来源",
+            key: "subscribe_scene",
+            render: (h, params) => {
+              let text = "";
+              switch (params.row.subscribe_scene) {
+                case "ADD_SCENE_SEARCH":
+                  text = "公众号搜索";
+                  break;
+                case "ADD_SCENE_ACCOUNT_MIGRATION":
+                  text = "公众号迁移";
+                  break;
+                case "ADD_SCENE_PROFILE_CARD":
+                  text = "名片分享";
+                  break;
+                case "ADD_SCENE_QR_CODE":
+                  text = "扫描二维码";
+                  break;
+                case "ADD_SCENEPROFILE_LINK":
+                  text = "图文页内名称点击";
+                  break;
+                case "ADD_SCENE_PROFILE_ITEM":
+                  text = "图文页右上角菜单";
+                  break;
+                case "ADD_SCENE_PAID":
+                  text = "支付后关注";
+                  break;
+                case "ADD_SCENE_OTHERS":
+                  text = "其他";
+                  break;
+                default:
+                  text = "";
+              }
+              return h("div", text);
+            }
           }
         ],
         data: []
