@@ -25,7 +25,7 @@ class Follow_model extends CI_Model
             'data' => [],
         );
 
-        $this->db->select('id, openid, headimgurl, nickname, sex, country, province, city, subscribe, subscribe_time');
+        $this->db->select('id, openid, headimgurl, nickname, sex, country, province, city, subscribe, subscribe_time, subscribe_scene');
         $this->db->from('wechat_follow');
 
         if($filter){
