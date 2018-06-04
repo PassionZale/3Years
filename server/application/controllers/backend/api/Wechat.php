@@ -18,4 +18,5 @@ class Wechat extends REST_Controller
         $result = $this->Follow->all();
         echoSuccess($result);
     }
+
 }

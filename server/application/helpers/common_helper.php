@@ -13,7 +13,7 @@ if (!function_exists('deal_emoji')) {
             $msg = urlencode($msg);
             $msg = json_encode($msg);
         } else {
-            $msg = preg_replace("#\\\u([0-9a-f]+)#ie", "iconv('UCS-2','UTF-8', pack('H4', '\\1'))", $msg);
+            $msg = preg_replace("#\\\u([0-9a-f]+)#i", "iconv('UCS-2','UTF-8', pack('H4', '\\1'))", $msg);
             $msg = urldecode($msg);
             $msg = str_replace('"', "", $msg);
         }

@@ -6,12 +6,18 @@ class Follow_model extends CI_Model
     function __construct()
     {
         parent::__construct();
+        $this->load->library('CI_Emoji');
     }
 
     public function all(){
         // TODO 分页 & 筛选
         $query = $this->db->get('wechat_follow');
-        return $query->result_array();
+        $follows = [];
+        foreach($query->result_array() as $follow){
+            $follow['nickname'] = $this->ci_emoji->de($follow['nickname']);
+            $follows[] = $follow;
+        }
+        return $follows;
     }
 
     public function subscribe($follow)
@@ -19,7 +25,7 @@ class Follow_model extends CI_Model
         $data = array(
             'openid' => $follow['openid'],
             'headimgurl' => $follow['headimgurl'],
-            'nickname' => deal_emoji($follow['nickname'], 0),
+            'nickname' => $this->ci_emoji->en($follow['nickname']),
             'sex' => $follow['sex'],
             'city' => $follow['city'],
             'province' => $follow['province'],
