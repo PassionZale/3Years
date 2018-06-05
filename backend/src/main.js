@@ -12,9 +12,9 @@ const whiteListRouter = ['/login', '/superuser'];
 router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
     if (getToken()) {
-        if(to.path === '/login'){
+        if (to.path === '/login') {
             next({ path: '/' })
-        }else{
+        } else {
             next();
         }
     } else {
@@ -27,6 +27,11 @@ router.beforeEach((to, from, next) => {
 });
 
 router.afterEach(router => {
+    let title = '3Years';
+    if (router.name) {
+        title += `-${router.name}`;
+    }
+    document.title = title;
     iView.LoadingBar.finish();
 });
 
