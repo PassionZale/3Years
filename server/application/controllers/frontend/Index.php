@@ -16,7 +16,7 @@ class Index extends CI_Controller
         $this->ci_wechat->valid();
         $type = $this->ci_wechat->getRev()->getRevType();
         $openid = $this->ci_wechat->getRevFrom();
-        switch ($type){
+        switch ($type) {
             case 'text':
                 $this->ci_wechat->text('It\'s Beta Version...')->reply();
                 break;
@@ -37,17 +37,31 @@ class Index extends CI_Controller
                     }
                 }
                 break;
-			default:
-				$this->ci_wechat->text('default')->reply();
+            default:
+                $this->ci_wechat->text('default')->reply();
         }
     }
 
-    public function init_follows(){
+    public function init_follows()
+    {
         $openids = $this->ci_wechat->getUserList();
-        foreach ($openids['data']['openid'] as $openid){
+        foreach ($openids['data']['openid'] as $openid) {
             $follow = $this->ci_wechat->getUserInfo($openid);
             $this->Follow->subscribe($follow);
         }
+    }
+
+    public function deploy_menus()
+    {
+        $data = array(
+            'button' => array(
+                'name' => '商城首页',
+                'type' => 'view',
+                'url' => 'https://www.lovchun.com'
+            )
+        );
+        $result = $this->ci_wechat->createMenu($data);
+        var_dump($result);
     }
 
 }
