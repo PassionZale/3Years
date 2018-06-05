@@ -6,7 +6,7 @@ const wechatRouter = {
     component: _import('wechat/Index'),
     children: [
         {
-            path: 'follow', name: '粉丝管理', component: _import('wechat/children/Follow'),
+            path: 'follow', name: '粉丝列表', component: _import('wechat/children/Follow'),
         }
     ]
 };

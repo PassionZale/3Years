@@ -69,11 +69,11 @@
         </MenuGroup>
         <MenuGroup title="公众号设置">
             <router-link :to="{ path: '/wechat/follow' }">
-                <MenuItem name="粉丝管理">
+                <MenuItem name="粉丝列表">
                     <Icon type="android-favorite"></Icon>
-                    粉丝管理
+                    粉丝列表
                 </MenuItem>
-            </router-link>            
+            </router-link>   
         </MenuGroup>
     </Menu>
 </Sider>
