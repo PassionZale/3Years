@@ -55,9 +55,11 @@ class Index extends CI_Controller
     {
         $data = array(
             'button' => array(
-                'name' => '商城首页',
-                'type' => 'view',
-                'url' => 'https://www.lovchun.com'
+                array(
+                    'name' => '商城首页',
+                    'type' => 'view',
+                    'url' => 'https://www.lovchun.com'
+                ),
             )
         );
         $result = $this->ci_wechat->createMenu($data);
