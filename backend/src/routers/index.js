@@ -31,10 +31,10 @@ export const dynamicRouterMap = [
     {
         path: '/system',
         name: '系统设置',
-        component: _import('system/Index'),
+        component: Layout,
         children: [
             {
-                path: 'users', name: '用户管理', component: _import('system/children/User'),
+                path: 'users', name: '用户管理', icon:'person-stalker', component: _import('system/children/User'),
                 redirect: '/system/users/index',
                 children: [
                     { path: 'index', name: '用户列表', component: _import('system/children/UserIndex') },
@@ -43,7 +43,7 @@ export const dynamicRouterMap = [
                 ]
             },
             {
-                path: 'roles', name: '角色管理', component: _import('system/children/Role'),
+                path: 'roles', name: '角色管理', icon:'ionic', component: _import('system/children/Role'),
                 redirect: '/system/roles/index',
                 children: [
                     { path: 'index', name: '角色列表', component: _import('system/children/RoleIndex') },
@@ -52,7 +52,7 @@ export const dynamicRouterMap = [
                 ]
             },
             {
-                path: 'permissions', name: '权限管理', component: _import('system/children/Permission'),
+                path: 'permissions', name: '权限管理', icon:'locked', component: _import('system/children/Permission'),
                 redirect: '/system/permissions/index',
                 children: [
                     { path: 'index', name: '权限列表', component: _import('system/children/PermissionIndex') },
@@ -66,10 +66,10 @@ export const dynamicRouterMap = [
     {
         path: '/product',
         name: '商品设置',
-        component: _import('product/Index'),
+        component: Layout,
         children: [
             {
-                path: 'commodity', name: '商品管理', component: _import('product/children/Product'),
+                path: 'commodity', name: '商品管理', icon:'bag', component: _import('product/children/Product'),
                 redirect: '/product/commodity/index',
                 children: [
                     { path: 'index', name: '商品列表', component: _import('product/children/ProductIndex') },
@@ -78,7 +78,7 @@ export const dynamicRouterMap = [
                 ]
             },
             {
-                path: 'category', name: '分类管理', component: _import('product/children/Category'),
+                path: 'category', name: '分类管理', icon:'ios-pricetag', component: _import('product/children/Category'),
                 redirect: '/product/category/index',
                 children: [
                     { path: 'index', name: '分类列表', component: _import('product/children/CategoryIndex') },
@@ -87,7 +87,7 @@ export const dynamicRouterMap = [
                 ]
             },
             {
-                path: 'attribute', name: '规格管理', component: _import('product/children/Attribute'),
+                path: 'attribute', name: '规格管理', icon:'ios-pricetag-outline', component: _import('product/children/Attribute'),
                 redirect: '/product/attribute/index',
                 children: [
                     { path: 'index', name: '规格列表', component: _import('product/children/AttributeIndex') },
@@ -101,13 +101,13 @@ export const dynamicRouterMap = [
     {
         path: '/shop',
         name: '商城设置',
-        component: _import('shop/Index'),
+        component: Layout,
         children: [
             {
-                path: 'freight', name: '运费管理', component: _import('shop/children/Freight'),
+                path: 'freight', name: '运费管理', icon:'social-yen', component: _import('shop/children/Freight'),
             },
             {
-                path: 'banner', name: '轮播图管理', component: _import('shop/children/Banner'),
+                path: 'banner', name: '轮播图管理', icon:'images', component: _import('shop/children/Banner'),
                 redirect: '/shop/banner/index',
                 children: [
                     { path: 'index', name: '轮播图列表', component: _import('shop/children/BannerIndex') },
@@ -116,16 +116,7 @@ export const dynamicRouterMap = [
                 ]
             },
             {
-                path: 'topic', name: '专题管理', component: _import('shop/children/Topic'),
-                redirect: '/shop/topic/index',
-                children: [
-                    { path: 'index', name: '专题列表', component: _import('shop/children/TopicIndex') },
-                    { path: 'create', name: '创建专题', component: _import('shop/children/TopicCreate') },
-                    { path: 'edit/:id', name: '编辑专题', component: _import('shop/children/TopicEdit') },
-                ]
-            },
-            {
-                path: 'recommend', name: '推荐管理', component: _import('shop/children/Recommend'),
+                path: 'recommend', name: '推荐管理', icon:'thumbsup', component: _import('shop/children/Recommend'),
             },
         ]
     },
@@ -133,10 +124,10 @@ export const dynamicRouterMap = [
     {
         path: '/wechat',
         name: '公众号设置',
-        component: _import('wechat/Index'),
+        component: Layout,
         children: [
             {
-                path: 'follow', name: '粉丝列表', component: _import('wechat/children/Follow'),
+                path: 'follow', name: '粉丝列表', icon:'android-favorite', component: _import('wechat/children/Follow'),
             }
         ]
     },

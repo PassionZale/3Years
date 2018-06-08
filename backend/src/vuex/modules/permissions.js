@@ -2,7 +2,7 @@ import { basicRouterMap, dynamicRouterMap } from "../../routers"
 
 function hasPermission(permissions, router) {
     return permissions.some(permission => {
-        permission.resource === router.path;
+        return `/${permission.resource}` == router.path;
     });
 }
 
