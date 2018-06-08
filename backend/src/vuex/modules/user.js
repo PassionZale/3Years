@@ -7,7 +7,8 @@ const user = {
         id: '',
         username: '',
         email: '',
-        roles: []
+        role: '',
+        permissions: '',
     },
 
     mutations: {
@@ -20,8 +21,11 @@ const user = {
         SET_EMAIL: (state, email) => {
             state.email = email
         },
-        SET_ROLES: (state, roles) => {
-            state.roles = roles;
+        SET_ROLE: (state, role) => {
+            state.role = role;
+        },
+        SET_PERMISSIONS: (state, permissions) => {
+            state.permissions = permissions;
         }
     },
 
@@ -66,7 +70,9 @@ const user = {
                         commit('SET_ID', userinfo.id);
                         commit('SET_USERNAME', userinfo.username);
                         commit('SET_EMAIL', userinfo.email);
-                        resolve();
+                        commit('SET_ROLE', userinfo.role);
+                        commit('SET_PERMISSIONS', userinfo.permissions);
+                        resolve(userinfo);
                     } else {
                         reject(response.ret_msg);
                     }
@@ -78,13 +84,13 @@ const user = {
         UpdateUserInfo({ commit, state }, params) {
             return new Promise((resolve, reject) => {
                 updateUserInfo(params).then(response => {
-                    if(response.ret_code === 0) {
+                    if (response.ret_code === 0) {
                         let userinfo = response.ret_msg;
                         commit('SET_ID', userinfo.id);
                         commit('SET_USERNAME', userinfo.username);
                         commit('SET_EMAIL', userinfo.email);
                         resolve();
-                    }else{
+                    } else {
                         reject(response.ret_msg);
                     }
                 }).catch(error => {
@@ -95,9 +101,9 @@ const user = {
         UpdateUserPwd({ commit, state }, params) {
             return new Promise((resolve, reject) => {
                 updateUserPwd(params).then(response => {
-                    if(response.ret_code === 0) {
+                    if (response.ret_code === 0) {
                         resolve();
-                    }else{
+                    } else {
                         reject(response.ret_msg);
                     }
                 }).catch(error => {

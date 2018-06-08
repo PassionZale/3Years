@@ -7,6 +7,20 @@
                 首页
             </MenuItem>
         </router-link>
+        <template v-for="router in addRouters">
+            <MenuGroup :title="router.name" v-if="router.path !== '*'">
+                <template v-for="child in router.children">
+                    <router-link :to="{ path: `${router.path}/${child.path}` }">
+                        <MenuItem :name="child.name">
+                            <Icon type="person-stalker"></Icon>
+                            {{child.name}}
+                        </MenuItem>
+                    </router-link>
+                </template>
+            </MenuGroup>
+        </template>
+
+        <!--
         <MenuGroup title="系统设置">
             <router-link :to="{ path: '/system/users' }">
                 <MenuItem name="用户管理">
@@ -75,12 +89,17 @@
                 </MenuItem>
             </router-link>   
         </MenuGroup>
+        -->
     </Menu>
 </Sider>
 </template>
 
 <script>
+import { mapGetters } from "vuex";
 export default {
+  computed: {
+    ...mapGetters(["addRouters"])
+  },
   data() {
     return {
       active_route_name: ""

@@ -22,9 +22,6 @@ export default {
   computed: {
     ...mapGetters(["user"])
   },
-  created() {
-    this.$store.dispatch("FetchUserInfo");
-  },
   methods: {
     logout() {
       this.$store.dispatch("LogOut").then(() => {

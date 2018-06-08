@@ -4,6 +4,7 @@ import store from './vuex/store'
 import App from './App.vue'
 import iView from 'iview'
 import { getToken } from './utils/auth'
+import { userInfo } from 'os';
 
 Vue.use(iView);
 
@@ -15,7 +16,18 @@ router.beforeEach((to, from, next) => {
         if (to.path === '/login') {
             next({ path: '/' })
         } else {
-            next();
+            if (store.getters.user.role === '') {
+                store.dispatch('FetchUserInfo').then(user => {
+                    store.dispatch('GenerateRoutes', user).then(() => {
+                        router.addRoutes(store.getters.addRouters)
+                        next({ ...to, replace: true })
+                    });
+                }).catch(error => {
+                    console.log(error);
+                });
+            } else {
+                next();
+            }
         }
     } else {
         if (whiteListRouter.indexOf(to.path) !== -1) {

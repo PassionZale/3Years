@@ -109,9 +109,33 @@ class User_Model extends CI_Model
 
     public function get_user_by_id($id)
     {
-        $query = $this->db->select('id, username, email, last_login')->where('id', $id)->get('auth_user');
+        $query = $this->db->where('id', $id)->get('auth_user');
         $user = $query->row_array();
-        return $user;
+        if($user['is_superuser']){
+            $role = 'superuser';
+            $permissions = 'all';
+        }else{
+            $query = $this->db->where('user_id', $id)->get('auth_user_role');
+            $user_role = $query->row_array();
+            $query = $this->db->select('id, name, alias')->where('id', $user_role['role_id'])->get('auth_role');
+            $role = $query->row_array();
+            $query = $this->db->select('p.name, p.resource')
+                ->where('r.role_id', $user_role['role_id'])
+                ->join('auth_permission as p', 'p.id = r.permission_id')
+                ->from('auth_role_permission as r')
+                ->get();
+            $permissions = $query->result_array();
+        }
+
+        $response = array(
+            'id' => $id,
+            'username' => $user['username'],
+            'email' => $user['email'],
+            'role' => $role,
+            'permissions' => $permissions
+        );
+
+        return $response;
     }
 
     public function update_userinfo($id, $data)
