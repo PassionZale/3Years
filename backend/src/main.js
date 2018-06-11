@@ -17,8 +17,11 @@ router.beforeEach((to, from, next) => {
             next({ path: '/' })
         } else {
             if (store.getters.user.role === '') {
+                // 1. 初始化用户信息
                 store.dispatch('FetchUserInfo').then(user => {
+                    // 2. 渲染 routes
                     store.dispatch('GenerateRoutes', user).then(() => {
+                        // 3. 增加 routes
                         router.addRoutes(store.getters.addRouters)
                         next({ ...to, replace: true })
                     });
