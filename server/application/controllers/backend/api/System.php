@@ -16,19 +16,6 @@ class System extends REST_Controller
         $this->load->model('Permission_model', 'Permission');
     }
 
-//    public function user_role_permission_get($user_id)
-//    {
-//        $role = $this->User->get_user_role($user_id);
-//        $permissions = $this->User->get_user_permissions($role['id']);
-//        $this->set_response(array(
-//            'ret_code' => 0,
-//            'ret_msg' => array(
-//                'role' => $role,
-//                'permissions' => $permissions
-//            )
-//        ), REST_Controller::HTTP_OK);
-//    }
-
     // 用户列表
     public function users_get()
     {

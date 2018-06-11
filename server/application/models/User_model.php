@@ -107,6 +107,15 @@ class User_Model extends CI_Model
         return $result['is_active'] == 1 ? TRUE : FALSE;
     }
 
+    public function is_visitor($id){
+        $filter = array(
+            'id' => $id,
+            'username' => 'visitor'
+        );
+        $query = $this->db->where($filter)->get('auth_user');
+        return $query->row_array();
+    }
+
     public function get_user_by_id($id)
     {
         $query = $this->db->where('id', $id)->get('auth_user');
