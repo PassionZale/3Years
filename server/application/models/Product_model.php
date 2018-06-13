@@ -11,6 +11,16 @@ class Product_model extends CI_Model
         parent::__construct();
     }
 
+    public function get($page){
+        $page_size = 5;
+        $query = $this->db->select('id, name, thumb_img, original_price,current_price,sort')
+            ->where('status', 1)
+            ->order_by('sort desc')
+            ->limit($this->page_size, ($page - 1) * $this->page_size)
+            ->get('product_products');
+        return $query->result_array();
+    }
+
     public function total($category, $keyword)
     {
         $this->db->select('id');

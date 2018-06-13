@@ -8,6 +8,14 @@ class Banner_model extends CI_Model
         parent::__construct();
     }
 
+    public function get()
+    {
+        $query = $this->db->select('sort, imgurl, redirect')
+            ->order_by('sort desc')
+            ->get('shop_banner');
+        return $query->result_array();
+    }
+
     public function show($id)
     {
         if ($id) {
@@ -15,15 +23,15 @@ class Banner_model extends CI_Model
         }
         $query = $this->db->get('shop_banner');
 
-        if($id){
+        if ($id) {
             $result = $query->row_array();
-            $result['sort'] = (int) $result['sort'];
+            $result['sort'] = (int)$result['sort'];
             return array(
-                'sort' => (int) $result['sort'],
+                'sort' => (int)$result['sort'],
                 'imgurl' => $result['imgurl'],
                 'redirect' => $result['redirect'],
             );
-        }else{
+        } else {
             return $query->result_array();
         }
     }
