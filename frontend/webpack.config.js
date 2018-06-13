@@ -57,7 +57,8 @@ module.exports = {
     'vue': 'Vue',
     'vue-router': 'VueRouter',
     'axios': 'axios',
-    'qs': 'Qs'
+    'qs': 'Qs',
+    'vant': 'vant'
   },
   devServer: {
     historyApiFallback: true,
