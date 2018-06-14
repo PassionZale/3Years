@@ -11,22 +11,27 @@
                 :finished="finished"
                 @load="onLoad"
                 >
-                <van-row v-for="(product, index) in products" :key="index" :style="{background:'#fff',marginBottom:'10px', padding:'10px'}">
-                    <van-col span="8" :style="{textAlign:'center'}">
-                        <img class="product-thumb-img" :src="product.thumb_img" :alt="product.name">
-                    </van-col>
-                    <van-col span="16">
-                        <h2>{{ product.name }}</h2>
-                        <p>
-                            &yen;{{ product.current_price }}
-                            <del style="color: rgb(243, 89, 75)">
-                                &yen;{{ product.original_price }}
-                            </del>
-                        </p>
-                    </van-col>
-                </van-row>
+                
+                <div class="product-list-container" v-for="(productGroup, index) in products" :key="index">
+                  <div class="product-list-item" v-for="item in productGroup">
+                    <div class="product-thumb-img">
+                      <img class="product-thumb-img" :src="item.thumb_img" :alt="item.name">
+                    </div>
+                    <div class="product-info">
+                      <h2>{{ item.name }}</h2>
+                      <p>
+                          &yen;{{ item.current_price }}
+                          <del style="color: rgb(243, 89, 75)">
+                              &yen;{{ item.original_price }}
+                          </del>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
             </van-list>
         </div>
+      
 
     </div>
 
@@ -38,6 +43,7 @@ import cSwipe from "../components/utils/Swipe.vue";
 import { List, Row, Col } from "vant";
 import { fetchBanners } from "../api/banner";
 import { fetchProducts } from "../api/product";
+import { chunkArr } from "../utils/base";
 export default {
   components: {
     cSwipe,
@@ -61,7 +67,10 @@ export default {
     onLoad() {
       fetchProducts(this.product_list_page).then(response => {
         if (response.ret_msg.length) {
-          this.proudcts = [].push.apply(this.products, response.ret_msg);
+          this.proudcts = [].push.apply(
+            this.products,
+            chunkArr(response.ret_msg)
+          );
           this.product_list_page++;
         } else {
           this.finished = true;
@@ -76,9 +85,22 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.product-thumb-img {
-  width: 100px;
-  height: auto;
+.product-list-container {
+  display: flex;
+  justify-content: center;
+  padding: 10px;
+  .product-list-item {
+    flex: 1;
+    background: #fff;
+    &:nth-child(even) {
+      margin-left: 10px;
+    }
+    .product-thumb-img {
+      width: 100%;
+      height: 150px;
+      display: block;
+    }
+  }
 }
 </style>
 
