@@ -18,13 +18,13 @@
                       <img class="product-thumb-img" :src="item.thumb_img" :alt="item.name">
                     </div>
                     <div class="product-info">
-                      <h2>{{ item.name }}</h2>
-                      <p>
+                      <div class="product-name">{{ item.name }}</div>
+                      <div class="product-price">
                           &yen;{{ item.current_price }}
                           <del style="color: rgb(243, 89, 75)">
                               &yen;{{ item.original_price }}
                           </del>
-                      </p>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -99,6 +99,10 @@ export default {
       width: 100%;
       height: 150px;
       display: block;
+      border-bottom: 1px solid #f5f5f5;
+    }
+    .product-info {
+      margin-top:10px;
     }
   }
 }

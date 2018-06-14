@@ -22,6 +22,7 @@
           :on-exceeded-size="handleExceedeSize"
           :before-upload="handleBeforeUpload"
           :on-success="handleSuccess"
+          :on-error="handleError"
           :show-upload-list="upload.show_upload_list"
           :default-file-list="defaultFileList"
           style="display:inline-block;">
@@ -38,14 +39,18 @@ export default {
   props: {
     thumb: {
       type: Object,
-      default: function() {return {}},
+      default: function() {
+        return {};
+      },
       required: true
     },
     defaultFileList: {
       type: Array,
-      default: function() {return []},
+      default: function() {
+        return [];
+      }
     }
-  },  
+  },
   data() {
     return {
       upload: {
@@ -54,15 +59,15 @@ export default {
         headers: { Authorization: getToken() },
         format: ["jpg", "jpeg", "png"],
         max_size: 1024,
-        show_upload_list: false,
+        show_upload_list: false
       },
-      fileList:[]
+      fileList: []
     };
   },
-  mounted(){
+  mounted() {
     this.fileList = this.$refs.thumb_uploader.fileList;
   },
-  updated(){
+  updated() {
     this.fileList = this.$refs.thumb_uploader.fileList;
   },
   methods: {
@@ -72,20 +77,27 @@ export default {
     handleExceedeSize() {
       this.$Message.error("只允许上传1MB以内的文件");
     },
-    handleBeforeUpload(){
-        if(this.fileList.length >= 1){
-            this.fileList.length = 0
-        }
+    handleBeforeUpload() {
+      if (this.fileList.length >= 1) {
+        this.fileList.length = 0;
+      }
     },
     handleSuccess(response, file) {
-        if(response.ret_code === 0){
-          file.name = response.ret_msg.name;
-          file.url = response.ret_msg.url;
-          this.$Message.success('上传成功');
-          this.$emit('update:thumb', {url: file.url});
-        }else{
-          this.$Message.error(response.ret_msg);
-        }
+      if (response.ret_code === 0) {
+        file.name = response.ret_msg.name;
+        file.url = response.ret_msg.url;
+        this.$Message.success("上传成功");
+        this.$emit("update:thumb", { url: file.url });
+      } else {
+        this.$Message.error(response.ret_msg);
+      }
+    },
+    handleError(error) {
+      if(error.status === 403){
+        this.$Message.error('暂无文件上传权限');
+      }else{
+        this.$Message.error('上传失败');
+      }
     }
   }
 };
@@ -93,16 +105,16 @@ export default {
 
 <style lang="less">
 .upload-file-wrapper {
-    display: inline-block;
-    width: 80px;
+  display: inline-block;
+  width: 80px;
+  height: auto;
+  vertical-align: middle;
+  margin-right: 15px;
+  img {
+    display: block;
+    max-width: 100%;
     height: auto;
-    vertical-align: middle;
-    margin-right: 15px;
-    img {
-        display: block;
-        max-width: 100%;
-        height: auto;        
-    }
+  }
 }
 </style>
 

@@ -25,6 +25,7 @@
           :on-exceeded-size="handleExceedeSize"
           :before-upload="handleBeforeUpload"
           :on-success="handleSuccess"
+          :on-error="handleError"
           :show-upload-list="upload.show_upload_list"
           :default-file-list="defaultFileList"
           style="display: inline-block;width:58px;vertical-align: middle;">
@@ -105,6 +106,13 @@ export default {
             return { name: item.name, url: item.url };
           })
         );
+    },
+    handleError(error) {
+      if(error.status === 403){
+        this.$Message.error('暂无文件上传权限');
+      }else{
+        this.$Message.error('上传失败');
+      }
     }
   }
 };
