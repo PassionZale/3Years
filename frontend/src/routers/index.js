@@ -15,7 +15,7 @@ export const RouterMap = [
             { path: 'home', name: '首页', component: _import('Home') },
             { path: 'category', name: '分类', component: _import('Category') },
             { path: 'cart', name: '购物车', component: _import('Cart') },
-            { path: 'usercenter', name: '用户中心', component: _import('UserCenter') },
+            { path: 'user', name: '用户中心', component: _import('UserCenter') },
         ] 
     },
     { path: '/search', name: '搜索商品', component: _import('Search') },

@@ -4,6 +4,7 @@
     <router-view></router-view>
 
     <c-footer-bar></c-footer-bar>
+    
  </div>
 </template>
 

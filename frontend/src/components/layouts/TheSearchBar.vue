@@ -5,7 +5,6 @@
 </template>
 
 <script>
-import { Search } from "vant";
 export default {};
 </script>
 

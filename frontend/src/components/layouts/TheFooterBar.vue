@@ -3,12 +3,11 @@
         <van-tabbar-item icon="home" to="/home">首页</van-tabbar-item>
         <van-tabbar-item icon="points" to="/category">分类</van-tabbar-item>
         <van-tabbar-item icon="cart" to="/cart">购物车</van-tabbar-item>
-        <van-tabbar-item icon="contact" to="/usercenter">个人中心</van-tabbar-item>
+        <van-tabbar-item icon="contact" to="/user">个人中心</van-tabbar-item>
     </van-tabbar>
 </template>
 
 <script>
-import { Tabbar, TabbarItem } from "vant";
 export default {
   data() {
     return {
@@ -36,7 +35,7 @@ export default {
         case "/cart":
           this.active = 2;
           break;
-        case "/usercenter":
+        case "/user":
           this.active = 3;
           break;
         default:
