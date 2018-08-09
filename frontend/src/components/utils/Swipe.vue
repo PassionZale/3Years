@@ -7,7 +7,6 @@
 </template>
 
 <script>
-import { Swipe, SwipeItem } from "vant";
 export default {
   props: {
     images: {
