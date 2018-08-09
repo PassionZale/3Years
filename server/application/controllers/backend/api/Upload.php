@@ -34,7 +34,7 @@ class Upload extends REST_Controller {
         );
         $this->upload->initialize($config);
 
-        if (!$this->upload->do_upload('thumb_img')) {
+        if (!$this->upload->do_upload('category_img')) {
             $errors = $this->upload->display_errors();
             echoFail(strip_tags($errors));
         } else {
